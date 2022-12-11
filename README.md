@@ -15,7 +15,6 @@ My name is Reebal and
 <!--  <p align="left"> <img src="https://komarev.com/ghpvc/?username=ReebalSami" alt="ReebalSami" /> </p> -->
 <!-- [![Reebal's github stats](https://github-readme-stats.vercel.app/api?username=ReebalSami&hide=stars,issues&count_private=true&show_icons=true&theme=tokyonight)](https://github.com/ReebalSami/github-readme-stats) <br /> -->
 
-<!-- ![Reebal's github stats](https://github-readme-stats.vercel.app/api?username=ReebalSami-mai&show_icons=true&theme=nightowl) -->
 
 
 
