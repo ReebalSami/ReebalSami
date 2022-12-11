@@ -12,14 +12,8 @@ My name is Reebal and
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png"></code>
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code>
 <br />
-<!--  <p align="left"> <img src="https://komarev.com/ghpvc/?username=ReebalSami" alt="ReebalSami" /> </p> -->
-<!-- [![Reebal's github stats](https://github-readme-stats.vercel.app/api?username=ReebalSami&hide=stars,issues&count_private=true&show_icons=true&theme=tokyonight)](https://github.com/ReebalSami/github-readme-stats) <br /> -->
 
 
-
-
-![Reebal's github stats](https://github-readme-stats.vercel.app/api?username=ReebalSami&theme=tokyonight&show_icons=true&hide=["issues"])<br />
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ReebalSami&theme=tokyonight&layout=compact)
 ### 🤝🏻 Find me on:
  <a href="mailto:reebal.sami@gmail.com"><img alt="Email" src="https://img.shields.io/badge/Email-reebal.sami@gmail.com-blue?style=flat-square&logo=gmail"></a>
 <p align="center"> 
