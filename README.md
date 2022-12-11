@@ -16,7 +16,7 @@ My name is Reebal and
 <!-- [![Reebal's github stats](https://github-readme-stats.vercel.app/api?username=ReebalSami&hide=stars,issues&count_private=true&show_icons=true&theme=tokyonight)](https://github.com/ReebalSami/github-readme-stats) <br /> -->
 
 <!-- ![Reebal's github stats](https://github-readme-stats.vercel.app/api?username=ReebalSami-mai&show_icons=true&theme=nightowl) -->
-<!-- [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ReebalSami&theme=nightowl&hide=html,css&langs_count=7)](https://github.com/ReebalSami/github-readme-stats)<br /> -->
+
 
 
 ![Reebal's github stats](https://github-readme-stats.vercel.app/api?username=ReebalSami&theme=tokyonight&show_icons=true&hide=["issues"])<br />
