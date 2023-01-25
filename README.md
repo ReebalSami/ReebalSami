@@ -14,9 +14,3 @@ My name is Reebal and
 <br />
 
 
-### 🤝🏻 Find me on:
- <a href="mailto:reebal.sami@gmail.com"><img alt="Email" src="https://img.shields.io/badge/Email-reebal.sami@gmail.com-blue?style=flat-square&logo=gmail"></a>
-<p align="center"> 
-  You are visitor number: <br>
-  <img src="https://profile-counter.glitch.me/ReebalSami/count.svg" />
-</p>
