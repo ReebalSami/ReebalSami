@@ -5,7 +5,8 @@
   "description": "GitHub profile README assets and milestone generation for @ReebalSami.",
   "type": "module",
   "scripts": {
-    "milestones": "node scripts/generate-milestones.mjs"
+    "milestones": "node scripts/generate-milestones.mjs",
+    "inject-webslinger": "node scripts/inject-webslinger.mjs"
   },
   "engines": {
     "node": ">=20"

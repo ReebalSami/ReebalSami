@@ -165,7 +165,7 @@ async function fetchPortfolioPostsCount(url) {
 
 const PALETTE = {
   light: {
-    bg: "#FAF9F4",
+    bg: "transparent",
     fg: "#22222A",
     muted: "#7C7C82",
     accent: "#B6803F",
@@ -177,7 +177,7 @@ const PALETTE = {
     dotEmptyAlpha: 0.12,
   },
   dark: {
-    bg: "#1B1B20",
+    bg: "transparent",
     fg: "#F5F4EE",
     muted: "#A4A4AC",
     accent: "#D4A574",
@@ -214,15 +214,27 @@ function renderRow({ y, milestone, p }) {
   const { label, value, valueSuffix = "", tier, description, href } = milestone;
   const filledDots = Math.round(tier.ratio * DOT_COUNT);
 
+  // The dot at index === filledDots is the "next-tier" target — animate it
+  // with a subtle pulse (scale + opacity) to draw the eye to upcoming progress.
   const dots = [];
   for (let i = 0; i < DOT_COUNT; i++) {
     const cx = i * (DOT_RADIUS * 2 + DOT_GAP) + DOT_RADIUS;
     const filled = i < filledDots;
-    dots.push(
-      `<circle cx="${cx}" cy="${DOT_RADIUS}" r="${DOT_RADIUS}" fill="${filled ? p.accent : p.dotEmpty}" fill-opacity="${
-        filled ? 1 : p.dotEmptyAlpha
-      }"/>`
-    );
+    const isNext = i === filledDots && !filled; // first unfilled dot only
+    if (isNext) {
+      dots.push(
+        `<circle cx="${cx}" cy="${DOT_RADIUS}" r="${DOT_RADIUS}" fill="${p.accent}" fill-opacity="0.85">
+  <animate attributeName="r" values="${DOT_RADIUS};${DOT_RADIUS * 1.7};${DOT_RADIUS}" dur="2.4s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
+</circle>`
+      );
+    } else {
+      dots.push(
+        `<circle cx="${cx}" cy="${DOT_RADIUS}" r="${DOT_RADIUS}" fill="${filled ? p.accent : p.dotEmpty}" fill-opacity="${
+          filled ? 1 : p.dotEmptyAlpha
+        }"/>`
+      );
+    }
   }
 
   const tierLabel = `${tier.current.name}${tier.current.name !== tier.final.name ? ` · next: ${tier.next.name} (${tier.next.threshold.toLocaleString()})` : " · max"}`;
@@ -268,12 +280,11 @@ function renderSvg({ milestones, theme }) {
       .row-desc { font-family: "DM Sans", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 400; }
     </style>
   </defs>
-  <rect width="${SVG_WIDTH}" height="${totalHeight}" fill="${p.bg}"/>
 
   <!-- title -->
   <text x="${ROW_PAD_X}" y="34" class="section-label" fill="${p.muted}">MILESTONES</text>
   <rect x="${ROW_PAD_X}" y="42" width="60" height="1" fill="${p.accent}" fill-opacity="0.55"/>
-  <text x="${ROW_PAD_X}" y="62" class="row-desc" fill="${p.muted}">Progress dots fill toward the final tier · click any row to dig deeper.</text>
+  <text x="${ROW_PAD_X}" y="62" class="row-desc" fill="${p.muted}">Progress dots fill toward the final tier · the pulsing dot is your next target · click any row to dig deeper.</text>
 
   ${rows}
 </svg>
