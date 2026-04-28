@@ -28,11 +28,14 @@ jobs:
         with:
           node-version: "20"
 
-      # Render a single half-year isocalendar. output_action: none disables
-      # lowlighter's auto-commit/push so we own the only commit in this run.
-      # That eliminates the previously seen race condition where the runner
-      # workspace stayed at the checked-out version while lowlighter pushed
-      # a different file directly from inside its container.
+      # Render a single half-year isocalendar.
+      #
+      # output_action: none means lowlighter does NOT commit/push, but it
+      # also writes the SVG to /metrics_renders/<filename> on the host
+      # (NOT to $GITHUB_WORKSPACE). We copy it back ourselves and own the
+      # only commit in this run — eliminating the race-condition stale-
+      # workspace bug where lowlighter's container committed real data
+      # while the workspace still held the checked-out (older) file.
       - name: Render isocalendar
         uses: lowlighter/metrics@latest
         with:
@@ -47,6 +50,12 @@ jobs:
           output_action: none
           plugin_isocalendar: yes
           plugin_isocalendar_duration: half-year
+
+      - name: Copy rendered SVG into workspace
+        run: |
+          mkdir -p assets
+          sudo cp /metrics_renders/assets/metrics.svg assets/metrics.svg
+          sudo chown $USER:$USER assets/metrics.svg
 
       - name: Inject web-slinger
         run: node scripts/inject-webslinger.mjs assets/metrics.svg
