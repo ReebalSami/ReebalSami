@@ -45,6 +45,56 @@ const theme = themeArg;
 
 let svg = readFileSync(svgPath, "utf8");
 
+// ----- idempotency: strip any prior injection -----------------------------
+// If this script has been run before on this file (e.g., the workflow ran
+// twice without lowlighter overwriting the file), remove the prior
+// webslinger group AND its preceding <style> block so we don't duplicate.
+
+function stripPriorInjection(s) {
+  // Remove any <g class="webslinger"> ... </g> blocks (greedy, nested-aware
+  // via lazy match + outer tag boundary).
+  let cleaned = s.replace(
+    /\n*<!-- webslinger character[^]*?<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*<\/g>\s*\n?/g,
+    ""
+  );
+  // Fallback: if the comment marker is missing, still match the group.
+  cleaned = cleaned.replace(
+    /<g class="webslinger">[^]*?<animateMotion[^]*?\/>\s*<\/g>\s*\n?/g,
+    ""
+  );
+  // Remove any prior brand-style block we added (markered by our comment).
+  cleaned = cleaned.replace(
+    /\n*<style>\s*\/\* Brand palette overrides for the lowlighter calendar[^]*?<\/style>\s*\n?/g,
+    ""
+  );
+  // Restore the original outer-svg height + viewBox if we expanded them on
+  // a prior run. We mark the original on the outer tag with a data attribute
+  // when expanding; here we use it to restore.
+  cleaned = cleaned.replace(
+    /<svg([^>]*?)\s+data-ws-orig-height="([0-9.]+)"([^>]*)>/,
+    (match, beforeAttr, origHeight, afterAttr) => {
+      let tag = `<svg${beforeAttr}${afterAttr}>`;
+      // Reset height attribute
+      tag = tag.replace(/\bheight="[0-9.]+"/, `height="${origHeight}"`);
+      // Reset viewBox height (4th value)
+      tag = tag.replace(
+        /\bviewBox="([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)\s+[0-9.\-]+"/,
+        (m, x, y, w) => `viewBox="${x} ${y} ${w} ${origHeight}"`
+      );
+      return tag;
+    }
+  );
+  return cleaned;
+}
+
+const before_strip = svg.length;
+svg = stripPriorInjection(svg);
+if (svg.length !== before_strip) {
+  console.log(
+    `🧹 Stripped prior injection (${before_strip - svg.length} bytes removed)`
+  );
+}
+
 // Match the outer <svg ...> opening tag.
 const outerMatch = svg.match(/<svg\b[^>]*>/);
 if (!outerMatch) {
@@ -145,6 +195,15 @@ if (newOuterTag.match(/\bviewBox="[^"]+"/)) {
   );
 } else {
   newOuterTag = newOuterTag.replace("<svg", `<svg viewBox="0 0 ${width} ${newHeight}"`);
+}
+
+// Mark original height on the tag so a future re-run can restore it after
+// stripping our injection.
+if (!newOuterTag.includes("data-ws-orig-height=")) {
+  newOuterTag = newOuterTag.replace(
+    "<svg",
+    `<svg data-ws-orig-height="${height}"`
+  );
 }
 
 svg = svg.replace(outerTag, newOuterTag);

@@ -27,9 +27,11 @@ jobs:
           node-version: "20"
 
       # ----- LIGHT VARIANT -----------------------------------------------
-      # Renders the isocalendar plugin (3D iso contribution grid) only.
-      # output_action: none disables lowlighter's auto-commit so the WHOLE
-      # generate-then-inject-then-commit flow stays atomic in our final step.
+      # lowlighter/metrics auto-commits AND pushes its raw SVG (default
+      # output_action: commit). The inject step then modifies the file and
+      # the final commit step pushes the post-processed result. Because
+      # multiple commits happen in the same run, the final push needs to
+      # rebase onto whatever lowlighter just pushed.
       - name: Render light isocalendar
         uses: lowlighter/metrics@latest
         with:
@@ -41,7 +43,6 @@ jobs:
           config_timezone: Europe/Berlin
           config_padding: 0, 0
           config_animations: yes
-          output_action: none
           plugin_isocalendar: yes
           plugin_isocalendar_duration: full-year
 
@@ -60,7 +61,6 @@ jobs:
           config_timezone: Europe/Berlin
           config_padding: 0, 0
           config_animations: yes
-          output_action: none
           plugin_isocalendar: yes
           plugin_isocalendar_duration: full-year
 
@@ -68,15 +68,20 @@ jobs:
         run: node scripts/inject-webslinger.mjs assets/metrics-dark.svg dark
 
       # ----- COMMIT BOTH -------------------------------------------------
-      # Single atomic commit+push — no other step has touched the remote.
+      # Rebase first to fetch lowlighter's auto-commits, then commit and push
+      # the post-processed (with web-slinger) versions on top.
       - name: Commit metrics with web-slinger
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Stash our inject changes, rebase onto remote, then re-apply.
+          git stash push -- assets/metrics-light.svg assets/metrics-dark.svg
+          git pull --rebase origin main
+          git stash pop || true
           git add assets/metrics-light.svg assets/metrics-dark.svg
           if git diff --staged --quiet; then
             echo "No changes — calendars unchanged since last run."
           else
-            git commit -m "chore(metrics): refresh iso calendars + web-slinger"
+            git commit -m "chore(metrics): inject web-slinger into iso calendars"
             git push
           fi
