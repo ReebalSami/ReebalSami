@@ -78,23 +78,40 @@ if (!width || !height) {
 
 console.log(`📐 Outer SVG dimensions: ${width}×${height}`);
 
-// ----- expand height + ensure viewBox -------------------------------------
-// The character swings ABOVE the calendar (web-strands hang from above), so
-// we need a bit of headroom above the original height. We add 60px and shift
-// the existing content down via a wrapping <g>.
+// ----- expand height + plan the swing path -------------------------------
+// The lowlighter isocalendar content lives inside a <foreignObject> with HTML
+// children; wrapping that foreignObject in a transformed <g> breaks its
+// rendering. So we keep the foreignObject in place and:
+//   1) Expand outer SVG height by HEADROOM at the BOTTOM (gives the character
+//      a "ground level" to swing toward without overlapping the streak/commit
+//      stats column on the right)
+//   2) Plan the swing path to weave THROUGH the iso-calendar towers — anchor
+//      lows in the lower iso-band, peaks just above the highest towers — so
+//      the character looks like he's swinging across the contribution skyline.
 
-const HEADROOM = 80;
+const HEADROOM = 20;
 const newHeight = height + HEADROOM;
 
-// Build the swing path in NEW coordinates: the iso calendar is in the
-// upper third of the original height (after we shift down by HEADROOM, the
-// iso starts around y=HEADROOM and runs through ~HEADROOM+180). The character
-// should swing in the area between y=HEADROOM+30 and y=newHeight-40, with
-// arcs peaking near y=HEADROOM-20.
-const { anchors } = defaultAnchorsForSize({ width, height });
-// Shift anchors down by HEADROOM to account for the new offset
-const shiftedAnchors = anchors.map((a) => ({ x: a.x, y: a.y + HEADROOM }));
-const swingPath = buildSwingPath({ anchors: shiftedAnchors, peak: 70 });
+// Iso calendar geometry inside the lowlighter SVG (480x310 typical):
+//   - heading + stats text occupy y ≈ 0 – 60
+//   - tower tops (peak greens) sit around y ≈ 50 – 90
+//   - mid iso row of cells around y ≈ 130 – 180
+//   - bottom of iso projection around y ≈ 200 – 230
+// The swing path's lows touch the lower iso band; peaks just clear tower tops.
+const lowY = Math.max(180, height * 0.65);
+const peakY = Math.max(40, height * 0.18);
+
+const anchors = [
+  { x: width * 0.04, y: lowY + 30 },     // start, just under iso
+  { x: width * 0.20, y: lowY },           // first landing on iso strip
+  { x: width * 0.36, y: lowY + 8 },       // dip
+  { x: width * 0.52, y: lowY - 6 },       // mid, slight rise
+  { x: width * 0.68, y: lowY + 8 },       // dip
+  { x: width * 0.84, y: lowY - 4 },       // rise toward end
+  { x: width * 0.96, y: lowY + 30 },      // exit, just under iso
+];
+const peak = lowY - peakY;
+const swingPath = buildSwingPath({ anchors, peak });
 
 // ----- build the webslinger group -----------------------------------------
 
@@ -102,25 +119,21 @@ const webslinger = buildWebslinger({
   theme,
   swingPath,
   durationSec: 14,
-  scale: 1.4,
 });
 
 // ----- rewrite the outer SVG --------------------------------------------
-// 1) Replace outer <svg> tag's height attribute with newHeight
-// 2) Add or update viewBox to "0 0 width newHeight"
-// 3) Wrap existing content in <g transform="translate(0, HEADROOM)"> ... </g>
-// 4) Append webslinger group right before </svg>
+// 1) Update the outer <svg> height attribute to newHeight
+// 2) Update or add viewBox to "0 0 width newHeight"
+// 3) Append the webslinger group right before </svg>
 
 let newOuterTag = outerTag;
 
-// Update height attribute
 if (newOuterTag.match(/\bheight="[0-9.]+"/)) {
   newOuterTag = newOuterTag.replace(/\bheight="[0-9.]+"/, `height="${newHeight}"`);
 } else {
   newOuterTag = newOuterTag.replace("<svg", `<svg height="${newHeight}"`);
 }
 
-// Update or add viewBox
 if (newOuterTag.match(/\bviewBox="[^"]+"/)) {
   newOuterTag = newOuterTag.replace(
     /\bviewBox="[^"]+"/,
@@ -130,81 +143,64 @@ if (newOuterTag.match(/\bviewBox="[^"]+"/)) {
   newOuterTag = newOuterTag.replace("<svg", `<svg viewBox="0 0 ${width} ${newHeight}"`);
 }
 
-// Replace the original outer tag
 svg = svg.replace(outerTag, newOuterTag);
 
-// Wrap existing inner content in a translate group. We do this by inserting
-// `<g transform="translate(0,HEADROOM)">` right after the outer <svg> open tag,
-// and inserting `</g>` right before the closing </svg>.
-const openTagEndIdx = svg.indexOf(newOuterTag) + newOuterTag.length;
+// Append the webslinger just before the closing </svg> tag.
 const closingIdx = svg.lastIndexOf("</svg>");
 if (closingIdx === -1) {
   console.error("Could not locate closing </svg> tag");
   process.exit(1);
 }
 
-const before = svg.slice(0, openTagEndIdx);
-const middle = svg.slice(openTagEndIdx, closingIdx);
+const before = svg.slice(0, closingIdx);
 const after = svg.slice(closingIdx);
 
-// Inject brand-color override <style> block + transparent bg + content wrapper
-// + webslinger group at the end.
+// Brand-color CSS overrides (apply to the lowlighter-rendered calendar HTML
+// inside foreignObject and to any SVG text labels). Injected at the end of
+// the SVG where it'll still cascade over earlier rules.
 
 const PALETTE = {
   light: {
-    bg: "transparent",
     fg: "#22222A",
     muted: "#7C7C82",
     accent: "#B6803F",
     border: "rgba(34,34,42,0.08)",
-    h2: "#B6803F",
-    field: "#22222A",
   },
   dark: {
-    bg: "transparent",
     fg: "#F5F4EE",
     muted: "#A4A4AC",
     accent: "#D4A574",
     border: "rgba(245,244,238,0.10)",
-    h2: "#D4A574",
-    field: "#F5F4EE",
   },
 };
 const p = PALETTE[theme];
 
-// Brand override style — injected at the very top of the wrapped content so
-// it cascades over the lowlighter defaults.
 const brandStyle = `
 <style>
-  .ws-brand-bg { fill: ${p.bg}; }
-  .ws-overlay svg, .ws-overlay foreignObject, .ws-overlay :root {
-    background: transparent !important;
-  }
-  .ws-overlay text, .ws-overlay tspan { fill: ${p.fg} !important; }
-  .ws-overlay h2, .ws-overlay h3 {
-    color: ${p.h2} !important;
+  /* Brand palette overrides for the lowlighter calendar content.
+     Scoped broadly because the calendar is rendered inside a foreignObject. */
+  svg { background: transparent; }
+  text, tspan { fill: ${p.fg}; }
+  h2, h3 {
+    color: ${p.accent} !important;
     font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif !important;
     font-weight: 600 !important;
   }
-  .ws-overlay .field, .ws-overlay .field text { color: ${p.field} !important; fill: ${p.field} !important; }
-  .ws-overlay .field b { color: ${p.accent} !important; fill: ${p.accent} !important; font-weight: 600; }
-  .ws-overlay h2 svg, .ws-overlay h3 svg { fill: ${p.accent} !important; }
-  .ws-overlay svg.calendar .day { outline-color: ${p.border} !important; }
-  .ws-overlay rect[fill="#28a745"], .ws-overlay rect[fill="#196c2e"] { fill: ${p.accent} !important; }
-  /* Keep iso-calendar tower colors as GitHub greens — looks better as a city-scape */
+  .field b { color: ${p.accent} !important; font-weight: 600; }
+  h2 svg, h3 svg { fill: ${p.accent} !important; }
+  svg.calendar .day { outline-color: ${p.border} !important; }
+  /* Note: we deliberately KEEP the green tower colors — they read as a
+     skyline and the chibi web-slinger swings through them nicely. */
 </style>
 `;
 
-const wrapped =
-  `${brandStyle}
-<g class="ws-overlay" transform="translate(0, ${HEADROOM})">
-${middle}
-</g>
-<!-- webslinger character — chibi homage, SMIL-animated swing path -->
-${webslinger}
-`;
-
-const out = before + wrapped + after;
+const out =
+  before +
+  brandStyle +
+  `\n<!-- webslinger character — chibi homage, SMIL-animated swing path -->\n` +
+  webslinger +
+  "\n" +
+  after;
 
 writeFileSync(svgPath, out);
 console.log(
