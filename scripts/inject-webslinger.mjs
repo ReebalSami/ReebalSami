@@ -2,35 +2,34 @@
 /**
  * inject-webslinger.mjs
  *
- * Post-processes a metrics-generated SVG (lowlighter/metrics output containing
- * the isocalendar plugin) and injects an animated chibi web-slinger character
- * that swings across the visible area in a multi-arc path.
+ * Reads a lowlighter/metrics isocalendar SVG, extracts every contribution
+ * cube, plans a parkour tour for a chibi web-slinger character, and emits
+ * a fully-baked SMIL animation injected into the SVG. No JS at runtime —
+ * GitHub renders the SVG natively and the SMIL plays the pre-computed
+ * waypoint sequence.
  *
- * Strategy:
- *   - Read the outer SVG element's width/height attributes
- *   - Build a 6-anchor swing path in those pixel coordinates
- *   - Insert the webslinger group as the last child of the outer SVG so it
- *     renders on top of everything else (including the foreignObject body)
- *   - Also expand the outer SVG height a bit to give the swing arc room
+ * Pipeline:
+ *   parseBuildings()  → array of cube positions + levels
+ *   planTour()        → array of jump/idle events (deterministic per seed)
+ *   buildSMIL()       → keyTimes/values for translate/scale/rotate/opacity
+ *   buildCharacter()  → static character markup
+ *   inject            → splice into the outer <svg>
  *
  * Usage:
- *   node scripts/inject-webslinger.mjs <svg-path> <theme>
- *   e.g. node scripts/inject-webslinger.mjs assets/metrics-light.svg light
+ *   node scripts/inject-webslinger.mjs <svg-path> <light|dark> [seed]
  */
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import {
-  buildWebslinger,
-  buildSwingPath,
-  defaultAnchorsForSize,
-} from "./webslinger-character.mjs";
+import { parseBuildings } from "./parse-iso-calendar.mjs";
+import { planTour } from "./plan-character-tour.mjs";
+import { buildCharacterBody, PALETTE as CHAR_PALETTE } from "./webslinger-character.mjs";
 
 // ----- args ---------------------------------------------------------------
 
-const [, , svgPathArg, themeArg = "light"] = process.argv;
+const [, , svgPathArg, themeArg = "light", seedArg] = process.argv;
 if (!svgPathArg) {
-  console.error("Usage: inject-webslinger <svg-path> <light|dark>");
+  console.error("Usage: inject-webslinger <svg-path> <light|dark> [seed]");
   process.exit(1);
 }
 if (themeArg !== "light" && themeArg !== "dark") {
@@ -40,46 +39,42 @@ if (themeArg !== "light" && themeArg !== "dark") {
 
 const svgPath = resolve(svgPathArg);
 const theme = themeArg;
+// Daily-rotating seed: day-number since epoch + theme tweak so light & dark
+// don't share an identical tour (slight visual difference between variants).
+const seed =
+  seedArg !== undefined
+    ? parseInt(seedArg, 10)
+    : Math.floor(Date.now() / 86_400_000) + (theme === "dark" ? 7919 : 0);
 
-// ----- read + parse outer dimensions --------------------------------------
+const TOTAL_DUR_SEC = 20;
+
+// ----- read SVG -----------------------------------------------------------
 
 let svg = readFileSync(svgPath, "utf8");
 
 // ----- idempotency: strip any prior injection -----------------------------
-// If this script has been run before on this file (e.g., the workflow ran
-// twice without lowlighter overwriting the file), remove the prior
-// webslinger group AND its preceding <style> block so we don't duplicate.
 
 function stripPriorInjection(s) {
-  // Remove any <g class="webslinger"> ... </g> blocks (greedy, nested-aware
-  // via lazy match + outer tag boundary).
   let cleaned = s.replace(
-    /\n*<!-- webslinger character[^]*?<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*<\/g>\s*\n?/g,
+    /\n*<!-- webslinger character[^]*?<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*\n?/g,
     ""
   );
-  // Fallback: if the comment marker is missing, still match the group.
   cleaned = cleaned.replace(
-    /<g class="webslinger">[^]*?<animateMotion[^]*?\/>\s*<\/g>\s*\n?/g,
+    /<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*\n?/g,
     ""
   );
-  // Remove any prior brand-style block we added (markered by our comment).
   cleaned = cleaned.replace(
-    /\n*<style>\s*\/\* Brand palette overrides for the lowlighter calendar[^]*?<\/style>\s*\n?/g,
+    /\n*<style>\s*\/\* webslinger brand overrides[^]*?<\/style>\s*\n?/g,
     ""
   );
-  // Restore the original outer-svg height + viewBox if we expanded them on
-  // a prior run. We mark the original on the outer tag with a data attribute
-  // when expanding; here we use it to restore.
   cleaned = cleaned.replace(
     /<svg([^>]*?)\s+data-ws-orig-height="([0-9.]+)"([^>]*)>/,
-    (match, beforeAttr, origHeight, afterAttr) => {
-      let tag = `<svg${beforeAttr}${afterAttr}>`;
-      // Reset height attribute
-      tag = tag.replace(/\bheight="[0-9.]+"/, `height="${origHeight}"`);
-      // Reset viewBox height (4th value)
+    (_match, before, origH, after) => {
+      let tag = `<svg${before}${after}>`;
+      tag = tag.replace(/\bheight="[0-9.]+"/, `height="${origH}"`);
       tag = tag.replace(
         /\bviewBox="([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)\s+[0-9.\-]+"/,
-        (m, x, y, w) => `viewBox="${x} ${y} ${w} ${origHeight}"`
+        (_m, x, y, w) => `viewBox="${x} ${y} ${w} ${origH}"`
       );
       return tag;
     }
@@ -87,15 +82,16 @@ function stripPriorInjection(s) {
   return cleaned;
 }
 
-const before_strip = svg.length;
+const beforeStripLen = svg.length;
 svg = stripPriorInjection(svg);
-if (svg.length !== before_strip) {
+if (svg.length !== beforeStripLen) {
   console.log(
-    `🧹 Stripped prior injection (${before_strip - svg.length} bytes removed)`
+    `🧹 Stripped prior injection (${beforeStripLen - svg.length} bytes removed)`
   );
 }
 
-// Match the outer <svg ...> opening tag.
+// ----- find outer SVG dimensions ------------------------------------------
+
 const outerMatch = svg.match(/<svg\b[^>]*>/);
 if (!outerMatch) {
   console.error(`No <svg> root tag found in ${svgPath}`);
@@ -104,149 +100,326 @@ if (!outerMatch) {
 const outerTag = outerMatch[0];
 
 function parseDim(tag, attr) {
-  const re = new RegExp(`\\b${attr}="([0-9.]+)"`);
-  const m = tag.match(re);
+  const m = tag.match(new RegExp(`\\b${attr}="([0-9.]+)"`));
   return m ? parseFloat(m[1]) : null;
 }
 
 let width = parseDim(outerTag, "width");
 let height = parseDim(outerTag, "height");
-
-// If width/height aren't on the root, try the viewBox.
 if (!width || !height) {
-  const vb = outerTag.match(/viewBox="\s*([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)\s*"/);
+  const vb = outerTag.match(
+    /viewBox="\s*([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)\s*"/
+  );
   if (vb) {
     width = width ?? parseFloat(vb[3]);
     height = height ?? parseFloat(vb[4]);
   }
 }
-
 if (!width || !height) {
   console.error(`Could not determine SVG dimensions from outer tag: ${outerTag}`);
   process.exit(1);
 }
+console.log(`📐 Outer SVG: ${width}×${height}`);
 
-console.log(`📐 Outer SVG dimensions: ${width}×${height}`);
+// ----- parse buildings + plan tour ----------------------------------------
 
-// ----- expand height + plan the swing path -------------------------------
-// The lowlighter isocalendar content lives inside a <foreignObject> with HTML
-// children; wrapping that foreignObject in a transformed <g> breaks its
-// rendering. So we keep the foreignObject in place and:
-//   1) Expand outer SVG height by HEADROOM at the BOTTOM (gives the character
-//      a "ground level" to swing toward without overlapping the streak/commit
-//      stats column on the right)
-//   2) Plan the swing path to weave THROUGH the iso-calendar towers — anchor
-//      lows in the lower iso-band, peaks just above the highest towers — so
-//      the character looks like he's swinging across the contribution skyline.
+const buildings = parseBuildings(svg);
+const tall = buildings.filter((b) => b.level >= 1);
+console.log(
+  `🏙️  Found ${buildings.length} cells (${tall.length} buildings level≥1)`
+);
 
-const HEADROOM = 20;
-const newHeight = height + HEADROOM;
+if (tall.length < 2) {
+  console.warn(
+    "⚠️  Not enough buildings to plan a tour — character will idle in place."
+  );
+}
 
-// Iso calendar geometry inside the lowlighter SVG (480x310 typical):
-//   - heading + stats text column occupy x ≈ 300 – 480 on the right side
-//   - iso projection occupies x ≈ 0 – 280
-//   - tower tops sit around y ≈ 50 – 90
-//   - bottom of iso projection around y ≈ 200 – 230
-// The character must NOT swing into the right-side stats column (x > 0.62 *
-// width). We constrain anchors to the LEFT 60% of the width.
-const lowY = Math.max(180, height * 0.65);
-const peakY = Math.max(40, height * 0.18);
+const tour = planTour(buildings, { seed, durationSec: TOTAL_DUR_SEC });
+console.log(
+  `🗺️  Planned tour: seed=${seed}, ${tour.events.length} events, ${tour.totalDuration.toFixed(2)}s`
+);
 
-const xMin = width * 0.04;
-const xMax = width * 0.60; // stops before the stats column
-const span = xMax - xMin;
-const anchors = [
-  { x: xMin + span * 0.00, y: lowY + 30 },
-  { x: xMin + span * 0.18, y: lowY },
-  { x: xMin + span * 0.36, y: lowY + 8 },
-  { x: xMin + span * 0.54, y: lowY - 6 },
-  { x: xMin + span * 0.72, y: lowY + 8 },
-  { x: xMin + span * 0.88, y: lowY - 4 },
-  { x: xMin + span * 1.00, y: lowY + 30 },
-];
-const peak = lowY - peakY;
-const swingPath = buildSwingPath({ anchors, peak });
+// ----- build SMIL keyframes from tour -------------------------------------
+/**
+ * For each jump, we emit 5 sub-keyframes approximating a parabolic arc:
+ *   t_jump_start: from
+ *   +0.25:        25% along + 75% of arcHeight up
+ *   +0.50:        midway + full arcHeight up (apex)
+ *   +0.75:        75% along + 75% of arcHeight up
+ *   +1.00:        to (landing)
+ * For idles, we emit ONE keyframe holding position. Head rotation gets
+ * its own intra-idle sub-keyframes for the "look around" wobble.
+ */
 
-// ----- build the webslinger group -----------------------------------------
+const totalDur = Math.max(tour.totalDuration, TOTAL_DUR_SEC * 0.5);
 
-const webslinger = buildWebslinger({
-  theme,
-  swingPath,
-  durationSec: 14,
-});
+// Position keyframes (translate)
+const posValues = [];
+const posKeyTimes = [];
 
-// ----- rewrite the outer SVG --------------------------------------------
-// 1) Update the outer <svg> height attribute to newHeight
-// 2) Update or add viewBox to "0 0 width newHeight"
-// 3) Append the webslinger group right before </svg>
+// Facing keyframes (scale x = ±1) — discrete flips
+const flipValues = [];
+const flipKeyTimes = [];
+
+// Head rotation keyframes (degrees)
+const headValues = [];
+const headKeyTimes = [];
+
+// Web strand opacity keyframes — discrete on/off
+const webValues = [];
+const webKeyTimes = [];
+
+let t = 0;
+let curX = 0;
+let curY = 0;
+let curFacing = "right";
+
+function pushPos(time, x, y) {
+  // Avoid duplicate adjacent identical times (would break SMIL).
+  const k = time / totalDur;
+  if (posKeyTimes.length > 0 && Math.abs(posKeyTimes[posKeyTimes.length - 1] - k) < 1e-6) {
+    // Replace last
+    posValues[posValues.length - 1] = `${x.toFixed(2)},${y.toFixed(2)}`;
+  } else {
+    posKeyTimes.push(k);
+    posValues.push(`${x.toFixed(2)},${y.toFixed(2)}`);
+  }
+  curX = x;
+  curY = y;
+}
+function pushFacing(time, facing) {
+  if (facing === curFacing && flipValues.length > 0) return;
+  const k = time / totalDur;
+  flipKeyTimes.push(k);
+  flipValues.push(facing === "left" ? "-1 1" : "1 1");
+  curFacing = facing;
+}
+function pushHead(time, deg) {
+  headKeyTimes.push(time / totalDur);
+  headValues.push(deg.toString());
+}
+function pushWeb(time, opacity) {
+  webKeyTimes.push(time / totalDur);
+  webValues.push(opacity.toString());
+}
+
+// Initialize
+const startEvent = tour.events.find((e) => e.type === "start");
+if (!startEvent) {
+  console.error("Tour has no start event — cannot animate.");
+  process.exit(1);
+}
+pushPos(0, startEvent.at.px, startEvent.at.py);
+pushFacing(0, "right");
+pushHead(0, 0);
+pushWeb(0, 0);
+
+for (let i = 0; i < tour.events.length; i++) {
+  const e = tour.events[i];
+  if (e.type === "start") continue;
+
+  if (e.type === "jump") {
+    pushFacing(t + Math.min(0.05, e.dur * 0.1), e.facing);
+
+    const fx = e.from.px;
+    const fy = e.from.py;
+    const tx = e.to.px;
+    const ty = e.to.py;
+    const dx = tx - fx;
+    const dy = ty - fy;
+    // Apex y = MIN of the two endpoints minus arcHeight (lower y = higher visual)
+    const apexBase = Math.min(fy, ty);
+
+    // 4 intermediate keyframes (1/4, 1/2, 3/4) plus the landing (1)
+    // Quadratic-like: y_offset = -arcHeight * 4 * τ * (1 - τ) where τ in [0..1]
+    for (const frac of [0.25, 0.5, 0.75, 1.0]) {
+      const subT = t + e.dur * frac;
+      const lerpX = fx + dx * frac;
+      // Parabolic offset from baseline using τ * (1-τ) which peaks at τ=0.5
+      const tau = frac;
+      const yOffsetUp = e.arcHeight * 4 * tau * (1 - tau);
+      // Lerp BASELINE between fy and ty for the slope component
+      const baseY = fy + dy * frac;
+      const lerpY = baseY - yOffsetUp;
+      pushPos(subT, lerpX, lerpY);
+    }
+
+    // Web strand opacity: snap visible just after takeoff, peak at apex,
+    // snap hidden just before landing.
+    pushWeb(t + e.dur * 0.05, 0);
+    pushWeb(t + e.dur * 0.06, 0.85);
+    pushWeb(t + e.dur * 0.5, 1.0);
+    pushWeb(t + e.dur * 0.85, 0.5);
+    pushWeb(t + e.dur * 0.92, 0);
+
+    // Head: keep neutral during jump
+    pushHead(t + e.dur * 0.5, 0);
+    pushHead(t + e.dur, 0);
+
+    t += e.dur;
+    continue;
+  }
+
+  if (e.type === "idle") {
+    // Position: hold (same x, y as last)
+    const heldX = e.at.px;
+    const heldY = e.at.py;
+
+    // Head wobble during idle: a 4-step cycle scaled to idle duration.
+    const headSeq = [-12, 9, -7, 0];
+    for (let s = 0; s < headSeq.length; s++) {
+      const subT = t + e.dur * ((s + 1) / headSeq.length);
+      pushHead(subT, headSeq[s]);
+      // Position holds
+      pushPos(subT, heldX, heldY);
+    }
+    // Web hidden during idle (already 0 from previous web=0 keyframe)
+    t += e.dur;
+    continue;
+  }
+}
+
+// Pad tail to TOTAL_DUR if needed (so the loop has consistent length).
+if (t < TOTAL_DUR_SEC) {
+  pushPos(TOTAL_DUR_SEC, curX, curY);
+  pushHead(TOTAL_DUR_SEC, 0);
+  pushWeb(TOTAL_DUR_SEC, 0);
+}
+// Always end with the SAME position as start so SMIL loops cleanly.
+const lastPosClean = posValues[posValues.length - 1];
+const startPosClean = posValues[0];
+if (lastPosClean !== startPosClean) {
+  // Add one more keyframe at exactly t=1 with start position.
+  // (Rarely needed because tour planner closes the loop, but safe to be explicit.)
+  pushPos(TOTAL_DUR_SEC, startEvent.at.px, startEvent.at.py);
+}
+
+// Sanitize: ensure keyTimes are strictly non-decreasing within [0, 1]
+function normalizeKeyframes(keyTimes, values) {
+  // Pair-sort (shouldn't be needed; our time progression is monotonic)
+  // Clamp last to 1.0
+  if (keyTimes.length > 0) {
+    keyTimes[keyTimes.length - 1] = 1;
+  }
+  // Format
+  return {
+    keyTimes: keyTimes.map((k) => Math.max(0, Math.min(1, k)).toFixed(5)).join(";"),
+    values: values.join(";"),
+  };
+}
+
+const posAnim = normalizeKeyframes(posKeyTimes, posValues);
+const headAnim = normalizeKeyframes(headKeyTimes, headValues);
+const webAnim = normalizeKeyframes(webKeyTimes, webValues);
+const flipAnim = normalizeKeyframes(flipKeyTimes, flipValues);
+
+// ----- expand outer SVG height (give the character vertical room) ---------
+// The character's head reaches up to ~14px above feet, plus arc apex ~26px
+// above the highest building. We add a modest HEADROOM at the top.
+
+const HEADROOM_TOP = 30;
+const newHeight = height + HEADROOM_TOP;
 
 let newOuterTag = outerTag;
-
 if (newOuterTag.match(/\bheight="[0-9.]+"/)) {
-  newOuterTag = newOuterTag.replace(/\bheight="[0-9.]+"/, `height="${newHeight}"`);
+  newOuterTag = newOuterTag.replace(
+    /\bheight="[0-9.]+"/,
+    `height="${newHeight}"`
+  );
 } else {
   newOuterTag = newOuterTag.replace("<svg", `<svg height="${newHeight}"`);
 }
-
 if (newOuterTag.match(/\bviewBox="[^"]+"/)) {
   newOuterTag = newOuterTag.replace(
     /\bviewBox="[^"]+"/,
-    `viewBox="0 0 ${width} ${newHeight}"`
+    `viewBox="0 ${-HEADROOM_TOP} ${width} ${newHeight}"`
   );
 } else {
-  newOuterTag = newOuterTag.replace("<svg", `<svg viewBox="0 0 ${width} ${newHeight}"`);
+  newOuterTag = newOuterTag.replace(
+    "<svg",
+    `<svg viewBox="0 ${-HEADROOM_TOP} ${width} ${newHeight}"`
+  );
 }
-
-// Mark original height on the tag so a future re-run can restore it after
-// stripping our injection.
 if (!newOuterTag.includes("data-ws-orig-height=")) {
   newOuterTag = newOuterTag.replace(
     "<svg",
     `<svg data-ws-orig-height="${height}"`
   );
 }
-
 svg = svg.replace(outerTag, newOuterTag);
 
-// Append the webslinger just before the closing </svg> tag.
-const closingIdx = svg.lastIndexOf("</svg>");
-if (closingIdx === -1) {
-  console.error("Could not locate closing </svg> tag");
-  process.exit(1);
-}
+// ----- build character body + assemble webslinger group --------------------
 
-const before = svg.slice(0, closingIdx);
-const after = svg.slice(closingIdx);
+const charMarkup = buildCharacterBody({ theme });
 
-// Brand-color CSS overrides (apply to the lowlighter-rendered calendar HTML
-// inside foreignObject and to any SVG text labels). Injected at the end of
-// the SVG where it'll still cascade over earlier rules.
+// Add the head rotation animateTransform inside the existing <g class="ws-head"> group.
+const headAnimateMarkup = `
+      <animateTransform attributeName="transform" type="rotate"
+                        values="${headAnim.values}"
+                        keyTimes="${headAnim.keyTimes}"
+                        dur="${TOTAL_DUR_SEC}s"
+                        repeatCount="indefinite"
+                        additive="sum"/>`;
+const charWithHeadAnim = charMarkup.replace(
+  /<g class="ws-head">/,
+  `<g class="ws-head">${headAnimateMarkup}`
+);
 
-const PALETTE = {
+// Add the web strand opacity animation inside the <line class="ws-web"> element.
+const webAnimateMarkup = `
+      <animate attributeName="opacity"
+               values="${webAnim.values}"
+               keyTimes="${webAnim.keyTimes}"
+               dur="${TOTAL_DUR_SEC}s"
+               repeatCount="indefinite"
+               calcMode="discrete"/>`;
+const charComplete = charWithHeadAnim.replace(
+  /(<line class="ws-web"[\s\S]*?)(\/>)/,
+  `$1>${webAnimateMarkup}\n    </line>`
+);
+
+const webslingerGroup = `
+<g class="webslinger">
+  <animateTransform attributeName="transform" type="translate"
+                    values="${posAnim.values}"
+                    keyTimes="${posAnim.keyTimes}"
+                    dur="${TOTAL_DUR_SEC}s"
+                    repeatCount="indefinite"/>
+  <g class="ws-flip">
+    <animateTransform attributeName="transform" type="scale"
+                      values="${flipAnim.values}"
+                      keyTimes="${flipAnim.keyTimes}"
+                      dur="${TOTAL_DUR_SEC}s"
+                      repeatCount="indefinite"
+                      calcMode="discrete"
+                      additive="sum"/>
+    ${charComplete}
+  </g>
+</g>
+`.trim();
+
+// ----- brand-color CSS overrides -----------------------------------------
+
+const PAL = {
   light: {
     fg: "#22222A",
-    muted: "#7C7C82",
     accent: "#B6803F",
     border: "rgba(34,34,42,0.08)",
-    // Empty iso cells stay light grey (matches the warm cream README bg)
-    emptyCellFill: "#ebedf0",
+    emptyCell: "#ebedf0", // GitHub native (light)
   },
   dark: {
     fg: "#F5F4EE",
-    muted: "#A4A4AC",
     accent: "#D4A574",
     border: "rgba(245,244,238,0.10)",
-    // Empty iso cells become near-transparent dark so they blend into the
-    // GitHub dark page bg instead of forming a cream ground plane.
-    emptyCellFill: "#1B1B20",
+    emptyCell: "#161b22", // GitHub native (dark) — matches contribution chart
   },
 };
-const p = PALETTE[theme];
+const p = PAL[theme];
 
 const brandStyle = `
 <style>
-  /* Brand palette overrides for the lowlighter calendar content.
-     Scoped broadly because the calendar is rendered inside a foreignObject. */
+  /* webslinger brand overrides */
   svg { background: transparent; }
   text, tspan { fill: ${p.fg}; }
   h2, h3 {
@@ -257,25 +430,32 @@ const brandStyle = `
   .field b { color: ${p.accent} !important; font-weight: 600; }
   h2 svg, h3 svg { fill: ${p.accent} !important; }
   svg.calendar .day { outline-color: ${p.border} !important; }
-  /* Recolor the empty iso-calendar cells (default fill="#ebedf0").
-     The lowlighter plugin uses 3 path elements per cube (top, left, right).
-     We override all three so the "ground plane" of empty cells blends
-     into the README background instead of looking like a cream slab. */
-  path[fill="#ebedf0"] { fill: ${p.emptyCellFill} !important; }
-  /* Note: we deliberately KEEP the green tower colors for filled cells —
-     they read as a skyline and the chibi web-slinger swings through them. */
+  /* Recolor empty iso-calendar cells (default fill="#ebedf0") to match
+     GitHub's native contribution chart background. */
+  path[fill="#ebedf0"] { fill: ${p.emptyCell} !important; }
 </style>
 `;
+
+// ----- splice into outer SVG just before </svg> ---------------------------
+
+const closingIdx = svg.lastIndexOf("</svg>");
+if (closingIdx === -1) {
+  console.error("Could not locate closing </svg> tag");
+  process.exit(1);
+}
+
+const before = svg.slice(0, closingIdx);
+const after = svg.slice(closingIdx);
 
 const out =
   before +
   brandStyle +
-  `\n<!-- webslinger character — chibi homage, SMIL-animated swing path -->\n` +
-  webslinger +
+  `\n<!-- webslinger character — chibi parkour with pre-computed tour -->\n` +
+  webslingerGroup +
   "\n" +
   after;
 
 writeFileSync(svgPath, out);
 console.log(
-  `✅ Injected webslinger (${theme}) into ${svgPath} — new dimensions ${width}×${newHeight}`
+  `✅ Injected webslinger (${theme}) → ${svgPath} — dimensions ${width}×${newHeight}`
 );

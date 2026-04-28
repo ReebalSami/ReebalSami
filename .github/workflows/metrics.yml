@@ -68,20 +68,23 @@ jobs:
         run: node scripts/inject-webslinger.mjs assets/metrics-dark.svg dark
 
       # ----- COMMIT BOTH -------------------------------------------------
-      # Rebase first to fetch lowlighter's auto-commits, then commit and push
-      # the post-processed (with web-slinger) versions on top.
+      # lowlighter has already auto-committed AND pushed its raw SVGs to
+      # origin/main. Our working tree now has the post-processed versions.
+      # We:
+      #   1. Fetch origin/main (latest, includes lowlighter's commits)
+      #   2. Soft-reset HEAD to origin/main (keeps our working tree intact)
+      #   3. Commit the (now-modified-vs-origin) SVGs on top
+      #   4. Push (fast-forward, no conflicts possible)
       - name: Commit metrics with web-slinger
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Stash our inject changes, rebase onto remote, then re-apply.
-          git stash push -- assets/metrics-light.svg assets/metrics-dark.svg
-          git pull --rebase origin main
-          git stash pop || true
+          git fetch origin main
+          git reset --soft origin/main
           git add assets/metrics-light.svg assets/metrics-dark.svg
           if git diff --staged --quiet; then
             echo "No changes — calendars unchanged since last run."
           else
             git commit -m "chore(metrics): inject web-slinger into iso calendars"
-            git push
+            git push origin main
           fi
