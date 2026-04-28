@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="800" height="240" role="img" aria-label="Hi, I'm Reebal — Data Scientist and AI Engineer based in Hamburg">
+  <defs>
+    <linearGradient id="bDarkCone" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%"   stop-color="#D4A574" stop-opacity="0.62"/>
+      <stop offset="35%"  stop-color="#D4A574" stop-opacity="0.26"/>
+      <stop offset="75%"  stop-color="#D4A574" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#D4A574" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="bDarkHotspot" cx="50%" cy="0%" r="22%">
+      <stop offset="0%"   stop-color="#F2D9AC" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#F2D9AC" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="bDarkConeBlur" x="-25%" y="-10%" width="150%" height="140%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <style>
+      .display { font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-weight: 600; letter-spacing: -0.02em; }
+      .subhead { font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-weight: 400; letter-spacing: -0.005em; }
+      .micro   { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-style: italic; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+  <rect width="800" height="240" fill="#1B1B20"/>
+  <g filter="url(#bDarkConeBlur)">
+    <path d="M 580 -20 L 460 240 L 700 240 Z" fill="url(#bDarkCone)"/>
+  </g>
+  <ellipse cx="580" cy="0" rx="120" ry="40" fill="url(#bDarkHotspot)"/>
+  <text class="display" x="60" y="124" fill="#F5F4EE" font-size="38">Hi, I&#8217;m Reebal</text>
+  <text class="subhead" x="60" y="160" fill="#A4A4AC" font-size="19">Data Scientist &#38; AI Engineer &#183; Hamburg</text>
+  <text class="micro" x="60" y="200" fill="#A4A4AC" font-size="11">focused &#183; fully local &#183; on your terms</text>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "name": "reebalsami-profile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub profile README assets and milestone generation for @ReebalSami.",
+  "type": "module",
+  "scripts": {
+    "milestones": "node scripts/generate-milestones.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@octokit/graphql": "^8.1.1"
+  }
+}

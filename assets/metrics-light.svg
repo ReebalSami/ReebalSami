@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" role="img" aria-label="GitHub metrics — refreshing">
+  <defs>
+    <radialGradient id="phLightGlow" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#B6803F" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#B6803F" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .label { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.14em; }
+      .body  { font-family: "DM Sans", "Inter", ui-sans-serif, system-ui, sans-serif; font-size: 14px; }
+    </style>
+  </defs>
+  <rect width="800" height="320" fill="#FAF9F4"/>
+  <rect width="800" height="320" fill="url(#phLightGlow)"/>
+  <text x="400" y="146" class="label" fill="#7C7C82" text-anchor="middle">METRICS RENDERING</text>
+  <rect x="370" y="156" width="60" height="1" fill="#B6803F" fill-opacity="0.55"/>
+  <text x="400" y="186" class="body" fill="#22222A" text-anchor="middle">First infographic publishes after the daily Action runs.</text>
+  <text x="400" y="206" class="body" fill="#7C7C82" text-anchor="middle">Trigger it manually from the Actions tab → Metrics → Run workflow.</text>
+</svg>

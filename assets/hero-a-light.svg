@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="800" height="240" role="img" aria-label="Hi, I'm Reebal — Data Scientist and AI Engineer based in Hamburg">
+  <defs>
+    <radialGradient id="aLightGlow" cx="78%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#B6803F" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#B6803F" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#B6803F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="aLightHorizon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B6803F" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#B6803F" stop-opacity="0.55"/>
+      <stop offset="70%" stop-color="#B6803F" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#B6803F" stop-opacity="0"/>
+    </linearGradient>
+    <style>
+      .display { font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-weight: 600; letter-spacing: -0.02em; }
+      .subhead { font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-weight: 400; letter-spacing: -0.005em; }
+      .micro   { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-style: italic; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+  <rect width="800" height="240" fill="#FAF9F4"/>
+  <rect width="800" height="240" fill="url(#aLightGlow)"/>
+  <text class="display" x="60" y="124" fill="#22222A" font-size="38">Hi, I&#8217;m Reebal</text>
+  <text class="subhead" x="60" y="160" fill="#7C7C82" font-size="19">Data Scientist &#38; AI Engineer &#183; Hamburg</text>
+  <rect x="60" y="190" width="680" height="1" fill="url(#aLightHorizon)"/>
+  <text class="micro" x="60" y="214" fill="#7C7C82" font-size="11">focused &#183; fully local &#183; on your terms</text>
+</svg>

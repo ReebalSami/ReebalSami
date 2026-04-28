@@ -1,0 +1,47 @@
+name: Milestones
+
+on:
+  schedule:
+    - cron: "23 6 * * *" # daily, 06:23 UTC (just after Metrics)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/milestones.yml
+      - scripts/generate-milestones.mjs
+      - package.json
+
+permissions:
+  contents: write
+
+jobs:
+  milestones:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --omit=dev --no-audit --no-fund
+
+      - name: Generate milestone SVGs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/generate-milestones.mjs
+
+      - name: Commit if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain assets/milestones-light.svg assets/milestones-dark.svg)" ]]; then
+            git add assets/milestones-light.svg assets/milestones-dark.svg
+            git commit -m "chore(milestones): refresh SVGs"
+            git push
+          else
+            echo "No milestone changes — skipping commit."
+          fi
