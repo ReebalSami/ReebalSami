@@ -93,22 +93,26 @@ const HEADROOM = 20;
 const newHeight = height + HEADROOM;
 
 // Iso calendar geometry inside the lowlighter SVG (480x310 typical):
-//   - heading + stats text occupy y ≈ 0 – 60
-//   - tower tops (peak greens) sit around y ≈ 50 – 90
-//   - mid iso row of cells around y ≈ 130 – 180
+//   - heading + stats text column occupy x ≈ 300 – 480 on the right side
+//   - iso projection occupies x ≈ 0 – 280
+//   - tower tops sit around y ≈ 50 – 90
 //   - bottom of iso projection around y ≈ 200 – 230
-// The swing path's lows touch the lower iso band; peaks just clear tower tops.
+// The character must NOT swing into the right-side stats column (x > 0.62 *
+// width). We constrain anchors to the LEFT 60% of the width.
 const lowY = Math.max(180, height * 0.65);
 const peakY = Math.max(40, height * 0.18);
 
+const xMin = width * 0.04;
+const xMax = width * 0.60; // stops before the stats column
+const span = xMax - xMin;
 const anchors = [
-  { x: width * 0.04, y: lowY + 30 },     // start, just under iso
-  { x: width * 0.20, y: lowY },           // first landing on iso strip
-  { x: width * 0.36, y: lowY + 8 },       // dip
-  { x: width * 0.52, y: lowY - 6 },       // mid, slight rise
-  { x: width * 0.68, y: lowY + 8 },       // dip
-  { x: width * 0.84, y: lowY - 4 },       // rise toward end
-  { x: width * 0.96, y: lowY + 30 },      // exit, just under iso
+  { x: xMin + span * 0.00, y: lowY + 30 },
+  { x: xMin + span * 0.18, y: lowY },
+  { x: xMin + span * 0.36, y: lowY + 8 },
+  { x: xMin + span * 0.54, y: lowY - 6 },
+  { x: xMin + span * 0.72, y: lowY + 8 },
+  { x: xMin + span * 0.88, y: lowY - 4 },
+  { x: xMin + span * 1.00, y: lowY + 30 },
 ];
 const peak = lowY - peakY;
 const swingPath = buildSwingPath({ anchors, peak });
@@ -165,12 +169,17 @@ const PALETTE = {
     muted: "#7C7C82",
     accent: "#B6803F",
     border: "rgba(34,34,42,0.08)",
+    // Empty iso cells stay light grey (matches the warm cream README bg)
+    emptyCellFill: "#ebedf0",
   },
   dark: {
     fg: "#F5F4EE",
     muted: "#A4A4AC",
     accent: "#D4A574",
     border: "rgba(245,244,238,0.10)",
+    // Empty iso cells become near-transparent dark so they blend into the
+    // GitHub dark page bg instead of forming a cream ground plane.
+    emptyCellFill: "#1B1B20",
   },
 };
 const p = PALETTE[theme];
@@ -189,8 +198,13 @@ const brandStyle = `
   .field b { color: ${p.accent} !important; font-weight: 600; }
   h2 svg, h3 svg { fill: ${p.accent} !important; }
   svg.calendar .day { outline-color: ${p.border} !important; }
-  /* Note: we deliberately KEEP the green tower colors — they read as a
-     skyline and the chibi web-slinger swings through them nicely. */
+  /* Recolor the empty iso-calendar cells (default fill="#ebedf0").
+     The lowlighter plugin uses 3 path elements per cube (top, left, right).
+     We override all three so the "ground plane" of empty cells blends
+     into the README background instead of looking like a cream slab. */
+  path[fill="#ebedf0"] { fill: ${p.emptyCellFill} !important; }
+  /* Note: we deliberately KEEP the green tower colors for filled cells —
+     they read as a skyline and the chibi web-slinger swings through them. */
 </style>
 `;
 
