@@ -75,14 +75,11 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 
 ## Contributions in 3D
 
-> A year of commits, lifted into an isometric calendar — and a chibi web-slinger swinging across the high-contribution weeks. Updates daily.
+> Six months of commits, lifted into an isometric calendar — and a chibi web-slinger parkouring across the rooftops, sector by sector. Updates daily.
 
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/metrics-dark.svg">
-  <img src="./assets/metrics-light.svg" alt="3D isometric contribution calendar with an animated web-slinger swinging across high-contribution weeks" width="100%">
-</picture>
+<img src="./assets/metrics.svg" alt="3D isometric contribution calendar with an animated web-slinger swinging across high-contribution weeks" width="100%">
 
 </div>
 

@@ -16,35 +16,38 @@
  *   inject            → splice into the outer <svg>
  *
  * Usage:
- *   node scripts/inject-webslinger.mjs <svg-path> <light|dark> [seed]
+ *   node scripts/inject-webslinger.mjs <svg-path> [seed]
+ *
+ * The output SVG is theme-agnostic: a single <style> block sets light
+ * defaults and uses @media (prefers-color-scheme: dark) to override colours
+ * (floor cells, headings, character tints) for dark viewers. One file,
+ * both themes — no <picture> tag needed in the README.
  */
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parseBuildings } from "./parse-iso-calendar.mjs";
 import { planTour } from "./plan-character-tour.mjs";
-import { buildCharacterBody, PALETTE as CHAR_PALETTE } from "./webslinger-character.mjs";
+import {
+  buildCharacterBody,
+  CHARACTER_CSS_VARS,
+} from "./webslinger-character.mjs";
 
 // ----- args ---------------------------------------------------------------
 
-const [, , svgPathArg, themeArg = "light", seedArg] = process.argv;
+const [, , svgPathArg, seedArg] = process.argv;
 if (!svgPathArg) {
-  console.error("Usage: inject-webslinger <svg-path> <light|dark> [seed]");
-  process.exit(1);
-}
-if (themeArg !== "light" && themeArg !== "dark") {
-  console.error(`Theme must be 'light' or 'dark', got '${themeArg}'`);
+  console.error("Usage: inject-webslinger <svg-path> [seed]");
   process.exit(1);
 }
 
 const svgPath = resolve(svgPathArg);
-const theme = themeArg;
-// Daily-rotating seed: day-number since epoch + theme tweak so light & dark
-// don't share an identical tour (slight visual difference between variants).
+// Daily-rotating seed: day-number since epoch. New seed each UTC day → fresh
+// tour pattern every 24h while staying deterministic per-day for cache.
 const seed =
   seedArg !== undefined
     ? parseInt(seedArg, 10)
-    : Math.floor(Date.now() / 86_400_000) + (theme === "dark" ? 7919 : 0);
+    : Math.floor(Date.now() / 86_400_000);
 
 const TOTAL_DUR_SEC = 20;
 
@@ -55,17 +58,32 @@ let svg = readFileSync(svgPath, "utf8");
 // ----- idempotency: strip any prior injection -----------------------------
 
 function stripPriorInjection(s) {
+  // The webslinger group nests as:
+  //   <g class="webslinger">
+  //     <g class="ws-flip">
+  //       ...
+  //       <g class="ws-head">...</g>   <- inner-most close
+  //     </g>                           <- ws-flip close
+  //   </g>                             <- webslinger close
+  // So the closing sequence is 3 consecutive </g>. Match all three.
   let cleaned = s.replace(
-    /\n*<!-- webslinger character[^]*?<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*\n?/g,
+    /\n*<!-- webslinger character[^]*?<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*<\/g>\s*\n?/g,
     ""
   );
   cleaned = cleaned.replace(
-    /<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*\n?/g,
+    /<g class="webslinger">[^]*?<\/g>\s*<\/g>\s*<\/g>\s*\n?/g,
     ""
   );
   cleaned = cleaned.replace(
     /\n*<style>\s*\/\* webslinger brand overrides[^]*?<\/style>\s*\n?/g,
     ""
+  );
+  // Defensive: if we still have an orphan </g> immediately before </svg>
+  // that doesn't match a <g> in the document, remove it. This catches any
+  // residue from prior runs of older versions of this script.
+  cleaned = cleaned.replace(
+    /(<\/foreignObject>)\s*<\/g>\s*(?=(?:[^<]|<(?!\/svg))*<\/svg>)/,
+    "$1"
   );
   cleaned = cleaned.replace(
     /<svg([^>]*?)\s+data-ws-orig-height="([0-9.]+)"([^>]*)>/,
@@ -351,7 +369,7 @@ svg = svg.replace(outerTag, newOuterTag);
 
 // ----- build character body + assemble webslinger group --------------------
 
-const charMarkup = buildCharacterBody({ theme });
+const charMarkup = buildCharacterBody();
 
 // Add the head rotation animateTransform inside the existing <g class="ws-head"> group.
 const headAnimateMarkup = `
@@ -399,40 +417,60 @@ const webslingerGroup = `
 </g>
 `.trim();
 
-// ----- brand-color CSS overrides -----------------------------------------
+// ----- brand-color CSS overrides (single SVG, both themes) ---------------
+// Light defaults at the SVG root, dark overrides inside @media query.
+// The character reads its colours from CSS custom properties — see
+// scripts/webslinger-character.mjs.
 
-const PAL = {
-  light: {
-    fg: "#22222A",
-    accent: "#B6803F",
-    border: "rgba(34,34,42,0.08)",
-    emptyCell: "#ebedf0", // GitHub native (light)
-  },
-  dark: {
-    fg: "#F5F4EE",
-    accent: "#D4A574",
-    border: "rgba(245,244,238,0.10)",
-    emptyCell: "#161b22", // GitHub native (dark) — matches contribution chart
-  },
+const LIGHT_PAL = {
+  fg: "#22222A",
+  accent: "#B6803F",
+  border: "rgba(34,34,42,0.08)",
+  emptyCell: "#ebedf0", // GitHub native (light)
 };
-const p = PAL[theme];
+const DARK_PAL = {
+  fg: "#F5F4EE",
+  accent: "#D4A574",
+  border: "rgba(245,244,238,0.10)",
+  emptyCell: "#161b22", // GitHub native dark contribution chart bg
+};
+
+const lightVars = Object.entries(CHARACTER_CSS_VARS.light)
+  .map(([k, v]) => `  ${k}: ${v};`)
+  .join("\n");
+const darkVars = Object.entries(CHARACTER_CSS_VARS.dark)
+  .map(([k, v]) => `    ${k}: ${v};`)
+  .join("\n");
 
 const brandStyle = `
 <style>
-  /* webslinger brand overrides */
+  /* webslinger brand overrides — single SVG, prefers-color-scheme aware */
+  :root {
+${lightVars}
+  }
   svg { background: transparent; }
-  text, tspan { fill: ${p.fg}; }
+  text, tspan { fill: ${LIGHT_PAL.fg}; }
   h2, h3 {
-    color: ${p.accent} !important;
+    color: ${LIGHT_PAL.accent} !important;
     font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif !important;
     font-weight: 600 !important;
   }
-  .field b { color: ${p.accent} !important; font-weight: 600; }
-  h2 svg, h3 svg { fill: ${p.accent} !important; }
-  svg.calendar .day { outline-color: ${p.border} !important; }
-  /* Recolor empty iso-calendar cells (default fill="#ebedf0") to match
-     GitHub's native contribution chart background. */
-  path[fill="#ebedf0"] { fill: ${p.emptyCell} !important; }
+  .field b { color: ${LIGHT_PAL.accent} !important; font-weight: 600; }
+  h2 svg, h3 svg { fill: ${LIGHT_PAL.accent} !important; }
+  svg.calendar .day { outline-color: ${LIGHT_PAL.border} !important; }
+  /* Empty iso-calendar cells default to fill="#ebedf0" — kept as-is in light. */
+  @media (prefers-color-scheme: dark) {
+    :root {
+${darkVars}
+    }
+    text, tspan { fill: ${DARK_PAL.fg}; }
+    h2, h3 { color: ${DARK_PAL.accent} !important; }
+    .field b { color: ${DARK_PAL.accent} !important; }
+    h2 svg, h3 svg { fill: ${DARK_PAL.accent} !important; }
+    svg.calendar .day { outline-color: ${DARK_PAL.border} !important; }
+    /* Recolor empty cells to match GitHub's native dark contribution chart. */
+    path[fill="#ebedf0"] { fill: ${DARK_PAL.emptyCell} !important; }
+  }
 </style>
 `;
 
@@ -457,5 +495,5 @@ const out =
 
 writeFileSync(svgPath, out);
 console.log(
-  `✅ Injected webslinger (${theme}) → ${svgPath} — dimensions ${width}×${newHeight}`
+  `✅ Injected webslinger → ${svgPath} — dimensions ${width}×${newHeight}`
 );

@@ -10,6 +10,8 @@ on:
       - .github/workflows/metrics.yml
       - scripts/inject-webslinger.mjs
       - scripts/webslinger-character.mjs
+      - scripts/plan-character-tour.mjs
+      - scripts/parse-iso-calendar.mjs
 
 permissions:
   contents: write
@@ -26,65 +28,37 @@ jobs:
         with:
           node-version: "20"
 
-      # ----- LIGHT VARIANT -----------------------------------------------
-      # lowlighter/metrics auto-commits AND pushes its raw SVG (default
-      # output_action: commit). The inject step then modifies the file and
-      # the final commit step pushes the post-processed result. Because
-      # multiple commits happen in the same run, the final push needs to
-      # rebase onto whatever lowlighter just pushed.
-      - name: Render light isocalendar
+      # Render a single half-year isocalendar. output_action: none disables
+      # lowlighter's auto-commit/push so we own the only commit in this run.
+      # That eliminates the previously seen race condition where the runner
+      # workspace stayed at the checked-out version while lowlighter pushed
+      # a different file directly from inside its container.
+      - name: Render isocalendar
         uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           user: ReebalSami
-          filename: assets/metrics-light.svg
+          filename: assets/metrics.svg
           template: classic
           base: ""
           config_timezone: Europe/Berlin
           config_padding: 0, 0
           config_animations: yes
+          output_action: none
           plugin_isocalendar: yes
-          plugin_isocalendar_duration: full-year
+          plugin_isocalendar_duration: half-year
 
-      - name: Inject web-slinger (light)
-        run: node scripts/inject-webslinger.mjs assets/metrics-light.svg light
+      - name: Inject web-slinger
+        run: node scripts/inject-webslinger.mjs assets/metrics.svg
 
-      # ----- DARK VARIANT ------------------------------------------------
-      - name: Render dark isocalendar
-        uses: lowlighter/metrics@latest
-        with:
-          token: ${{ secrets.METRICS_TOKEN }}
-          user: ReebalSami
-          filename: assets/metrics-dark.svg
-          template: classic
-          base: ""
-          config_timezone: Europe/Berlin
-          config_padding: 0, 0
-          config_animations: yes
-          plugin_isocalendar: yes
-          plugin_isocalendar_duration: full-year
-
-      - name: Inject web-slinger (dark)
-        run: node scripts/inject-webslinger.mjs assets/metrics-dark.svg dark
-
-      # ----- COMMIT BOTH -------------------------------------------------
-      # lowlighter has already auto-committed AND pushed its raw SVGs to
-      # origin/main. Our working tree now has the post-processed versions.
-      # We:
-      #   1. Fetch origin/main (latest, includes lowlighter's commits)
-      #   2. Soft-reset HEAD to origin/main (keeps our working tree intact)
-      #   3. Commit the (now-modified-vs-origin) SVGs on top
-      #   4. Push (fast-forward, no conflicts possible)
-      - name: Commit metrics with web-slinger
+      - name: Commit + push
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git reset --soft origin/main
-          git add assets/metrics-light.svg assets/metrics-dark.svg
+          git add assets/metrics.svg
           if git diff --staged --quiet; then
-            echo "No changes — calendars unchanged since last run."
+            echo "No changes — calendar unchanged since last run."
           else
-            git commit -m "chore(metrics): inject web-slinger into iso calendars"
+            git commit -m "chore(metrics): refresh isocalendar + webslinger"
             git push origin main
           fi
