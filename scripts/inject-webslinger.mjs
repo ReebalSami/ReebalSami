@@ -49,7 +49,9 @@ const seed =
     ? parseInt(seedArg, 10)
     : Math.floor(Date.now() / 86_400_000);
 
-const TOTAL_DUR_SEC = 20;
+// Planner TARGET (maximum natural tour length — it'll compress if longer,
+// and produce a shorter loop if there isn't enough material to fill it).
+const TARGET_DUR_SEC = 20;
 
 // ----- read SVG -----------------------------------------------------------
 
@@ -153,9 +155,12 @@ if (tall.length < 2) {
   );
 }
 
-const tour = planTour(buildings, { seed, durationSec: TOTAL_DUR_SEC });
+const tour = planTour(buildings, { seed, durationSec: TARGET_DUR_SEC });
+// SMIL loop length matches the tour's NATURAL duration. Floor at 6 s so a
+// degenerate single-building tour doesn't loop every fraction of a second.
+const SMIL_DUR_SEC = Math.max(tour.totalDuration, 6);
 console.log(
-  `🗺️  Planned tour: seed=${seed}, ${tour.events.length} events, ${tour.totalDuration.toFixed(2)}s`
+  `🗺️  Planned tour: seed=${seed}, playlist=[${(tour.playlist || []).join(",")}], ${tour.events.length} events, natural=${tour.totalDuration.toFixed(2)}s, SMIL dur=${SMIL_DUR_SEC.toFixed(2)}s`
 );
 
 // ----- build SMIL keyframes from tour -------------------------------------
@@ -170,7 +175,7 @@ console.log(
  * its own intra-idle sub-keyframes for the "look around" wobble.
  */
 
-const totalDur = Math.max(tour.totalDuration, TOTAL_DUR_SEC * 0.5);
+const totalDur = SMIL_DUR_SEC;
 
 // Position keyframes (translate)
 const posValues = [];
@@ -298,19 +303,19 @@ for (let i = 0; i < tour.events.length; i++) {
   }
 }
 
-// Pad tail to TOTAL_DUR if needed (so the loop has consistent length).
-if (t < TOTAL_DUR_SEC) {
-  pushPos(TOTAL_DUR_SEC, curX, curY);
-  pushHead(TOTAL_DUR_SEC, 0);
-  pushWeb(TOTAL_DUR_SEC, 0);
+// Pad tail to SMIL_DUR if needed. Normally the planner closes its own loop
+// so t ≈ SMIL_DUR_SEC already; this is a safety net for the floor-clamped
+// degenerate case (1 building → 4 s natural → 6 s SMIL).
+if (t < SMIL_DUR_SEC) {
+  pushPos(SMIL_DUR_SEC, curX, curY);
+  pushHead(SMIL_DUR_SEC, 0);
+  pushWeb(SMIL_DUR_SEC, 0);
 }
 // Always end with the SAME position as start so SMIL loops cleanly.
 const lastPosClean = posValues[posValues.length - 1];
 const startPosClean = posValues[0];
 if (lastPosClean !== startPosClean) {
-  // Add one more keyframe at exactly t=1 with start position.
-  // (Rarely needed because tour planner closes the loop, but safe to be explicit.)
-  pushPos(TOTAL_DUR_SEC, startEvent.at.px, startEvent.at.py);
+  pushPos(SMIL_DUR_SEC, startEvent.at.px, startEvent.at.py);
 }
 
 // Sanitize: ensure keyTimes are strictly non-decreasing within [0, 1]
@@ -376,7 +381,7 @@ const headAnimateMarkup = `
       <animateTransform attributeName="transform" type="rotate"
                         values="${headAnim.values}"
                         keyTimes="${headAnim.keyTimes}"
-                        dur="${TOTAL_DUR_SEC}s"
+                        dur="${SMIL_DUR_SEC}s"
                         repeatCount="indefinite"
                         additive="sum"/>`;
 const charWithHeadAnim = charMarkup.replace(
@@ -389,7 +394,7 @@ const webAnimateMarkup = `
       <animate attributeName="opacity"
                values="${webAnim.values}"
                keyTimes="${webAnim.keyTimes}"
-               dur="${TOTAL_DUR_SEC}s"
+               dur="${SMIL_DUR_SEC}s"
                repeatCount="indefinite"
                calcMode="discrete"/>`;
 const charComplete = charWithHeadAnim.replace(
@@ -402,13 +407,13 @@ const webslingerGroup = `
   <animateTransform attributeName="transform" type="translate"
                     values="${posAnim.values}"
                     keyTimes="${posAnim.keyTimes}"
-                    dur="${TOTAL_DUR_SEC}s"
+                    dur="${SMIL_DUR_SEC}s"
                     repeatCount="indefinite"/>
   <g class="ws-flip">
     <animateTransform attributeName="transform" type="scale"
                       values="${flipAnim.values}"
                       keyTimes="${flipAnim.keyTimes}"
-                      dur="${TOTAL_DUR_SEC}s"
+                      dur="${SMIL_DUR_SEC}s"
                       repeatCount="indefinite"
                       calcMode="discrete"
                       additive="sum"/>
