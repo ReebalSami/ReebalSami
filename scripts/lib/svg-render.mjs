@@ -36,7 +36,7 @@ import {
   tilePath,
   gridBounds,
 } from "./iso-projection.mjs";
-import { LEVEL_COLOR, PAGE_BG, BRAND, CHARACTER_CSS_VARS, renderCssVars } from "./palette.mjs";
+import { LEVEL_COLOR, BRAND, CHARACTER_CSS_VARS, renderCssVars } from "./palette.mjs";
 
 // Tunable: per-cell rise-stagger increment in seconds. Smaller = snappier
 // front-to-back sweep. 0.04s × 32 (max gx+gy) ≈ 1.3s total wave.
@@ -140,7 +140,6 @@ export function renderCity({ days, weeks, characterMarkup = "" }) {
   aria-label="Isometric calendar of GitHub contributions for the last ${weeks} weeks">
   <title>GitHub contributions, last ${weeks} weeks</title>
   ${style}
-  <rect class="bg" x="${fmt(viewBox.x)}" y="${fmt(viewBox.y)}" width="${fmt(viewBox.w)}" height="${fmt(viewBox.h)}"/>
   <g class="caption">
     <text x="${fmt(viewBox.x + 2)}" y="${fmt(viewBox.y + 8)}">${caption}</text>
   </g>
@@ -204,7 +203,6 @@ function buildStyleBlock() {
       color-scheme: light dark;
 ${lightVars}
     }
-    .bg { fill: ${PAGE_BG.light}; }
     .caption text {
       font-family: ui-sans-serif, system-ui, "Space Grotesk", "Inter", sans-serif;
       font-size: 4px;
@@ -216,7 +214,6 @@ ${indent(lightCss, "    ")}
       :root {
 ${darkVars}
       }
-      .bg { fill: ${PAGE_BG.dark}; }
       .caption text { fill: ${BRAND.dark.mutedText}; }
 ${indent(darkCss, "      ")}
     }

@@ -23,23 +23,26 @@
 
 // ===== GitHub-native contribution palette ================================
 //
-// Source: https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/showing-an-overview-of-your-activity-on-your-profile
-// Light: ebedf0 / 9be9a8 / 40c463 / 30a14e / 216e39
-// Dark:  161b22 / 0e4429 / 006d32 / 26a641 / 39d353
+// Values extracted directly from `td.ContributionCalendar-day` on
+// github.com/<user> in both light and default-dark themes (current Primer
+// release). Update these only by re-inspecting github.com — Primer values
+// drift over time and we want pixel-exact match against the live graph.
 //
-// We pre-compute side-face shades so the renderer can emit them as plain
-// CSS class fills (no per-cube inline filters).
+// Side-face shades are precomputed at 78% (sideL) and 62% (sideR) of each
+// top color so the renderer emits them as plain CSS class fills (no
+// per-cube inline filters). The 78/62 multipliers preserve the iso 3D
+// read across the redesigned palette.
 
 export const LEVEL_COLOR = {
   light: {
-    top:   ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
-    sideL: ["#c9cdd3", "#7ab689", "#329e4f", "#247c3d", "#1a5630"], // ~22% darker
-    sideR: ["#a4a8ae", "#5a8666", "#23783b", "#195e2e", "#124224"], // ~38% darker
+    top:   ["#eff2f5", "#aceebb", "#4ac26b", "#2da44e", "#116329"],
+    sideL: ["#babdbf", "#86ba92", "#3a9753", "#23803d", "#0d4d20"], // ~22% darker
+    sideR: ["#949698", "#6b9474", "#2e7842", "#1c6630", "#0b3d19"], // ~38% darker
   },
   dark: {
-    top:   ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
-    sideL: ["#11151b", "#0a3320", "#005226", "#1c7d31", "#2da342"], // ~22% darker
-    sideR: ["#0d1117", "#072518", "#003c1c", "#125c25", "#1f7a31"], // ~38% darker
+    top:   ["#151b23", "#033a16", "#196c2e", "#2ea043", "#56d364"],
+    sideL: ["#10151b", "#022d11", "#145424", "#247d34", "#43a54e"], // ~22% darker
+    sideR: ["#0d1116", "#02240e", "#10431d", "#1d632a", "#35833e"], // ~38% darker
   },
 };
 
@@ -60,17 +63,11 @@ export const BRAND = {
   },
 };
 
-// ===== Page background ===================================================
-//
-// Used as the SVG's solid backdrop. Light = GitHub's profile-page bg.
-// Dark  = GitHub's dark-mode profile bg (matches contribution chart).
-
-export const PAGE_BG = {
-  light: "#ffffff",
-  dark: "#0d1117",
-};
-
 // ===== Character (chibi web-slinger) =====================================
+//
+// (No PAGE_BG export: the SVG renders with no painted background so it
+// inherits whatever GitHub theme the viewer is using — default-dark,
+// dark-dimmed, high-contrast, light, light-high-contrast all just work.)
 
 export const CHARACTER_CSS_VARS = {
   light: {
