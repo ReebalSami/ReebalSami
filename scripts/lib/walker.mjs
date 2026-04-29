@@ -66,17 +66,20 @@ const DEFAULTS = {
   // Capped to floor(N/2) so each cluster has at least 2 buildings.
   sectorTargetCount: 3,
   // Per-mood Lévy parameters within a neighborhood.
+  // idleProb is doubled vs. the "feels too rushed" baseline (0.22/0.10/0.02)
+  // so the agent now pauses about every 2-3 jumps instead of every 4-6.
   moods: {
-    prowl: { alpha: 1.7, idleProb: 0.22, hopRange: [0.34, 0.55] },
-    hunt:  { alpha: 1.5, idleProb: 0.10, hopRange: [0.30, 0.50] },
-    dash:  { alpha: 1.2, idleProb: 0.02, hopRange: [0.22, 0.42] },
+    prowl: { alpha: 1.7, idleProb: 0.44, hopRange: [0.34, 0.55] },
+    hunt:  { alpha: 1.5, idleProb: 0.20, hopRange: [0.30, 0.50] },
+    dash:  { alpha: 1.2, idleProb: 0.04, hopRange: [0.22, 0.42] },
   },
   // Regional-leap timing — the inter-sector jumps. Slightly slower with
   // a tall arc so the eye registers the "BIG jump" between zones.
   regionalLeapSec: 0.85,
   regionalArcPx: [22, 32],
-  // Idle dwell sampling.
-  idleSec: { short: [0.4, 0.8], long: [1.2, 1.6], longProb: 0.15 },
+  // Idle dwell sampling. Each range is the previous baseline ×1.2 — pauses
+  // hold ~20% longer so the chibi visibly settles before the next jump.
+  idleSec: { short: [0.48, 0.96], long: [1.44, 1.92], longProb: 0.15 },
   // Within-sector arc-height shaping.
   arcBasePx: 6,
   arcHeightCoeff: 0.45,
@@ -324,8 +327,21 @@ function visitSector({ sector, sectorBox, baseUnit, cur, budgetSec, mood, rng, c
       events.push(jump);
       elapsed += jump.dur;
       cur = next;
+      // Per-step micro-pause: fires after every jump at the per-mood
+      // idleProb. With prowl=0.44 this means ~2 idles per 5-jump phrase —
+      // the chibi visibly settles on roofs instead of bouncing through
+      // the whole phrase robotically. Hunt/dash moods naturally pause less.
+      if (elapsed < budgetSec && rng() < moodCfg.idleProb) {
+        const idle = makeIdle({ at: cur, rng, cfg, mood });
+        events.push(idle);
+        elapsed += idle.dur;
+      }
     }
-    if (elapsed < budgetSec && rng() < moodCfg.idleProb + 0.2) {
+    // End-of-phrase pause — guaranteed-ish breath before picking a new
+    // phrase. Probability is unbiased now (we removed the +0.2 fudge)
+    // because the per-step check above already catches the "needs to
+    // catch breath" case far more naturally.
+    if (elapsed < budgetSec && rng() < moodCfg.idleProb) {
       const idle = makeIdle({ at: cur, rng, cfg, mood });
       events.push(idle);
       elapsed += idle.dur;

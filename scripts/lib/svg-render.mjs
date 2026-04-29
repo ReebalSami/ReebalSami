@@ -45,22 +45,33 @@ const RISE_STAGGER_SEC = 0.04;
 const RISE_DURATION_SEC = 0.55;
 
 /**
- * Build the iso-city SVG.
+ * Build the iso-city SVG for a single theme.
+ *
+ * Each SVG is single-theme (no `@media (prefers-color-scheme)`) so that when
+ * embedded as `<img>` on github.com the floor/cubes/chibi all render in the
+ * intended theme even when the viewer's OS preference and GitHub Appearance
+ * setting disagree. Theme switching is handled at the README level via
+ * `<picture><source media="(prefers-color-scheme: dark)" ...></picture>`.
  *
  * @param {{
  *   days: Array<{date:string, count:number, level:number, gx:number, gy:number}>,
  *   weeks: number,
- *   characterMarkup?: string,    // optional: pre-built chibi + animations
+ *   theme?: 'light' | 'dark',  // default 'light'
+ *   characterMarkup?: string,  // optional: pre-built chibi + animations
  * }} opts
  * @returns {{
  *   svg: string,
  *   viewBox: {x:number, y:number, w:number, h:number},
  *   width: number,
  *   height: number,
+ *   theme: 'light' | 'dark',
  *   buildings: Array<{gx:number, gy:number, level:number, h:number, roof:{x:number,y:number}}>,
  * }}
  */
-export function renderCity({ days, weeks, characterMarkup = "" }) {
+export function renderCity({ days, weeks, theme = "light", characterMarkup = "" }) {
+  if (theme !== "light" && theme !== "dark") {
+    throw new Error(`renderCity: theme must be 'light' or 'dark' (got ${theme})`);
+  }
   if (!Array.isArray(days) || days.length === 0) {
     throw new Error("renderCity: days array is required and non-empty");
   }
@@ -130,7 +141,7 @@ export function renderCity({ days, weeks, characterMarkup = "" }) {
   const caption = `${formatDate(firstDate)} → ${formatDate(lastDate)}`;
 
   // ----- styles ----------------------------------------------------------
-  const style = buildStyleBlock();
+  const style = buildStyleBlock(theme);
 
   // ----- assemble final svg ---------------------------------------------
   const svg = `<svg xmlns="http://www.w3.org/2000/svg"
@@ -157,6 +168,7 @@ export function renderCity({ days, weeks, characterMarkup = "" }) {
     viewBox,
     width: widthPx,
     height: heightPx,
+    theme,
     buildings: sortedBuildings,
   };
 }
@@ -193,30 +205,23 @@ function buildCubeMarkup(b) {
 
 // ===== Style block builder ===============================================
 
-function buildStyleBlock() {
-  const lightCss = buildPaletteCss(LEVEL_COLOR.light);
-  const darkCss = buildPaletteCss(LEVEL_COLOR.dark);
-  const lightVars = renderCssVars(CHARACTER_CSS_VARS.light, "      ");
-  const darkVars = renderCssVars(CHARACTER_CSS_VARS.dark, "        ");
+function buildStyleBlock(theme) {
+  const palette = LEVEL_COLOR[theme];
+  const css = buildPaletteCss(palette);
+  const cssVars = renderCssVars(CHARACTER_CSS_VARS[theme], "      ");
+  const captionFill = BRAND[theme].mutedText;
   return `<style>
     :root {
-      color-scheme: light dark;
-${lightVars}
+      color-scheme: ${theme};
+${cssVars}
     }
     .caption text {
       font-family: ui-sans-serif, system-ui, "Space Grotesk", "Inter", sans-serif;
       font-size: 4px;
-      fill: ${BRAND.light.mutedText};
+      fill: ${captionFill};
       letter-spacing: 0.05em;
     }
-${indent(lightCss, "    ")}
-    @media (prefers-color-scheme: dark) {
-      :root {
-${darkVars}
-      }
-      .caption text { fill: ${BRAND.dark.mutedText}; }
-${indent(darkCss, "      ")}
-    }
+${indent(css, "    ")}
   </style>`;
 }
 

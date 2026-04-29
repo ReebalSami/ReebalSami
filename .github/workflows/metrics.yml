@@ -32,16 +32,16 @@ jobs:
       - name: Smoke test
         run: node scripts/test-build.mjs
 
-      - name: Build calendar SVG
+      - name: Build calendar SVGs (light + dark)
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
-        run: node scripts/build-calendar.mjs --user ReebalSami --weeks 26 --out assets/metrics.svg
+        run: node scripts/build-calendar.mjs --user ReebalSami --weeks 26 --out assets/metrics.svg --theme both
 
       - name: Commit + push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/metrics.svg
+          git add assets/metrics-light.svg assets/metrics-dark.svg
           if git diff --staged --quiet; then
             echo "No changes — calendar unchanged since last run."
           else

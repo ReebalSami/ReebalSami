@@ -60,13 +60,27 @@ function assert(cond, label) {
   }
 }
 
-// ---- 2. render
-const { svg, buildings, viewBox, width, height } = renderCity({ days, weeks: WEEKS });
+// ---- 2. render BOTH themes and verify each is single-theme
+const lightOut = renderCity({ days, weeks: WEEKS, theme: "light" });
+const darkOut  = renderCity({ days, weeks: WEEKS, theme: "dark"  });
+const { svg, buildings, viewBox, width, height } = lightOut; // legacy alias
 
 assert(typeof svg === "string" && svg.length > 1000, "renderCity returns non-trivial SVG");
 assert(svg.startsWith("<svg"), "SVG starts with <svg");
 assert(svg.includes("</svg>"), "SVG has closing tag");
 assert(width > 100 && height > 50, `SVG has reasonable dims (${width}x${height})`);
+
+// Theme isolation: NO @media block in either file (we use <picture> instead).
+assert(!lightOut.svg.includes("@media"), "light SVG has no @media block");
+assert(!darkOut.svg.includes("@media"),  "dark SVG has no @media block");
+
+// Theme correctness: floor color matches GitHub Primer for that theme.
+assert(lightOut.svg.includes("#eff2f5"), "light SVG floor uses #eff2f5");
+assert(darkOut.svg.includes("#151b23"),  "dark SVG floor uses #151b23");
+assert(!lightOut.svg.includes("#151b23"), "light SVG does NOT contain dark floor color");
+assert(!darkOut.svg.includes("#eff2f5"),  "dark SVG does NOT contain light floor color");
+assert(lightOut.svg.includes("color-scheme: light"), "light SVG declares color-scheme: light");
+assert(darkOut.svg.includes("color-scheme: dark"),   "dark SVG declares color-scheme: dark");
 
 // Floor tiles: should be exactly WEEKS * DAYS path elements inside .floor
 const floorMatch = svg.match(/<g class="floor">([\s\S]*?)<\/g>/);
@@ -117,6 +131,17 @@ assert(walkerRoofMismatch === 0, "every jump lands on roofCenter() — geometry 
 
 const slowdown = SPEED_MULTIPLIER;
 assert(slowdown >= 1.3 && slowdown <= 1.5, `SPEED_MULTIPLIER ≈ 1.4 (got ${slowdown})`);
+
+// Pacing: doubled idleProb + per-step micro-pauses + 20%-longer idle dwell
+// means BOTH more idle events and more total pause time (≈1.8× baseline).
+// Idle count caps because each idle (~1.2s) eats from the 28s budget.
+// Threshold 0.10 = at least 10% idle:jump ratio — comfortably above the
+// "no idles at all" failure mode (~0.05) but achievable across seeds.
+const jumpCount = tour.events.filter((e) => e.type === "jump").length;
+const idleCount = tour.events.filter((e) => e.type === "idle").length;
+const idleRatio = idleCount / Math.max(1, jumpCount);
+assert(idleCount >= 5, `tour has ≥5 idle events (got ${idleCount})`);
+assert(idleRatio >= 0.10, `idle:jump ratio ≥0.10 (got ${idleRatio.toFixed(2)} = ${idleCount}/${jumpCount})`);
 
 // ---- 4. build chibi markup
 const chibi = buildChibiMarkup({ tour });

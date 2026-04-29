@@ -15,12 +15,16 @@
  * for the same day) but a fresh tour pattern every UTC midnight.
  *
  * Usage:
- *   node scripts/build-calendar.mjs                # uses GITHUB_TOKEN env
- *   node scripts/build-calendar.mjs --user X       # override user
- *   node scripts/build-calendar.mjs --weeks 26     # override window
- *   node scripts/build-calendar.mjs --out path.svg # override output
- *   node scripts/build-calendar.mjs --seed N       # deterministic tour
- *   node scripts/build-calendar.mjs --fixture      # use synthetic data (no token)
+ *   node scripts/build-calendar.mjs                       # uses GITHUB_TOKEN env
+ *   node scripts/build-calendar.mjs --user X              # override user
+ *   node scripts/build-calendar.mjs --weeks 26            # override window
+ *   node scripts/build-calendar.mjs --out path.svg        # override output
+ *   node scripts/build-calendar.mjs --seed N              # deterministic tour
+ *   node scripts/build-calendar.mjs --fixture             # use synthetic data (no token)
+ *   node scripts/build-calendar.mjs --theme light|dark|both  # default 'both'
+ *
+ * With --theme both (the default), --out's `.svg` is replaced by `-light.svg`
+ * and `-dark.svg` so you get TWO files. The README pairs them with <picture>.
  */
 
 import { writeFileSync, mkdirSync } from "node:fs";
@@ -41,10 +45,14 @@ const config = {
   out: args.out || "assets/metrics.svg",
   seed: args.seed != null ? parseInt(args.seed, 10) : Math.floor(Date.now() / 86_400_000),
   fixture: !!args.fixture,
+  theme: args.theme || "both",
 };
+if (!["light", "dark", "both"].includes(config.theme)) {
+  throw new Error(`--theme must be one of: light, dark, both (got '${config.theme}')`);
+}
 
 console.log(`==> build-calendar`);
-console.log(`    user=${config.user} weeks=${config.weeks} seed=${config.seed} out=${config.out}${config.fixture ? " (fixture)" : ""}`);
+console.log(`    user=${config.user} weeks=${config.weeks} seed=${config.seed} theme=${config.theme} out=${config.out}${config.fixture ? " (fixture)" : ""}`);
 
 // ===== 1. Fetch / synthesize day grid ===================================
 
@@ -61,43 +69,48 @@ if (config.fixture) {
   console.log(`==> fetched ${days.length} days, ${fetched.total} total contributions`);
 }
 
-// ===== 2. Render the city SVG ===========================================
+// ===== 2. Plan tour once (theme-independent) ============================
+//
+// Buildings + tour are derived from grid geometry alone, so they are the
+// same in both themes. We render once per theme afterwards, varying only
+// the stylesheet and the chibi CSS-vars.
 
-// Pre-render WITHOUT character; we'll splice it in after planning the tour.
-const { svg: cityShell, buildings, viewBox, width, height } = renderCity({
+const { buildings, viewBox, width, height } = renderCity({
   days,
   weeks: config.weeks,
+  theme: "light", // theme doesn't affect buildings/viewBox; pick either
   characterMarkup: "",
 });
 console.log(`==> rendered ${buildings.length} buildings, viewBox ${fmtVB(viewBox)}, ${width}×${height}`);
 
-// ===== 3. Plan Spider-Man tour ==========================================
-
 const tour = planTour(buildings, { seed: config.seed });
 console.log(`==> tour: ${tour.events.length} events, ${tour.totalDuration.toFixed(2)}s, playlist=[${tour.playlist.join(",")}]`);
-
-// ===== 4. Build chibi SMIL markup ======================================
 
 const chibi = buildChibiMarkup({ tour });
 console.log(`==> chibi markup: ${chibi.length} bytes`);
 
-// ===== 5. Splice chibi into city SVG ====================================
-//
-// The city renderer leaves a placeholder for `characterMarkup` before the
-// closing </svg>. We do this in two passes (render → splice) so the
-// renderer stays pure and the orchestrator owns the wiring.
+// ===== 3. Render once per requested theme ===============================
 
-const finalSvg = cityShell.replace(
-  /<\/svg>\s*$/,
-  `\n  ${chibi}\n</svg>\n`
-);
+const themesToRender = config.theme === "both" ? ["light", "dark"] : [config.theme];
+for (const theme of themesToRender) {
+  const { svg: cityShell } = renderCity({
+    days,
+    weeks: config.weeks,
+    theme,
+    characterMarkup: "",
+  });
+  // Splice chibi in just before </svg> (renderer leaves no placeholder
+  // marker; we use the closing tag as the splice point).
+  const finalSvg = cityShell.replace(
+    /<\/svg>\s*$/,
+    `\n  ${chibi}\n</svg>\n`
+  );
 
-// ===== 6. Write =========================================================
-
-const outPath = resolve(process.cwd(), config.out);
-mkdirSync(dirname(outPath), { recursive: true });
-writeFileSync(outPath, finalSvg);
-console.log(`==> wrote ${outPath} (${finalSvg.length} bytes)`);
+  const outPath = resolve(process.cwd(), themedOutPath(config.out, theme, config.theme));
+  mkdirSync(dirname(outPath), { recursive: true });
+  writeFileSync(outPath, finalSvg);
+  console.log(`==> wrote ${outPath} (${finalSvg.length} bytes, ${theme})`);
+}
 
 // ===== Helpers ==========================================================
 
@@ -120,6 +133,20 @@ function parseArgs(argv) {
 
 function fmtVB(v) {
   return `[${v.x.toFixed(1)} ${v.y.toFixed(1)} ${v.w.toFixed(1)} ${v.h.toFixed(1)}]`;
+}
+
+/**
+ * When --theme is 'both', insert `-light` / `-dark` before the file extension.
+ * When --theme is 'light' or 'dark', use --out exactly as given.
+ *
+ *   themedOutPath('assets/metrics.svg', 'light', 'both') -> 'assets/metrics-light.svg'
+ *   themedOutPath('assets/metrics.svg', 'dark',  'dark') -> 'assets/metrics.svg'
+ */
+function themedOutPath(outArg, theme, themeMode) {
+  if (themeMode !== "both") return outArg;
+  const dot = outArg.lastIndexOf(".");
+  if (dot < 0) return `${outArg}-${theme}`;
+  return `${outArg.slice(0, dot)}-${theme}${outArg.slice(dot)}`;
 }
 
 /**

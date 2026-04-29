@@ -79,7 +79,10 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 
 <div align="center">
 
-<img src="./assets/metrics.svg" alt="3D isometric contribution calendar with an animated web-slinger swinging across high-contribution weeks" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/metrics-dark.svg">
+  <img src="./assets/metrics-light.svg" alt="3D isometric contribution calendar with an animated web-slinger swinging across high-contribution weeks" width="100%">
+</picture>
 
 </div>
 
