@@ -41,7 +41,7 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=python,typescript,java,r,sql,bash,react,nextjs,fastapi,spring,tailwind,nodejs,aws,docker,git,github,postgres,mongodb&theme=dark&perline=9">
+  <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=python%2Ctypescript%2Cjava%2Cr%2Csql%2Cbash%2Creact%2Cnextjs%2Cfastapi%2Cspring%2Ctailwind%2Cnodejs%2Caws%2Cdocker%2Cgit%2Cgithub%2Cpostgres%2Cmongodb&theme=dark&perline=9">
   <img src="https://skillicons.dev/icons?i=python,typescript,java,r,sql,bash,react,nextjs,fastapi,spring,tailwind,nodejs,aws,docker,git,github,postgres,mongodb&theme=light&perline=9" alt="Languages, web, cloud, and data tooling">
 </picture>
 
@@ -67,7 +67,7 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 </a>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=ReebalSami&layout=compact&langs_count=10&hide_border=true&bg_color=00000000&title_color=D4A574&text_color=F5F4EE&hide=Procfile,Smarty">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=ReebalSami&layout=compact&langs_count=10&hide_border=true&bg_color=00000000&title_color=D4A574&text_color=F5F4EE&hide=Procfile%2CSmarty">
   <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=ReebalSami&layout=compact&langs_count=10&hide_border=true&bg_color=00000000&title_color=B6803F&text_color=22222A&hide=Procfile,Smarty" alt="Top languages by repo bytes for ReebalSami">
 </picture>
 
@@ -92,8 +92,8 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 
 <a href="https://github.com/ReebalSami">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-trophy.vercel.app/?username=ReebalSami&theme=darkhub&no-frame=true&no-bg=true&margin-w=10&margin-h=10&column=7&title=Stars,Followers,Commits,Repositories,PullRequest,Issues,MultipleLang,LongTimeUser">
-    <img src="https://github-profile-trophy.vercel.app/?username=ReebalSami&theme=flat&no-frame=true&no-bg=true&margin-w=10&margin-h=10&column=7&title=Stars,Followers,Commits,Repositories,PullRequest,Issues,MultipleLang,LongTimeUser" alt="GitHub achievement trophies for ReebalSami">
+    <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-trophy.vercel.app/?username=ReebalSami&theme=gruvbox&no-frame=true&no-bg=true&margin-w=10&margin-h=10&column=8&title=Stars%2CFollowers%2CCommits%2CRepositories%2CPullRequest%2CIssues%2CMultipleLang%2CLongTimeUser">
+    <img src="https://github-profile-trophy.vercel.app/?username=ReebalSami&theme=flat&no-frame=true&no-bg=true&margin-w=10&margin-h=10&column=8&title=Stars,Followers,Commits,Repositories,PullRequest,Issues,MultipleLang,LongTimeUser" alt="GitHub achievement trophies for ReebalSami">
   </picture>
 </a>
 
