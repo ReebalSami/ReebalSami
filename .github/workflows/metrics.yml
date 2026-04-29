@@ -8,59 +8,36 @@ on:
     branches: [main]
     paths:
       - .github/workflows/metrics.yml
-      - scripts/inject-webslinger.mjs
-      - scripts/webslinger-character.mjs
-      - scripts/plan-character-tour.mjs
-      - scripts/parse-iso-calendar.mjs
+      - scripts/build-calendar.mjs
+      - scripts/lib/**
+      - scripts/test-build.mjs
+      - package.json
 
 permissions:
   contents: write
 
 jobs:
-  metrics:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
 
-      # Render a single half-year isocalendar.
-      #
-      # output_action: none means lowlighter does NOT commit/push, but it
-      # also writes the SVG to /metrics_renders/<filename> on the host
-      # (NOT to $GITHUB_WORKSPACE). We copy it back ourselves and own the
-      # only commit in this run — eliminating the race-condition stale-
-      # workspace bug where lowlighter's container committed real data
-      # while the workspace still held the checked-out (older) file.
-      - name: Render isocalendar
-        uses: lowlighter/metrics@latest
-        with:
-          token: ${{ secrets.METRICS_TOKEN }}
-          user: ReebalSami
-          filename: assets/metrics.svg
-          template: classic
-          base: ""
-          config_timezone: Europe/Berlin
-          config_padding: 0, 0
-          config_animations: yes
-          output_action: none
-          plugin_isocalendar: yes
-          plugin_isocalendar_duration: half-year
+      - run: npm ci
 
-      - name: Copy rendered SVG into workspace
-        run: |
-          mkdir -p assets
-          sudo cp /metrics_renders/assets/metrics.svg assets/metrics.svg
-          sudo chown $USER:$USER assets/metrics.svg
+      - name: Smoke test
+        run: node scripts/test-build.mjs
 
-      - name: Inject web-slinger
-        run: node scripts/inject-webslinger.mjs assets/metrics.svg
+      - name: Build calendar SVG
+        env:
+          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: node scripts/build-calendar.mjs --user ReebalSami --weeks 26 --out assets/metrics.svg
 
-      - name: Commit + push
+      - name: Commit + push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -68,6 +45,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes — calendar unchanged since last run."
           else
-            git commit -m "chore(metrics): refresh isocalendar + webslinger"
+            git commit -m "chore(metrics): refresh iso calendar"
             git push origin main
           fi
