@@ -1,0 +1,52 @@
+name: GitHub Numbers
+
+on:
+  schedule:
+    - cron: "29 6 * * *" # daily, 06:29 UTC (just after Milestones at 06:23)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/github-numbers.yml
+      - scripts/generate-github-numbers.mjs
+      - scripts/lib/palette.mjs
+      - package.json
+
+permissions:
+  contents: write
+
+jobs:
+  numbers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --omit=dev --no-audit --no-fund
+
+      - name: Generate GitHub-numbers SVGs (3 cards × light + dark)
+        env:
+          # METRICS_TOKEN is a PAT with read:user scope. Required so
+          # contributionsCollection includes private contribution counts
+          # (matches today's count_private=true semantics).
+          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: node scripts/generate-github-numbers.mjs
+
+      - name: Commit if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain assets/numbers-*.svg)" ]]; then
+            git add assets/numbers-*.svg
+            git commit -m "chore(numbers): refresh SVGs"
+            git push
+          else
+            echo "No GitHub-numbers changes — skipping commit."
+          fi

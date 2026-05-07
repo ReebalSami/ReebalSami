@@ -1,0 +1,47 @@
+name: Hero
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/hero.yml
+      - scripts/generate-hero.mjs
+      - scripts/lib/palette.mjs
+      - package.json
+
+permissions:
+  contents: write
+
+jobs:
+  hero:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # No external deps used; the renderer is pure standard Node + local
+      # palette tokens. `npm install` only to be safe if future iterations
+      # introduce a build-time dep.
+      - name: Install dependencies
+        run: npm install --omit=dev --no-audit --no-fund
+
+      - name: Generate hero SVGs (light + dark)
+        run: node scripts/generate-hero.mjs
+
+      - name: Commit if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain assets/hero-typing-*.svg)" ]]; then
+            git add assets/hero-typing-*.svg
+            git commit -m "chore(hero): refresh typing SVG"
+            git push
+          else
+            echo "No hero changes — skipping commit."
+          fi

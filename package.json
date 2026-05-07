@@ -6,6 +6,9 @@
   "type": "module",
   "scripts": {
     "milestones": "node scripts/generate-milestones.mjs",
+    "numbers": "node scripts/generate-github-numbers.mjs",
+    "hero": "node scripts/generate-hero.mjs",
+    "tech-stack": "node scripts/generate-tech-stack.mjs",
     "build": "node scripts/build-calendar.mjs --user ReebalSami --weeks 26 --out assets/metrics.svg",
     "build:fixture": "node scripts/build-calendar.mjs --fixture --out tmp/fixture.svg",
     "test": "node scripts/test-build.mjs"

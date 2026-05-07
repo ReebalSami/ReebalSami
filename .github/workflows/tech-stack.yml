@@ -1,0 +1,45 @@
+name: Tech Stack
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/tech-stack.yml
+      - scripts/generate-tech-stack.mjs
+      - scripts/lib/palette.mjs
+      - assets/icons/skill-icons/**
+      - package.json
+
+permissions:
+  contents: write
+
+jobs:
+  tech-stack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --omit=dev --no-audit --no-fund
+
+      - name: Generate tech-stack SVGs (light + dark)
+        run: node scripts/generate-tech-stack.mjs
+
+      - name: Commit if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain assets/tech-stack-*.svg)" ]]; then
+            git add assets/tech-stack-*.svg
+            git commit -m "chore(tech-stack): refresh SVGs"
+            git push
+          else
+            echo "No tech-stack changes — skipping commit."
+          fi
