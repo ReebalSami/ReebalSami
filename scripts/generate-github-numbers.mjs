@@ -401,59 +401,93 @@ function barWithDrawAnim({ x, y, h, trackW, fillW, p, delay, dur = ANIM.slow }) 
 }
 
 /**
- * Data-bearing ring around the current-streak number. Two concentric
- * circles:
+ * Streak emblem: bronze ring with a flame breaking through the top.
+ * Layered to satisfy two intents at once:
  *
- *   1. BG ring   — full 360°, muted + low opacity. Acts as the "track"
- *                  that anchors the arc visually even when progress=0.
- *   2. PROGRESS  — a second circle stroked with the accent color, using
- *      ARC           `stroke-dasharray` of the full circumference and a
- *                    `stroke-dashoffset` that animates from `circ` (fully
- *                    hidden) to `circ - fillLen` (arc revealed from 12
- *                    o'clock clockwise). `rotate(-90)` puts the start at
- *                    the top. `stroke-linecap="round"` gives a refined
- *                    finish for the terminus of partial arcs.
+ *   1. FULL RING    — drawn as a static circle at lower opacity (0.35).
+ *      (under)        Provides the "complete ring" silhouette that
+ *                     matches the iconic DenverCoder1 streak-stats look.
+ *   2. PROGRESS ARC — same circle stroked at higher opacity (0.95) but
+ *      (over)         with `stroke-dasharray` + `stroke-dashoffset`
+ *                     animation revealing only `(current/longest) × 360°`
+ *                     starting from 12 o'clock clockwise.
  *
- * `progress` is `currentStreak / longestStreak`, clamped to [0, 1]. A
- * streak that ties or beats the personal best paints the full 360° (a
- * complete ring) — silent acknowledgment without any extra decoration.
+ * Both circles live inside a `<g mask="url(#maskId)">` so a small
+ * ellipse at the top center cuts both the ring and the arc — that's
+ * what produces the visible "break" where the flame sits.
  *
- * After the entrance draw, a subtle stroke-opacity breathe keeps the arc
- * feeling "alive" — same cadence as the previous decorative ring, now
- * grounded in real data rather than pure ornament.
+ * Mask geometry adapted from DenverCoder1/github-readme-streak-stats
+ * (MIT License, src/card.php "mask_out_ring_behind_fire"). Their
+ * defaults (mask offset 39, rx=13, ry=18) at r=40 were scaled by 0.8
+ * for our r=32 emblem: mask offset 31, rx=10, ry=14.
+ *
+ * Subtle stroke-opacity breathe loop on the progress arc post-entrance
+ * keeps the data-bearing element feeling "alive" — within Emil's
+ * imperceptibility threshold (≤ 0.20 swing).
  */
-function progressArc({ cx, cy, r, progress, p, delay, dur = ANIM.slow }) {
+function progressArc({ cx, cy, r, progress, p, delay, maskId, dur = ANIM.slow }) {
   const circ = 2 * Math.PI * r;
   const clamped = Math.min(1, Math.max(0, progress));
   const fillLen = circ * clamped;
   const breatheStart = delay + parseFloat(dur);
 
-  // Track / background ring — full circle, low-opacity muted stroke.
-  const track = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.muted}" stroke-width="2" stroke-opacity="0">
-    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.18" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+  // Mask: cuts an ellipse where the flame sits, so both the full ring
+  // and the progress arc visibly "break" at the top. `userSpaceOnUse`
+  // makes our pixel-coords match the SVG's outer viewBox directly.
+  const maskCy = cy - 31;
+  const maskRx = 10;
+  const maskRy = 14;
+  // Mask covers a region wide/tall enough that no ring stroke leaks
+  // outside the white area. Adding `r + 6` on each side ensures the
+  // outer stroke (cy ± (r + 2.5)) is inside the white rect.
+  const maskRectW = CARD_W;
+  const maskRectH = CARD_H;
+  const maskDef = `<defs>
+    <mask id="${maskId}" maskUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="${maskRectW}" height="${maskRectH}" fill="white"/>
+      <ellipse cx="${cx}" cy="${maskCy}" rx="${maskRx}" ry="${maskRy}" fill="black"/>
+    </mask>
+  </defs>`;
+
+  // Underlying full ring — always 360°, low opacity. Reference look at
+  // a glance. Stroke 5 matches DenverCoder1's original weight.
+  const fullRing = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.accent}" stroke-width="5" stroke-opacity="0">
+    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.35" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
   </circle>`;
 
-  // Progress arc — zero-length dash animates to `fillLen`. rotate(-90)
-  // starts the arc at 12 o'clock and sweeps clockwise.
-  const arc = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.accent}" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})" stroke-dasharray="${circ.toFixed(2)}" stroke-dashoffset="${circ.toFixed(2)}" stroke-opacity="0">
-    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.9" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+  // Progress arc — same circle, dashed so only `fillLen` is visible.
+  // Higher opacity (0.95) creates a brighter "highlight" segment over
+  // the underlying ring, encoding `current/longest` without breaking
+  // the visual unity of the full ring.
+  const arc = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.accent}" stroke-width="5" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})" stroke-dasharray="${circ.toFixed(2)}" stroke-dashoffset="${circ.toFixed(2)}" stroke-opacity="0">
+    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.95" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
     <animate attributeName="stroke-dashoffset" begin="${delay + 0.05}s" dur="${dur}" from="${circ.toFixed(2)}" to="${(circ - fillLen).toFixed(2)}" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
-    <animate attributeName="stroke-opacity" begin="${breatheStart}s" dur="${ANIM.ringLoop}" values="0.9;0.75;1;0.9" repeatCount="indefinite" calcMode="linear"/>
+    <animate attributeName="stroke-opacity" begin="${breatheStart}s" dur="${ANIM.ringLoop}" values="0.95;0.80;1;0.95" repeatCount="indefinite" calcMode="linear"/>
   </circle>`;
 
-  return `${track}\n  ${arc}`;
+  return `${maskDef}
+  <g mask="url(#${maskId})">
+    ${fullRing}
+    ${arc}
+  </g>`;
 }
 
 /**
- * Small flame glyph anchored to the top-right of the current-streak ring.
+ * Iconic flame glyph that "breaks through" the top of the streak ring.
  * Entrance: opacity 0→1 + scale 0→`baseScale` (snappy expoOut). Loop:
  * subtle scale oscillation + opacity flicker — both within ranges
  * imperceptible enough to read as "alive" without becoming noise.
  *
+ * Path adapted from DenverCoder1/github-readme-streak-stats (MIT License,
+ * src/card.php "Fire icon" group). 16×22 SVG silhouette with the
+ * characteristic curl-and-notch detail; first subpath is the outer body
+ * including the curl tip, second subpath is the inner highlight that
+ * gives the flame its "lit" look. Vendored verbatim — adapt-from-all
+ * rule satisfied via the source citation in this docstring.
+ *
  * `baseScale` is data-bearing: scales from 0.55 (cold — no streak) to
  * 1.0 (matching personal best). Ties the flame's visual weight to the
- * same progress ratio as the arc, so both elements reinforce the same
- * story. The path is a 14×18 teardrop centered at (0, 0).
+ * same progress ratio as the underlying arc.
  */
 function flameWithFlicker({ x, y, p, delay, progress = 1 }) {
   const clamped = Math.min(1, Math.max(0, progress));
@@ -462,12 +496,13 @@ function flameWithFlicker({ x, y, p, delay, progress = 1 }) {
   const dipScale = (baseScale * 0.94).toFixed(3);
   const lowScale = (baseScale * 1.04).toFixed(3);
   const flickerStart = delay + parseFloat(ANIM.flame);
-  const FLAME_PATH = "M 0 -9 C 3 -5 5 -1 4 3 C 3 7 1 8 0 9 C -1 8 -3 7 -4 3 C -5 -1 -3 -5 0 -9 Z";
+  // 16×22 flame body, top of curl at (1.5, 0.67), bottom of body at y=22.
+  const FLAME_PATH = "M 1.5 0.67 C 1.5 0.67 2.24 3.32 2.24 5.47 C 2.24 7.53 0.89 9.2 -1.17 9.2 C -3.23 9.2 -4.79 7.53 -4.79 5.47 L -4.76 5.11 C -6.78 7.51 -8 10.62 -8 13.99 C -8 18.41 -4.42 22 0 22 C 4.42 22 8 18.41 8 13.99 C 8 8.6 5.41 3.79 1.5 0.67 Z M -0.29 19 C -2.07 19 -3.51 17.6 -3.51 15.86 C -3.51 14.24 -2.46 13.1 -0.7 12.74 C 1.07 12.38 2.9 11.53 3.92 10.16 C 4.31 11.45 4.51 12.81 4.51 14.2 C 4.51 16.85 2.36 19 -0.29 19 Z";
   return `<g transform="translate(${x}, ${y})">
     <g opacity="0">
       <animate attributeName="opacity" begin="${delay}s" dur="${ANIM.flame}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
       <animate attributeName="opacity" begin="${flickerStart}s" dur="${ANIM.flameLoop}" values="1;0.85;1;0.92;1" repeatCount="indefinite" calcMode="linear"/>
-      <path d="${FLAME_PATH}" fill="${p.accent}" transform="scale(0)">
+      <path d="${FLAME_PATH}" fill="${p.accent}" fill-rule="evenodd" transform="scale(0)">
         <animateTransform attributeName="transform" type="scale" begin="${delay}s" dur="${ANIM.flame}" from="0" to="${baseScale.toFixed(3)}" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
         <animateTransform attributeName="transform" type="scale" begin="${flickerStart}s" dur="${ANIM.flameLoop}" values="${baseScale.toFixed(3)};${peakScale};${dipScale};${lowScale};${baseScale.toFixed(3)}" repeatCount="indefinite" calcMode="linear"/>
       </path>
@@ -584,7 +619,11 @@ function renderCombinedCard({
 
   // === Center divider between halves ====================================
 
-  const divider = `<line x1="${GUTTER_DIV_X}" y1="24" x2="${GUTTER_DIV_X}" y2="${CARD_H - 24}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1" opacity="0">
+  // Vertical separators use the warm accent (bronze) at moderate opacity
+  // — same visual family as the section accent bars and progress arc, so
+  // structural lines tie into the card's color story instead of breaking
+  // it with neutral gray.
+  const divider = `<line x1="${GUTTER_DIV_X}" y1="24" x2="${GUTTER_DIV_X}" y2="${CARD_H - 24}" stroke="${p.accent}" stroke-opacity="0.30" stroke-width="1" opacity="0">
     <animate attributeName="opacity" begin="0.18s" dur="${ANIM.base}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
   </line>`;
 
@@ -599,10 +638,12 @@ function renderCombinedCard({
     CAD_X0 + CAD_COL_W * 2.5,
   ];
   const CAD_VAL_Y = CAD_PAD_TOP + 50;
-  // Pushed 8px further down from the previous 22/18 so the shrunken ring
-  // (r=24) has ~9px clearance above the label's ascender, instead of the
-  // old r=34 that clipped straight through the label baseline.
-  const CAD_LABEL_Y = CAD_VAL_Y + 30;
+  // CAD_LABEL_Y at +42 (was +30): the bigger r=32 ring with stroke 5
+  // extends to y ≈ 102.5 outer-bottom; pushing the label baseline to
+  // y=120 gives ~6.5 px clearance above the label's ascender. Card
+  // height stays 180 — there's still 36 px of slack between the date
+  // descender and the bottom edge.
+  const CAD_LABEL_Y = CAD_VAL_Y + 42;
   const CAD_DATE_Y = CAD_LABEL_Y + 18;
   const CAD_DIV_Y_TOP = CAD_PAD_TOP + 12;
   const CAD_DIV_Y_BOT = CARD_H - 16;
@@ -627,27 +668,43 @@ function renderCombinedCard({
   const streakProgress = longestStreak > 0
     ? Math.min(1, currentStreak / longestStreak)
     : 0;
-  const RING_R = 24;
-  const RING_CY = CAD_VAL_Y - 14; // centered on the cap height of the digit
-  const FLAME_OFFSET_X = 18;      // top-right of ring, tighter after shrink
-  const FLAME_OFFSET_Y = -16;
+  // RING_R 32 (was 20): matches DenverCoder1's iconic ring presence,
+  // scaled 0.8× from their r=40 default. Stroke 5 (set inside
+  // progressArc()) gives the same visual weight as the original.
+  // RING_CY at CAD_VAL_Y - 10 (= 68): centered on the digit's visual
+  // midpoint (baseline - cap-height/2). Unchanged from previous tuning.
+  // FLAME at top center (offsets 0, -41): scaled from DenverCoder1's
+  // (-51.5 above ring center at r=40) by 0.8 → -41 above ring center.
+  // The flame body extends 22 px down from there into the ring's top
+  // interior; the mask ellipse (cy=ringCy-31, rx=10, ry=14) cuts the
+  // ring stroke behind the flame so it visibly "breaks through."
+  const RING_R = 32;
+  const RING_CY = CAD_VAL_Y - 10;
+  const FLAME_OFFSET_X = 0;
+  const FLAME_OFFSET_Y = -41;
+  const RING_MASK_ID = `streak-ring-mask-${theme}`;
   const ringDelay = cadBase + 0.08 + 0.05;
   const flameDelay = ringDelay + 0.20; // after arc has drawn a bit
 
+  // The `accent` flag colors the LABEL bronze (not the number) —
+  // matches DenverCoder1's reference where `currStreakLabel` is bronze
+  // (warm signal: "this is the live one") and `currStreakNum` is dark
+  // (anchors the cell). Other two columns keep muted-gray labels.
   const cadCol = (col, rawValue, label, sub, accent = false) => {
     const cx = CAD_COL_X[col];
     const numDelay = cadBase + col * 0.06;
     const labelDelay = numDelay + 0.65; // wait for count-up to finish
     const dateDelay = labelDelay + 0.05;
+    const labelFill = accent ? p.accent : p.muted;
     return `${countUpText({
       x: cx, y: CAD_VAL_Y, className: "row-value",
-      fill: accent ? p.accent : p.fg,
+      fill: p.fg,
       target: rawValue,
       delay: numDelay,
       format: (n) => n.toLocaleString(),
     })}
     ${entrance(
-      `<text x="${cx}" y="${CAD_LABEL_Y}" text-anchor="middle" class="row-label" fill="${p.muted}">${escapeXml(label)}</text>`,
+      `<text x="${cx}" y="${CAD_LABEL_Y}" text-anchor="middle" class="row-label" fill="${labelFill}">${escapeXml(label)}</text>`,
       { delay: labelDelay, dur: ANIM.fast, ease: EASE.quartOut }
     )}
     ${entrance(
@@ -658,13 +715,13 @@ function renderCombinedCard({
 
   const cadenceDividers = `<g opacity="0">
     <animate attributeName="opacity" begin="0.2s" dur="${ANIM.base}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
-    <line x1="${CAD_DIV_X_1}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_1}" y2="${CAD_DIV_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>
-    <line x1="${CAD_DIV_X_2}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_2}" y2="${CAD_DIV_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>
+    <line x1="${CAD_DIV_X_1}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_1}" y2="${CAD_DIV_Y_BOT}" stroke="${p.accent}" stroke-opacity="0.30" stroke-width="1"/>
+    <line x1="${CAD_DIV_X_2}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_2}" y2="${CAD_DIV_Y_BOT}" stroke="${p.accent}" stroke-opacity="0.30" stroke-width="1"/>
   </g>`;
 
   const cadenceBody = `${sectionTitle(p, CAD_X0, CAD_PAD_TOP - 14, "CADENCE", 0.18)}
   ${cadenceDividers}
-  ${progressArc({ cx: CAD_COL_X[1], cy: RING_CY, r: RING_R, progress: streakProgress, p, delay: ringDelay })}
+  ${progressArc({ cx: CAD_COL_X[1], cy: RING_CY, r: RING_R, progress: streakProgress, p, delay: ringDelay, maskId: RING_MASK_ID })}
   ${flameWithFlicker({ x: CAD_COL_X[1] + FLAME_OFFSET_X, y: RING_CY + FLAME_OFFSET_Y, p, delay: flameDelay, progress: streakProgress })}
   ${cadCol(0, totalContribs, "Total contributions", sinceLabel)}
   ${cadCol(1, currentStreak, "Current streak", currentLabel, true)}
