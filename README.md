@@ -5,7 +5,7 @@
     - Hero:        custom (scripts/generate-hero.mjs)
     - Tech stack:  custom + vendored skill-icons (scripts/generate-tech-stack.mjs)
     - Numbers:     custom (scripts/generate-github-numbers.mjs)
-                   = 3 cards: volume tile, streak tile, top languages
+                   = 2 cards: combined VOLUME+CADENCE, top languages
     - Calendar:    custom iso-projection + chibi web-slinger overlay (scripts/build-calendar.mjs)
     - Milestones:  custom (scripts/generate-milestones.mjs)
 -->
@@ -59,20 +59,15 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 
 <a href="https://github.com/ReebalSami">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/numbers-stats-dark.svg">
-    <img height="180" src="./assets/numbers-stats-light.svg" alt="Lifetime totals for @ReebalSami">
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/numbers-stats-streak-dark.svg">
+    <img src="./assets/numbers-stats-streak-light.svg" alt="Lifetime totals and contribution streak for @ReebalSami" width="100%">
   </picture>
 </a>
-<a href="https://github.com/ReebalSami">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/numbers-streak-dark.svg">
-    <img height="180" src="./assets/numbers-streak-light.svg" alt="GitHub contribution streak for @ReebalSami">
-  </picture>
-</a>
+
 <a href="https://github.com/ReebalSami">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/numbers-langs-dark.svg">
-    <img height="180" src="./assets/numbers-langs-light.svg" alt="Top languages by recent commits for @ReebalSami">
+    <img src="./assets/numbers-langs-light.svg" alt="Top languages by recent commits for @ReebalSami" width="100%">
   </picture>
 </a>
 

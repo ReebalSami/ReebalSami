@@ -149,6 +149,54 @@ export const TYPO = {
   heroLine: `font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 30px; font-weight: 600; letter-spacing: -0.01em;`,
 };
 
+// ===== Motion tokens (Emil Kowalski + Impeccable, SMIL-compatible) =======
+//
+// SMIL doesn't support spring physics, but it does support cubic-bezier
+// easing via `keySplines` + `calcMode="spline"`. These curves are the
+// SMIL-formatted twins of the CSS bezier curves recommended by Emil
+// Kowalski's design-engineering skill and Impeccable's motion-design.md.
+//
+// SMIL keySplines format: "x1 y1 x2 y2" (whitespace-separated, no commas).
+// Each animation segment needs ONE keySplines tuple; for multi-segment
+// animations join with semicolons.
+//
+// Hard rule (from Impeccable anti-patterns + Emil's review checklist):
+// NEVER use bounce / elastic curves — they feel dated and tacky in 2026.
+
+export const EASE = {
+  // Default ease-out for entrances. Smooth, refined, restraint-friendly.
+  // CSS:   cubic-bezier(0.25, 1, 0.5, 1)   — quart-out
+  quartOut: "0.25 1 0.5 1",
+
+  // Snappy, confident ease-out. Emil's favorite for UI entrances.
+  // CSS:   cubic-bezier(0.16, 1, 0.3, 1)   — expo-out
+  expoOut: "0.16 1 0.3 1",
+
+  // Symmetric ease-in-out for state toggles (there → back).
+  // CSS:   cubic-bezier(0.65, 0, 0.35, 1)
+  inOut: "0.65 0 0.35 1",
+
+  // Gentle linear-ish for loops where any easing would feel jittery.
+  // (Use for subtle breathing/flicker; SMIL "linear" calcMode also works.)
+  linear: "0.5 0.5 0.5 0.5",
+};
+
+// Animation duration tokens (ms → seconds for SMIL `dur` attribute).
+// Following Impeccable's 100/300/500 rule:
+//   100–150ms: instant feedback (button press)
+//   200–300ms: state changes (label/title fade-in)
+//   300–500ms: layout changes (bar draw, card reveal)
+//   500–800ms: entrance choreography
+export const ANIM = {
+  fast: "0.2s",       // 200ms — labels, dates, section titles
+  base: "0.35s",      // 350ms — numbers, accent bars
+  slow: "0.45s",      // 450ms — language bars (longer travel)
+  reveal: "0.4s",     // 400ms — ring fade-in
+  flame: "0.35s",     // 350ms — flame fade-in
+  flameLoop: "1.5s",  // 1.5s loop — flame flicker
+  ringLoop: "3s",     // 3s loop — ring breathe
+};
+
 // ===== Shared SVG helpers =================================================
 
 /**

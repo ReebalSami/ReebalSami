@@ -2,15 +2,28 @@
 /**
  * generate-github-numbers.mjs
  *
- * Renders the three "GitHub by the numbers" cards for @ReebalSami's profile
+ * Renders the "GitHub by the numbers" cards for @ReebalSami's profile
  * README, replacing the previous third-party services
  * (github-readme-stats.vercel.app + streak-stats.demolab.com):
  *
- *   LEFT   numbers-stats-{light,dark}.svg    Volume tile (4 lifetime totals)
- *   MIDDLE numbers-streak-{light,dark}.svg   Streak tile (total / current / longest)
- *   RIGHT  numbers-langs-{light,dark}.svg    Top languages by recent commits
+ *   numbers-stats-streak-{light,dark}.svg   Combined VOLUME + CADENCE
+ *                                           card (960×180). Single SVG so
+ *                                           the two halves are guaranteed
+ *                                           side-by-side regardless of
+ *                                           GitHub's README column width.
+ *   numbers-langs-{light,dark}.svg          Top languages by recent commits
+ *                                           (960×180, full-width).
  *
- * Story arc: LEFT = volume · MIDDLE = cadence · RIGHT = range.
+ * Story arc: VOLUME = career totals · CADENCE = streak rhythm · LANGS = range.
+ *
+ * Motion design: the CADENCE column for "Current streak" includes the
+ * iconic ring + flame emblem (re-implemented in-house from the original
+ * streak-stats.demolab.com look). All entrance animations follow Emil
+ * Kowalski's design-engineering principles + Impeccable's motion-design
+ * rules: stagger ≤ 80ms, custom expo-out / quart-out keySplines (no
+ * built-in `ease`, no bounce / elastic), one-shot entrance choreographed
+ * over ~950ms with bounded loops only on state indicators (flame flicker,
+ * ring breathe).
  *
  * Run:
  *   GITHUB_TOKEN=ghp_… node scripts/generate-github-numbers.mjs
@@ -25,7 +38,7 @@ import { graphql } from "@octokit/graphql";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { CARD_PALETTE, TYPO, escapeXml } from "./lib/palette.mjs";
+import { CARD_PALETTE, TYPO, EASE, ANIM, escapeXml } from "./lib/palette.mjs";
 
 // ----- config -------------------------------------------------------------
 
@@ -310,8 +323,18 @@ function formatRange(fromIso, toIso) {
 
 // ----- SVG building blocks ------------------------------------------------
 
-const CARD_W = 480;
+// Combined card geometry. 960 wide guarantees VOLUME + CADENCE always sit
+// side-by-side regardless of GitHub's README column width — the browser
+// scales a single image proportionally, so the two halves never wrap.
+const CARD_W = 960;
 const CARD_H = 180;
+
+// Internal layout for the combined VOLUME + CADENCE card.
+const VOL_X0 = 24;
+const VOL_X1 = 460;          // VOLUME right edge
+const GUTTER_DIV_X = 480;    // shared vertical divider between the two halves
+const CAD_X0 = 500;
+const CAD_X1 = CARD_W - 24;
 
 function svgWrap({ width, height, ariaLabel, body }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
@@ -330,101 +353,231 @@ ${body}
 `;
 }
 
-function sectionTitle(p, x, y, label, accentBarLen = 60) {
-  return `  <text x="${x}" y="${y}" class="section-label" fill="${p.muted}">${escapeXml(label)}</text>
-  <rect x="${x}" y="${y + 8}" width="${accentBarLen}" height="1" fill="${p.accent}" fill-opacity="0.55"/>`;
+function sectionTitle(p, x, y, label, delay, accentBarLen = 60) {
+  // Title fades in (200ms quartOut, slight delay), then the accent bar draws
+  // its width 0→accentBarLen with a snappier expoOut (Emil's favorite).
+  return `  <g opacity="0">
+    <animate attributeName="opacity" begin="${delay}s" dur="${ANIM.fast}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+    <text x="${x}" y="${y}" class="section-label" fill="${p.muted}">${escapeXml(label)}</text>
+  </g>
+  <rect x="${x}" y="${y + 8}" width="0" height="1" fill="${p.accent}" fill-opacity="0.55">
+    <animate attributeName="width" begin="${delay + 0.08}s" dur="${ANIM.base}" from="0" to="${accentBarLen}" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
+  </rect>`;
 }
 
-// ----- LEFT card: volume tile ---------------------------------------------
+// ----- Motion helpers (Emil + Impeccable principles, SMIL-compatible) ----
 
-function renderStatsCard({ theme, totalCommits, totalPRs, totalStars, totalRepos }) {
+/**
+ * Wrap arbitrary SVG content in a `<g>` whose opacity fades 0→1 and which
+ * optionally rises (translateY dy→0) on entrance. One-shot.
+ *
+ * Per Impeccable's 100/300/500 rule, default duration is 350ms; per Emil's
+ * decision tree, the default easing is expo-out (snappy, confident).
+ */
+function entrance(content, { delay = 0, dy = 0, dur = ANIM.base, ease = EASE.expoOut } = {}) {
+  const initialTransform = dy ? `translate(0, ${dy})` : null;
+  const transformAnim = dy
+    ? `\n    <animateTransform attributeName="transform" type="translate" begin="${delay}s" dur="${dur}" from="0 ${dy}" to="0 0" fill="freeze" calcMode="spline" keySplines="${ease}"/>`
+    : "";
+  const tAttr = initialTransform ? ` transform="${initialTransform}"` : "";
+  return `<g opacity="0"${tAttr}>
+    <animate attributeName="opacity" begin="${delay}s" dur="${dur}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${ease}"/>${transformAnim}
+    ${content}
+  </g>`;
+}
+
+/**
+ * Render a horizontal bar (langs row) whose width grows 0→targetW on
+ * entrance. Two `<rect>` elements: track behind, fill on top — only the
+ * fill animates. Track fades in via parent group, fill draws via width
+ * animation. Per Impeccable: animating `width` is acceptable here because
+ * the bar is a visual primitive, not a layout-driving element.
+ */
+function barWithDrawAnim({ x, y, h, trackW, fillW, p, delay, dur = ANIM.slow }) {
+  return `<rect x="${x}" y="${y}" width="${trackW}" height="${h}" fill="${p.barTrack}" fill-opacity="${p.barTrackAlpha}" rx="${h / 2}"/>
+    <rect x="${x}" y="${y}" width="0" height="${h}" fill="${p.accent}" rx="${h / 2}">
+      <animate attributeName="width" begin="${delay}s" dur="${dur}" from="0" to="${fillW}" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
+    </rect>`;
+}
+
+/**
+ * Bronze ring around the current-streak number. Two animations on
+ * stroke-opacity, sequenced by time: (1) entrance fade 0→0.55, (2) loop
+ * that breathes between 0.45 and 0.65 — a subtle "live data" pulse,
+ * deliberately well under the attention threshold (Emil: "the best
+ * animations are the ones you don't notice").
+ */
+function ringWithBreathe({ cx, cy, r, p, delay }) {
+  const breatheStart = delay + parseFloat(ANIM.reveal);
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.accent}" stroke-width="2" stroke-opacity="0">
+    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.55" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+    <animate attributeName="stroke-opacity" begin="${breatheStart}s" dur="${ANIM.ringLoop}" values="0.55;0.45;0.65;0.55" repeatCount="indefinite" calcMode="linear"/>
+  </circle>`;
+}
+
+/**
+ * Small flame glyph anchored to the top-right of the current-streak ring.
+ * Entrance: opacity 0→1 + scale 0.7→1 (snappy expoOut). Loop: subtle scale
+ * oscillation 1→1.06→0.94→1 plus opacity flicker — both within ranges
+ * imperceptible enough to read as "alive" without becoming noise.
+ *
+ * The flame path is a stylized 14×18 teardrop; positioned via the parent
+ * `<g>`'s translate, scaled via the inner element's transform.
+ */
+function flameWithFlicker({ x, y, p, delay }) {
+  const flickerStart = delay + parseFloat(ANIM.flame);
+  // 14×18 single-tip flame, centered at (0,0). Rough teardrop shape with
+  // a pointed top and rounded base — reads as flame at small sizes.
+  const FLAME_PATH = "M 0 -9 C 3 -5 5 -1 4 3 C 3 7 1 8 0 9 C -1 8 -3 7 -4 3 C -5 -1 -3 -5 0 -9 Z";
+  return `<g transform="translate(${x}, ${y})">
+    <g opacity="0">
+      <animate attributeName="opacity" begin="${delay}s" dur="${ANIM.flame}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
+      <animate attributeName="opacity" begin="${flickerStart}s" dur="${ANIM.flameLoop}" values="1;0.85;1;0.92;1" repeatCount="indefinite" calcMode="linear"/>
+      <path d="${FLAME_PATH}" fill="${p.accent}" transform="scale(0.7)">
+        <animateTransform attributeName="transform" type="scale" begin="${delay}s" dur="${ANIM.flame}" from="0.7" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
+        <animateTransform attributeName="transform" type="scale" begin="${flickerStart}s" dur="${ANIM.flameLoop}" values="1;1.08;0.94;1.04;1" repeatCount="indefinite" calcMode="linear"/>
+      </path>
+    </g>
+  </g>`;
+}
+
+// ----- Combined card: VOLUME + CADENCE (one 960×180 SVG) ------------------
+
+function renderCombinedCard({
+  theme,
+  totalCommits, totalPRs, totalStars, totalRepos,
+  totalContribs, currentStreak, currentEnd,
+  longestStreak, longestStart, longestEnd,
+  firstContribDate,
+}) {
   const p = CARD_PALETTE[theme];
 
-  const PAD_X = 24;
-  const PAD_TOP = 28;
-  // 2x2 grid centered vertically in the remaining space below the title.
-  // The "Building since…" date already lives on the streak card next door,
-  // so we don't duplicate it here.
-  const TOP_ZONE_Y = PAD_TOP + 12;
-  const BOT_ZONE_Y = CARD_H - 12;
-  const ZONE_H = BOT_ZONE_Y - TOP_ZONE_Y;
-  const CELL_H = 60;
-  const ROW_Y = [
-    TOP_ZONE_Y + (ZONE_H - CELL_H * 2) / 3,
-    TOP_ZONE_Y + (ZONE_H - CELL_H * 2) / 3 * 2 + CELL_H,
-  ];
-  const COL_X = [PAD_X, CARD_W / 2 + 8];
+  // === VOLUME half =======================================================
 
-  const cell = (col, row, value, label) => {
-    const x = COL_X[col];
-    const y = ROW_Y[row];
-    return `  <text x="${x}" y="${y + 26}" class="row-value" fill="${p.fg}">${escapeXml(value)}</text>
-  <text x="${x}" y="${y + 48}" class="row-label" fill="${p.muted}">${escapeXml(label)}</text>`;
+  const VOL_PAD_TOP = 28;
+  const VOL_TOP_Y = VOL_PAD_TOP + 12;
+  const VOL_BOT_Y = CARD_H - 12;
+  const VOL_ZONE_H = VOL_BOT_Y - VOL_TOP_Y;
+  const VOL_CELL_H = 60;
+  const VOL_GUTTER = (VOL_ZONE_H - VOL_CELL_H * 2) / 3;
+  const VOL_ROW_Y = [
+    VOL_TOP_Y + VOL_GUTTER,
+    VOL_TOP_Y + VOL_GUTTER * 2 + VOL_CELL_H,
+  ];
+  const VOL_COL_X = [VOL_X0, VOL_X0 + (VOL_X1 - VOL_X0) / 2 + 8];
+
+  // Stagger numbers: each cell enters with a 60ms delay after the previous.
+  // Per Impeccable: cap total stagger ≤ 500ms (4 cells × 60ms = 240ms — well under).
+  const volBase = 0.12; // delay after section title settles
+  const volCell = (col, row, value, label, idx) => {
+    const x = VOL_COL_X[col];
+    const y = VOL_ROW_Y[row];
+    const numDelay = volBase + idx * 0.06;
+    const labelDelay = numDelay + 0.1;
+    return `${entrance(
+      `<text x="${x}" y="${y + 26}" class="row-value" fill="${p.fg}">${escapeXml(value)}</text>`,
+      { delay: numDelay, dy: 6 }
+    )}
+    ${entrance(
+      `<text x="${x}" y="${y + 48}" class="row-label" fill="${p.muted}">${escapeXml(label)}</text>`,
+      { delay: labelDelay, dur: ANIM.fast, ease: EASE.quartOut }
+    )}`;
   };
 
-  const body = `${sectionTitle(p, PAD_X, PAD_TOP - 14, "VOLUME")}
+  const volumeBody = `${sectionTitle(p, VOL_X0, VOL_PAD_TOP - 14, "VOLUME", 0)}
+  ${volCell(0, 0, totalCommits.toLocaleString(), "Total commits", 0)}
+  ${volCell(1, 0, totalPRs.toLocaleString(), "Total PRs", 1)}
+  ${volCell(0, 1, totalStars.toLocaleString(), "Stars received", 2)}
+  ${volCell(1, 1, totalRepos.toLocaleString(), "Repositories", 3)}`;
 
-${cell(0, 0, totalCommits.toLocaleString(), "Total commits")}
-${cell(1, 0, totalPRs.toLocaleString(), "Total PRs")}
-${cell(0, 1, totalStars.toLocaleString(), "Stars received")}
-${cell(1, 1, totalRepos.toLocaleString(), "Repositories")}`;
+  // === Center divider between halves ====================================
 
-  return svgWrap({
-    width: CARD_W,
-    height: CARD_H,
-    ariaLabel: `Lifetime totals for @${USERNAME}: ${totalCommits} commits, ${totalPRs} PRs, ${totalStars} stars, ${totalRepos} repos.`,
-    body,
-  });
-}
+  const divider = `<line x1="${GUTTER_DIV_X}" y1="24" x2="${GUTTER_DIV_X}" y2="${CARD_H - 24}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1" opacity="0">
+    <animate attributeName="opacity" begin="0.18s" dur="${ANIM.base}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+  </line>`;
 
-// ----- MIDDLE card: streak tile -------------------------------------------
+  // === CADENCE half =====================================================
 
-function renderStreakCard({ theme, totalContribs, currentStreak, currentEnd, longestStreak, longestStart, longestEnd, firstContribDate }) {
-  const p = CARD_PALETTE[theme];
+  const CAD_PAD_TOP = 28;
+  const CAD_INNER_W = CAD_X1 - CAD_X0;
+  const CAD_COL_W = CAD_INNER_W / 3;
+  const CAD_COL_X = [
+    CAD_X0 + CAD_COL_W * 0.5,
+    CAD_X0 + CAD_COL_W * 1.5,
+    CAD_X0 + CAD_COL_W * 2.5,
+  ];
+  const CAD_VAL_Y = CAD_PAD_TOP + 50;
+  const CAD_LABEL_Y = CAD_VAL_Y + 22;
+  const CAD_DATE_Y = CAD_LABEL_Y + 18;
+  const CAD_DIV_Y_TOP = CAD_PAD_TOP + 12;
+  const CAD_DIV_Y_BOT = CARD_H - 16;
+  const CAD_DIV_X_1 = CAD_X0 + CAD_COL_W;
+  const CAD_DIV_X_2 = CAD_X0 + CAD_COL_W * 2;
 
-  const PAD_X = 16;
-  const PAD_TOP = 28;
-  const COL_W = (CARD_W - PAD_X * 2) / 3;
-  const COL_X = [PAD_X + COL_W * 0.5, PAD_X + COL_W * 1.5, PAD_X + COL_W * 2.5];
-  const VAL_Y = PAD_TOP + 50;
-  const LABEL_Y = VAL_Y + 22;
-  const DATE_Y = LABEL_Y + 18;
-  const DIVIDER_Y_TOP = PAD_TOP + 12;
-  const DIVIDER_Y_BOT = CARD_H - 16;
-
+  // Compressed date format ("Since 30 Oct 2022" — 17 chars) keeps the
+  // sub-line clear of the column divider. The original "30 Oct 2022 –
+  // Present" overflowed into the divider on column 1.
   const sinceLabel = firstContribDate
-    ? `${formatYMDShort(firstContribDate)} ${firstContribDate.slice(0, 4)} – Present`
+    ? `Since ${formatYMDShort(firstContribDate)} ${firstContribDate.slice(0, 4)}`
     : "";
   const currentLabel = currentEnd ? formatYMDShort(currentEnd) : "—";
   const longestLabel = formatRange(longestStart, longestEnd);
 
-  const col = (i, value, label, sub) => `  <text x="${COL_X[i]}" y="${VAL_Y}" text-anchor="middle" class="row-value" fill="${i === 1 ? p.accent : p.fg}">${escapeXml(value)}</text>
-  <text x="${COL_X[i]}" y="${LABEL_Y}" text-anchor="middle" class="row-label" fill="${p.muted}">${escapeXml(label)}</text>
-  <text x="${COL_X[i]}" y="${DATE_Y}" text-anchor="middle" class="small-value" fill="${p.muted}">${escapeXml(sub)}</text>`;
+  const cadBase = 0.30; // CADENCE half enters slightly after VOLUME settles
+  const cadCol = (i, value, label, sub, accent = false) => {
+    const cx = CAD_COL_X[i];
+    const numDelay = cadBase + i * 0.08;
+    const labelDelay = numDelay + 0.1;
+    const dateDelay = labelDelay + 0.05;
+    return `${entrance(
+      `<text x="${cx}" y="${CAD_VAL_Y}" text-anchor="middle" class="row-value" fill="${accent ? p.accent : p.fg}">${escapeXml(value)}</text>`,
+      { delay: numDelay, dy: 6 }
+    )}
+    ${entrance(
+      `<text x="${cx}" y="${CAD_LABEL_Y}" text-anchor="middle" class="row-label" fill="${p.muted}">${escapeXml(label)}</text>`,
+      { delay: labelDelay, dur: ANIM.fast, ease: EASE.quartOut }
+    )}
+    ${entrance(
+      `<text x="${cx}" y="${CAD_DATE_Y}" text-anchor="middle" class="small-value" fill="${p.muted}">${escapeXml(sub)}</text>`,
+      { delay: dateDelay, dur: ANIM.fast, ease: EASE.quartOut }
+    )}`;
+  };
 
-  // Vertical dividers between the three columns.
-  const divX1 = PAD_X + COL_W;
-  const divX2 = PAD_X + COL_W * 2;
-  const dividers = `  <line x1="${divX1}" y1="${DIVIDER_Y_TOP}" x2="${divX1}" y2="${DIVIDER_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>
-  <line x1="${divX2}" y1="${DIVIDER_Y_TOP}" x2="${divX2}" y2="${DIVIDER_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>`;
+  // Ring + flame on the middle column (Current streak).
+  const RING_R = 34;
+  const RING_CY = CAD_VAL_Y - 9; // visually centered around the digit
+  const FLAME_OFFSET_X = 24;     // top-right of ring
+  const FLAME_OFFSET_Y = -22;
+  const ringDelay = cadBase + 0.08 + 0.05; // just before middle number lands
+  const flameDelay = ringDelay + 0.15;
 
-  const body = `${sectionTitle(p, PAD_X, PAD_TOP - 14, "CADENCE")}
+  const cadenceDividers = `<g opacity="0">
+    <animate attributeName="opacity" begin="${cadBase}s" dur="${ANIM.base}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+    <line x1="${CAD_DIV_X_1}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_1}" y2="${CAD_DIV_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>
+    <line x1="${CAD_DIV_X_2}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_2}" y2="${CAD_DIV_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>
+  </g>`;
 
-${col(0, totalContribs.toLocaleString(), "Total contributions", sinceLabel)}
-${col(1, currentStreak.toLocaleString(), "Current streak", currentLabel)}
-${col(2, longestStreak.toLocaleString(), "Longest streak", longestLabel)}
+  const cadenceBody = `${sectionTitle(p, CAD_X0, CAD_PAD_TOP - 14, "CADENCE", 0.18)}
+  ${cadenceDividers}
+  ${ringWithBreathe({ cx: CAD_COL_X[1], cy: RING_CY, r: RING_R, p, delay: ringDelay })}
+  ${flameWithFlicker({ x: CAD_COL_X[1] + FLAME_OFFSET_X, y: RING_CY + FLAME_OFFSET_Y, p, delay: flameDelay })}
+  ${cadCol(0, totalContribs.toLocaleString(), "Total contributions", sinceLabel)}
+  ${cadCol(1, currentStreak.toLocaleString(), "Current streak", currentLabel, true)}
+  ${cadCol(2, longestStreak.toLocaleString(), "Longest streak", longestLabel)}`;
 
-${dividers}`;
+  const body = `  ${divider}
+  ${volumeBody}
+  ${cadenceBody}`;
 
   return svgWrap({
     width: CARD_W,
     height: CARD_H,
-    ariaLabel: `Streak for @${USERNAME}: ${totalContribs} contributions, current streak ${currentStreak}, longest streak ${longestStreak}.`,
+    ariaLabel: `Stats for @${USERNAME}: ${totalCommits} commits, ${totalPRs} PRs, ${totalStars} stars, ${totalRepos} repos. Streak: ${totalContribs} contributions, current ${currentStreak}, longest ${longestStreak}.`,
     body,
   });
 }
 
-// ----- RIGHT card: top languages ------------------------------------------
+// ----- Top languages card (full-width, 960×180) ---------------------------
 
 function renderLangsCard({ theme, langs }) {
   const p = CARD_PALETTE[theme];
@@ -434,8 +587,8 @@ function renderLangsCard({ theme, langs }) {
   const TITLE_Y = PAD_TOP - 14;
   // NAME_W must accommodate the widest expected language name
   // (e.g., "Jupyter Notebook" at 13px Space Grotesk).
-  const NAME_W = 132;
-  const PCT_W = 54;
+  const NAME_W = 156;
+  const PCT_W = 56;
   const BAR_X = PAD_X + NAME_W;
   const BAR_W = CARD_W - PAD_X * 2 - NAME_W - PCT_W;
   const BAR_H = 6;
@@ -447,25 +600,42 @@ function renderLangsCard({ theme, langs }) {
   const BOT_ZONE_Y = CARD_H - 16;
   const ZONE_H = BOT_ZONE_Y - TOP_ZONE_Y;
   const n = Math.max(1, langs.length);
-  const ROW_H = Math.min(28, Math.max(16, Math.floor(ZONE_H / Math.max(n, 4))));
+  const ROW_H = Math.min(28, Math.max(18, Math.floor(ZONE_H / Math.max(n, 4))));
   const blockH = ROW_H * n;
   const FIRST_ROW_Y = TOP_ZONE_Y + Math.max(0, (ZONE_H - blockH) / 2);
+
+  // Each row: name fades in, bar draws (width 0→target with expoOut), pct
+  // fades in. Stagger 80ms between rows. Total stagger capped at 8 × 80 =
+  // 640ms — slightly above Impeccable's "10 items × 50ms = 500ms" cap, but
+  // we have at most 8 rows in practice.
+  const baseDelay = 0.20;
+  const perRowDelay = 0.08;
 
   const rows = langs.map((l, i) => {
     const y = FIRST_ROW_Y + i * ROW_H;
     const filledW = Math.max(2, Math.round(BAR_W * l.pct));
     const pctLabel = `${(l.pct * 100).toFixed(1).replace(/\.0$/, "")}%`;
-    return `  <text x="${PAD_X}" y="${y + BAR_H}" class="row-label" fill="${p.fg}">${escapeXml(l.name)}</text>
-  <rect x="${BAR_X}" y="${y}" width="${BAR_W}" height="${BAR_H}" fill="${p.barTrack}" fill-opacity="${p.barTrackAlpha}" rx="${BAR_H / 2}"/>
-  <rect x="${BAR_X}" y="${y}" width="${filledW}" height="${BAR_H}" fill="${p.accent}" rx="${BAR_H / 2}"/>
-  <text x="${CARD_W - PAD_X}" y="${y + BAR_H}" text-anchor="end" class="small-value" fill="${p.muted}">${escapeXml(pctLabel)}</text>`;
+    const rowDelay = baseDelay + i * perRowDelay;
+    const pctDelay = rowDelay + parseFloat(ANIM.slow) * 0.6;
+
+    return `  ${entrance(
+      `<text x="${PAD_X}" y="${y + BAR_H}" class="row-label" fill="${p.fg}">${escapeXml(l.name)}</text>`,
+      { delay: rowDelay, dur: ANIM.fast, ease: EASE.quartOut }
+    )}
+  ${barWithDrawAnim({
+    x: BAR_X, y, h: BAR_H, trackW: BAR_W, fillW: filledW, p, delay: rowDelay,
+  })}
+  ${entrance(
+    `<text x="${CARD_W - PAD_X}" y="${y + BAR_H}" text-anchor="end" class="small-value" fill="${p.muted}">${escapeXml(pctLabel)}</text>`,
+    { delay: pctDelay, dur: ANIM.fast, ease: EASE.quartOut }
+  )}`;
   }).join("\n");
 
   const empty = langs.length === 0
     ? `  <text x="${CARD_W / 2}" y="${CARD_H / 2}" text-anchor="middle" class="row-desc" fill="${p.muted}">No recent language data.</text>`
     : "";
 
-  const body = `${sectionTitle(p, PAD_X, TITLE_Y, LANGS_WINDOW_LABEL)}
+  const body = `${sectionTitle(p, PAD_X, TITLE_Y, LANGS_WINDOW_LABEL, 0)}
 
 ${rows}
 ${empty}`;
@@ -508,15 +678,12 @@ async function main() {
   console.log(`  topLangs          = ${langs.map((l) => `${l.name}:${l.commits}`).join(", ")}\n`);
 
   for (const theme of ["light", "dark"]) {
-    const stats = renderStatsCard({
+    const combined = renderCombinedCard({
       theme,
       totalCommits,
       totalPRs,
       totalStars,
       totalRepos,
-    });
-    const streakSvg = renderStreakCard({
-      theme,
       totalContribs: streak.totalContribs,
       currentStreak: streak.currentStreak,
       currentEnd: streak.currentEnd,
@@ -527,14 +694,11 @@ async function main() {
     });
     const langsSvg = renderLangsCard({ theme, langs });
 
-    const outStats = resolve(ASSETS_DIR, `numbers-stats-${theme}.svg`);
-    const outStreak = resolve(ASSETS_DIR, `numbers-streak-${theme}.svg`);
+    const outCombined = resolve(ASSETS_DIR, `numbers-stats-streak-${theme}.svg`);
     const outLangs = resolve(ASSETS_DIR, `numbers-langs-${theme}.svg`);
-    writeFileSync(outStats, stats);
-    writeFileSync(outStreak, streakSvg);
+    writeFileSync(outCombined, combined);
     writeFileSync(outLangs, langsSvg);
-    console.log(`Wrote ${outStats}`);
-    console.log(`Wrote ${outStreak}`);
+    console.log(`Wrote ${outCombined}`);
     console.log(`Wrote ${outLangs}`);
   }
 }
