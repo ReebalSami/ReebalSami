@@ -1,116 +1,106 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 804" width="800" height="804" role="img" aria-label="Milestones for @ReebalSami">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 336" width="960" height="336" role="img" aria-label="Milestones for @ReebalSami. 2 active milestone(s): M7: Homepage Journey Refresh 50%; M6: CV System 92%. 2 active project(s): Cascade System 100%; Portfolio Website 80%.">
   <defs>
     <style>
       .section-label { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.14em; font-weight: 500; }
-      .row-label { font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-      .row-value { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
-      .tier-label { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10.5px; letter-spacing: 0.06em; }
-      .row-desc { font-family: "DM Sans", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 400; }
+      .row-label     { font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: -0.005em; }
+      .row-value     { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
+      .small-value   { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+      .row-desc      { font-family: "DM Sans", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 400; }
     </style>
   </defs>
+  <g opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="42" class="section-label" fill="#7C7C82">ACTIVE MILESTONES</text>
+  </g>
+  <rect x="24" y="50" width="0" height="1" fill="#B6803F" fill-opacity="0.55">
+    <animate attributeName="width" begin="0.08s" dur="0.35s" from="0" to="60" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+  </rect>
 
-  <!-- title -->
-  <text x="60" y="34" class="section-label" fill="#7C7C82">MILESTONES</text>
-  <rect x="60" y="42" width="60" height="1" fill="#B6803F" fill-opacity="0.55"/>
-  <text x="60" y="62" class="row-desc" fill="#7C7C82">Progress dots fill toward the final tier · the pulsing dot is your next target · click any row to dig deeper.</text>
+<a href="https://github.com/ReebalSami/portfolio-website/milestone/7" target="_blank" rel="noopener">
+    <g opacity="0" transform="translate(0, 4)">
+    <animate attributeName="opacity" begin="0.18s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <animateTransform attributeName="transform" type="translate" begin="0.18s" dur="0.2s" from="0 4" to="0 0" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="74" class="row-label" fill="#22222A">M7: Homepage Journey Refresh</text>
+  </g>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.22999999999999998s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="936" y="74" text-anchor="end" class="small-value" fill="#7C7C82">50%</text>
+  </g>
+    <rect x="24" y="82" width="852" height="6" fill="#22222A" fill-opacity="0.08" rx="3"/>
+    <rect x="24" y="82" width="0" height="6" fill="#B6803F" rx="3">
+      <animate attributeName="width" begin="0.28s" dur="0.45s" from="0" to="426" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+    </rect>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.36s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="102" class="small-value" fill="#7C7C82">portfolio-website · 1/2 issues · updated 10d ago</text>
+  </g>
+  </a>
 
-  <a href="https://github.com/ReebalSami?tab=repositories" target="_blank" rel="noopener"><g transform="translate(60, 80)">
-    <text x="0" y="14" class="row-label" fill="#22222A">Public projects shipped</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">35</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="20" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="28.8" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="37.6" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="46.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="55.2" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="90.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="134.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Silver · next: Gold (50)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Open-source repositories owned by @ReebalSami (forks excluded).</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://github.com/ReebalSami?tab=overview" target="_blank" rel="noopener"><g transform="translate(60, 156)">
-    <text x="0" y="14" class="row-label" fill="#22222A">Commits in the last year</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">241</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="20" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="28.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="37.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="46.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="55.2" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="90.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="134.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Bronze · next: Silver (2,000)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Verified commits across all repos in the trailing 12 months.</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://github.com/ReebalSami?tab=repositories&amp;sort=stargazers" target="_blank" rel="noopener"><g transform="translate(60, 232)">
-    <text x="0" y="14" class="row-label" fill="#22222A">Stars received</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">13</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="20" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="28.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="37.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="46.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="55.2" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="90.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="134.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Bronze · next: Silver (100)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Stars on owned repositories — peer recognition signal.</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://github.com/ReebalSami?tab=repositories" target="_blank" rel="noopener"><g transform="translate(60, 308)">
-    <text x="0" y="14" class="row-label" fill="#22222A">Coding languages used</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">14</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="20" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="28.8" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="37.6" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="46.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="55.2" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="90.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="134.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="160.8" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="178.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Silver · next: Gold (15)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Distinct languages detected across owned repos by GitHub Linguist.</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://reebal-sami.com/about" target="_blank" rel="noopener"><g transform="translate(60, 384)">
-    <text x="0" y="14" class="row-label" fill="#22222A">Spoken languages</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">4</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="20" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="28.8" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="37.6" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="46.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="55.2" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="90.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="134.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Silver · next: Gold (6)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">German · English · Arabic · Spanish (learning)</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://www.credly.com/users/reebal-sami" target="_blank" rel="noopener"><g transform="translate(60, 460)">
-    <text x="0" y="14" class="row-label" fill="#22222A">AWS certifications</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">0/3</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="20" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="28.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="37.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="46.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="55.2" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="90.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="134.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">In progress · next: Foundational (1)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Cloud Practitioner · AI Practitioner · ML Engineer Associate</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://reebal-sami.com/about" target="_blank" rel="noopener"><g transform="translate(60, 536)">
-    <text x="0" y="14" class="row-label" fill="#22222A">Years as a builder</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">6+</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="20" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="28.8" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="37.6" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="46.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="55.2" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="90.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="134.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Practitioner · next: Senior (10)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Bilanzbuchhalter at OTTO Group → Data Scientist → AI Engineer</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://reebal-sami.com/blog" target="_blank" rel="noopener"><g transform="translate(60, 612)">
-    <text x="0" y="14" class="row-label" fill="#22222A">Posts on the portfolio blog</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">2</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="20" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="28.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="37.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="46.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="55.2" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="90.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="134.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Drafted · next: Started (5)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Long-form writing published at reebal-sami.com/blog.</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
-<a href="https://reebal-sami.com/about#thesis" target="_blank" rel="noopener"><g transform="translate(60, 688)">
-    <text x="0" y="14" class="row-label" fill="#22222A">M.Sc. thesis</text>
-    <text x="680" y="14" class="row-value" fill="#B6803F" text-anchor="end">writing</text>
-    <g transform="translate(0, 28)"><circle cx="2.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="11.200000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="20" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="28.8" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="37.6" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="46.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="55.2" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="64.00000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="72.80000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="81.60000000000001" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="1"/><circle cx="90.4" cy="2.4" r="2.4" fill="#B6803F" fill-opacity="0.85">
-  <animate attributeName="r" values="2.4;4.08;2.4" dur="2.4s" repeatCount="indefinite"/>
-  <animate attributeName="fill-opacity" values="0.95;0.35;0.95" dur="2.4s" repeatCount="indefinite"/>
-</circle><circle cx="99.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="108.00000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="116.80000000000001" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="125.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="134.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="143.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="152.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="160.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="169.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="178.4" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="187.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="196.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="204.8" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="213.60000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="222.40000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="231.20000000000002" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="240.00000000000003" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="248.80000000000004" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/><circle cx="257.6" cy="2.4" r="2.4" fill="#22222A" fill-opacity="0.12"/></g>
-    <text x="276" y="34.4" class="tier-label" fill="#7C7C82">Drafting · next: Submitted (2)</text>
-    <text x="0" y="60" class="row-desc" fill="#7C7C82">Document Intelligence &amp; Knowledge Graph Construction · FH Wedel · defense Q2 2026</text>
-    <line x1="0" y1="72" x2="680" y2="72" stroke="#22222A" stroke-opacity="0.12" stroke-width="1"/>
-  </g></a>
+<a href="https://github.com/ReebalSami/portfolio-website/milestone/6" target="_blank" rel="noopener">
+    <g opacity="0" transform="translate(0, 4)">
+    <animate attributeName="opacity" begin="0.26s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <animateTransform attributeName="transform" type="translate" begin="0.26s" dur="0.2s" from="0 4" to="0 0" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="124" class="row-label" fill="#22222A">M6: CV System</text>
+  </g>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.31s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="936" y="124" text-anchor="end" class="small-value" fill="#7C7C82">92%</text>
+  </g>
+    <rect x="24" y="132" width="852" height="6" fill="#22222A" fill-opacity="0.08" rx="3"/>
+    <rect x="24" y="132" width="0" height="6" fill="#B6803F" rx="3">
+      <animate attributeName="width" begin="0.36s" dur="0.45s" from="0" to="781" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+    </rect>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.44s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="152" class="small-value" fill="#7C7C82">portfolio-website · 11/12 issues · updated 12d ago</text>
+  </g>
+  </a>
+
+  <g opacity="0">
+    <animate attributeName="opacity" begin="0.33999999999999997s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="194" class="section-label" fill="#7C7C82">ACTIVE PROJECTS</text>
+  </g>
+  <rect x="24" y="202" width="0" height="1" fill="#B6803F" fill-opacity="0.55">
+    <animate attributeName="width" begin="0.42s" dur="0.35s" from="0" to="60" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+  </rect>
+
+<a href="https://github.com/users/ReebalSami/projects/5" target="_blank" rel="noopener">
+    <g opacity="0" transform="translate(0, 4)">
+    <animate attributeName="opacity" begin="0.52s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <animateTransform attributeName="transform" type="translate" begin="0.52s" dur="0.2s" from="0 4" to="0 0" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="226" class="row-label" fill="#22222A">Cascade System</text>
+  </g>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.5700000000000001s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="936" y="226" text-anchor="end" class="small-value" fill="#7C7C82">100%</text>
+  </g>
+    <rect x="24" y="234" width="852" height="6" fill="#22222A" fill-opacity="0.08" rx="3"/>
+    <rect x="24" y="234" width="0" height="6" fill="#B6803F" rx="3">
+      <animate attributeName="width" begin="0.62s" dur="0.45s" from="0" to="852" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+    </rect>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.7s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="254" class="small-value" fill="#7C7C82">46 items · 46 done · updated 33m ago</text>
+  </g>
+  </a>
+
+<a href="https://github.com/users/ReebalSami/projects/4" target="_blank" rel="noopener">
+    <g opacity="0" transform="translate(0, 4)">
+    <animate attributeName="opacity" begin="0.6s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <animateTransform attributeName="transform" type="translate" begin="0.6s" dur="0.2s" from="0 4" to="0 0" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="276" class="row-label" fill="#22222A">Portfolio Website</text>
+  </g>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.65s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="936" y="276" text-anchor="end" class="small-value" fill="#7C7C82">80%</text>
+  </g>
+    <rect x="24" y="284" width="852" height="6" fill="#22222A" fill-opacity="0.08" rx="3"/>
+    <rect x="24" y="284" width="0" height="6" fill="#B6803F" rx="3">
+      <animate attributeName="width" begin="0.7s" dur="0.45s" from="0" to="685" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+    </rect>
+    <g opacity="0">
+    <animate attributeName="opacity" begin="0.78s" dur="0.2s" from="0" to="1" fill="freeze" calcMode="spline" keySplines="0.25 1 0.5 1"/>
+    <text x="24" y="304" class="small-value" fill="#7C7C82">46 items · 37 done · 1 in progress · 8 to do · updated 10d ago</text>
+  </g>
+  </a>
 </svg>

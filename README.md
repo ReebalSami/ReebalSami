@@ -92,7 +92,7 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/milestones-dark.svg">
-  <img src="./assets/milestones-light.svg" alt="Milestones with progress dots, tier thresholds, and clickable rows for @ReebalSami" width="100%">
+  <img src="./assets/milestones-light.svg" alt="Active milestones and projects for @ReebalSami, sourced from real GitHub repo milestones and Projects v2 status" width="100%">
 </picture>
 
 </div>

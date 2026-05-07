@@ -30,8 +30,13 @@ jobs:
         run: npm install --omit=dev --no-audit --no-fund
 
       - name: Generate milestone SVGs
+        # METRICS_TOKEN is a PAT. For the projects-v2 half of the card to
+        # render, the PAT must ALSO have `read:project` scope alongside
+        # `read:user`. Without project scope, the script gracefully
+        # degrades — renders only the repo-milestones half with a warning
+        # in the log, rather than failing the whole job.
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
         run: node scripts/generate-milestones.mjs
 
       - name: Commit if changed
