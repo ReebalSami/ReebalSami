@@ -88,6 +88,81 @@ export const CHARACTER_CSS_VARS = {
   },
 };
 
+// ===== Card palette (for non-calendar SVGs: numbers, hero, tech-stack) ====
+//
+// Used by scripts/generate-github-numbers.mjs, scripts/generate-hero.mjs,
+// scripts/generate-tech-stack.mjs. Mirrors the inline PALETTE shape used by
+// scripts/generate-milestones.mjs so future refactors can fold them together.
+
+export const CARD_PALETTE = {
+  light: {
+    bg: "transparent",
+    fg: "#22222A",
+    muted: "#7C7C82",
+    accent: "#B6803F",
+    accentSoft: "#B6803F",
+    accentSoftAlpha: 0.08,
+    border: "#22222A",
+    borderAlpha: 0.12,
+    barTrack: "#22222A",
+    barTrackAlpha: 0.08,
+  },
+  dark: {
+    bg: "transparent",
+    fg: "#F5F4EE",
+    muted: "#A4A4AC",
+    accent: "#D4A574",
+    accentSoft: "#D4A574",
+    accentSoftAlpha: 0.12,
+    border: "#F5F4EE",
+    borderAlpha: 0.12,
+    barTrack: "#F5F4EE",
+    barTrackAlpha: 0.10,
+  },
+};
+
+// ===== Typography (shared CSS class definitions) ==========================
+//
+// Inlined into each SVG's <style> block. Keeping a single source-of-truth
+// avoids visual drift between milestones-*, numbers-*, hero-*, tech-stack-*.
+
+export const TYPO = {
+  // Small uppercase tracker label, e.g., "MILESTONES", "GITHUB BY THE NUMBERS"
+  sectionLabel: `font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.14em; font-weight: 500;`,
+
+  // Row / card heading (e.g., "Total commits")
+  rowLabel: `font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: -0.005em;`,
+
+  // Big numeric value (uses tabular-nums for column alignment)
+  rowValue: `font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums;`,
+
+  // Mid-size numeric value (used in streak, langs)
+  midValue: `font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums;`,
+
+  // Tiny numeric value (percentages, dates)
+  smallValue: `font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.04em; font-variant-numeric: tabular-nums;`,
+
+  // Body / descriptive text
+  rowDesc: `font-family: "DM Sans", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 400;`,
+
+  // Hero typing line
+  heroLine: `font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 30px; font-weight: 600; letter-spacing: -0.01em;`,
+};
+
+// ===== Shared SVG helpers =================================================
+
+/**
+ * Escape a string for safe inclusion in SVG text content / attribute values.
+ */
+export function escapeXml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 // ===== Helpers ===========================================================
 
 export function renderCssVars(vars, indent = "  ") {
