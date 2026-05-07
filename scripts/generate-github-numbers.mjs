@@ -401,44 +401,136 @@ function barWithDrawAnim({ x, y, h, trackW, fillW, p, delay, dur = ANIM.slow }) 
 }
 
 /**
- * Bronze ring around the current-streak number. Two animations on
- * stroke-opacity, sequenced by time: (1) entrance fade 0→0.55, (2) loop
- * that breathes between 0.45 and 0.65 — a subtle "live data" pulse,
- * deliberately well under the attention threshold (Emil: "the best
- * animations are the ones you don't notice").
+ * Data-bearing ring around the current-streak number. Two concentric
+ * circles:
+ *
+ *   1. BG ring   — full 360°, muted + low opacity. Acts as the "track"
+ *                  that anchors the arc visually even when progress=0.
+ *   2. PROGRESS  — a second circle stroked with the accent color, using
+ *      ARC           `stroke-dasharray` of the full circumference and a
+ *                    `stroke-dashoffset` that animates from `circ` (fully
+ *                    hidden) to `circ - fillLen` (arc revealed from 12
+ *                    o'clock clockwise). `rotate(-90)` puts the start at
+ *                    the top. `stroke-linecap="round"` gives a refined
+ *                    finish for the terminus of partial arcs.
+ *
+ * `progress` is `currentStreak / longestStreak`, clamped to [0, 1]. A
+ * streak that ties or beats the personal best paints the full 360° (a
+ * complete ring) — silent acknowledgment without any extra decoration.
+ *
+ * After the entrance draw, a subtle stroke-opacity breathe keeps the arc
+ * feeling "alive" — same cadence as the previous decorative ring, now
+ * grounded in real data rather than pure ornament.
  */
-function ringWithBreathe({ cx, cy, r, p, delay }) {
-  const breatheStart = delay + parseFloat(ANIM.reveal);
-  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.accent}" stroke-width="2" stroke-opacity="0">
-    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.55" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
-    <animate attributeName="stroke-opacity" begin="${breatheStart}s" dur="${ANIM.ringLoop}" values="0.55;0.45;0.65;0.55" repeatCount="indefinite" calcMode="linear"/>
+function progressArc({ cx, cy, r, progress, p, delay, dur = ANIM.slow }) {
+  const circ = 2 * Math.PI * r;
+  const clamped = Math.min(1, Math.max(0, progress));
+  const fillLen = circ * clamped;
+  const breatheStart = delay + parseFloat(dur);
+
+  // Track / background ring — full circle, low-opacity muted stroke.
+  const track = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.muted}" stroke-width="2" stroke-opacity="0">
+    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.18" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
   </circle>`;
+
+  // Progress arc — zero-length dash animates to `fillLen`. rotate(-90)
+  // starts the arc at 12 o'clock and sweeps clockwise.
+  const arc = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.accent}" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})" stroke-dasharray="${circ.toFixed(2)}" stroke-dashoffset="${circ.toFixed(2)}" stroke-opacity="0">
+    <animate attributeName="stroke-opacity" begin="${delay}s" dur="${ANIM.reveal}" from="0" to="0.9" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+    <animate attributeName="stroke-dashoffset" begin="${delay + 0.05}s" dur="${dur}" from="${circ.toFixed(2)}" to="${(circ - fillLen).toFixed(2)}" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
+    <animate attributeName="stroke-opacity" begin="${breatheStart}s" dur="${ANIM.ringLoop}" values="0.9;0.75;1;0.9" repeatCount="indefinite" calcMode="linear"/>
+  </circle>`;
+
+  return `${track}\n  ${arc}`;
 }
 
 /**
  * Small flame glyph anchored to the top-right of the current-streak ring.
- * Entrance: opacity 0→1 + scale 0.7→1 (snappy expoOut). Loop: subtle scale
- * oscillation 1→1.06→0.94→1 plus opacity flicker — both within ranges
+ * Entrance: opacity 0→1 + scale 0→`baseScale` (snappy expoOut). Loop:
+ * subtle scale oscillation + opacity flicker — both within ranges
  * imperceptible enough to read as "alive" without becoming noise.
  *
- * The flame path is a stylized 14×18 teardrop; positioned via the parent
- * `<g>`'s translate, scaled via the inner element's transform.
+ * `baseScale` is data-bearing: scales from 0.55 (cold — no streak) to
+ * 1.0 (matching personal best). Ties the flame's visual weight to the
+ * same progress ratio as the arc, so both elements reinforce the same
+ * story. The path is a 14×18 teardrop centered at (0, 0).
  */
-function flameWithFlicker({ x, y, p, delay }) {
+function flameWithFlicker({ x, y, p, delay, progress = 1 }) {
+  const clamped = Math.min(1, Math.max(0, progress));
+  const baseScale = 0.55 + clamped * 0.45; // 0.55 when cold, 1.0 at PB
+  const peakScale = (baseScale * 1.08).toFixed(3);
+  const dipScale = (baseScale * 0.94).toFixed(3);
+  const lowScale = (baseScale * 1.04).toFixed(3);
   const flickerStart = delay + parseFloat(ANIM.flame);
-  // 14×18 single-tip flame, centered at (0,0). Rough teardrop shape with
-  // a pointed top and rounded base — reads as flame at small sizes.
   const FLAME_PATH = "M 0 -9 C 3 -5 5 -1 4 3 C 3 7 1 8 0 9 C -1 8 -3 7 -4 3 C -5 -1 -3 -5 0 -9 Z";
   return `<g transform="translate(${x}, ${y})">
     <g opacity="0">
       <animate attributeName="opacity" begin="${delay}s" dur="${ANIM.flame}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
       <animate attributeName="opacity" begin="${flickerStart}s" dur="${ANIM.flameLoop}" values="1;0.85;1;0.92;1" repeatCount="indefinite" calcMode="linear"/>
-      <path d="${FLAME_PATH}" fill="${p.accent}" transform="scale(0.7)">
-        <animateTransform attributeName="transform" type="scale" begin="${delay}s" dur="${ANIM.flame}" from="0.7" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
-        <animateTransform attributeName="transform" type="scale" begin="${flickerStart}s" dur="${ANIM.flameLoop}" values="1;1.08;0.94;1.04;1" repeatCount="indefinite" calcMode="linear"/>
+      <path d="${FLAME_PATH}" fill="${p.accent}" transform="scale(0)">
+        <animateTransform attributeName="transform" type="scale" begin="${delay}s" dur="${ANIM.flame}" from="0" to="${baseScale.toFixed(3)}" fill="freeze" calcMode="spline" keySplines="${EASE.expoOut}"/>
+        <animateTransform attributeName="transform" type="scale" begin="${flickerStart}s" dur="${ANIM.flameLoop}" values="${baseScale.toFixed(3)};${peakScale};${dipScale};${lowScale};${baseScale.toFixed(3)}" repeatCount="indefinite" calcMode="linear"/>
       </path>
     </g>
   </g>`;
+}
+
+/**
+ * Count-up text: renders a sequence of visibility-keyed frames so the
+ * number appears to tick 0 → target over `dur` seconds. Each intermediate
+ * value hard-cuts to the next — SMIL doesn't support text-content
+ * tweening, but the rapid frame succession (40–80 ms per frame) reads as
+ * a smooth counter.
+ *
+ * For target < 10 (degenerate: 0, 1, a couple digits) the count-up reads
+ * as jitter, so we fall back to a single fade-in of the final value.
+ *
+ * `format` is an optional callback that transforms each integer frame
+ * to its display string (e.g., `n => n.toLocaleString()` for thousands
+ * separators). Defaults to a plain numeric string.
+ */
+function countUpText({
+  x, y, textAnchor = "middle", className, fill,
+  target, delay, dur = 0.6, steps = 10, format = String,
+}) {
+  const n = Math.max(0, Math.floor(Number(target)));
+
+  // Short / degenerate values — just fade in the final number. A 1-frame
+  // "count-up" from nothing to 1 is not count-up; it's a fade.
+  if (!Number.isFinite(n) || n < 10) {
+    return entrance(
+      `<text x="${x}" y="${y}" text-anchor="${textAnchor}" class="${className}" fill="${fill}">${escapeXml(format(n))}</text>`,
+      { delay, dy: 6 }
+    );
+  }
+
+  const frameCount = Math.min(steps, n);
+  const stepDur = dur / frameCount;
+
+  // Generate evenly-spaced integer snapshots from 1..n. We intentionally
+  // skip frame "0" — starting at the first non-zero value avoids a
+  // visible "0" flash before the count-up begins.
+  const frames = [];
+  for (let i = 1; i <= frameCount; i += 1) {
+    const val = Math.round((i / frameCount) * n);
+    const start = delay + (i - 1) * stepDur;
+    const end = delay + i * stepDur;
+    frames.push({ val, start, end });
+  }
+
+  const frameEls = frames.map((f, i) => {
+    const isLast = i === frames.length - 1;
+    // The last frame stays visible (no end) and also fades its opacity
+    // in for an elegant settle. Prior frames hard-cut off at their end.
+    const visibilitySet = isLast
+      ? `    <set attributeName="visibility" to="visible" begin="${f.start.toFixed(3)}s"/>`
+      : `    <set attributeName="visibility" to="visible" begin="${f.start.toFixed(3)}s" end="${f.end.toFixed(3)}s"/>`;
+    return `  <text x="${x}" y="${y}" text-anchor="${textAnchor}" class="${className}" fill="${fill}" visibility="hidden">${escapeXml(format(f.val))}
+${visibilitySet}
+  </text>`;
+  }).join("\n");
+
+  return `<g>\n${frameEls}\n</g>`;
 }
 
 // ----- Combined card: VOLUME + CADENCE (one 960×180 SVG) ------------------
@@ -507,7 +599,10 @@ function renderCombinedCard({
     CAD_X0 + CAD_COL_W * 2.5,
   ];
   const CAD_VAL_Y = CAD_PAD_TOP + 50;
-  const CAD_LABEL_Y = CAD_VAL_Y + 22;
+  // Pushed 8px further down from the previous 22/18 so the shrunken ring
+  // (r=24) has ~9px clearance above the label's ascender, instead of the
+  // old r=34 that clipped straight through the label baseline.
+  const CAD_LABEL_Y = CAD_VAL_Y + 30;
   const CAD_DATE_Y = CAD_LABEL_Y + 18;
   const CAD_DIV_Y_TOP = CAD_PAD_TOP + 12;
   const CAD_DIV_Y_BOT = CARD_H - 16;
@@ -524,15 +619,33 @@ function renderCombinedCard({
   const longestLabel = formatRange(longestStart, longestEnd);
 
   const cadBase = 0.30; // CADENCE half enters slightly after VOLUME settles
-  const cadCol = (i, value, label, sub, accent = false) => {
-    const cx = CAD_COL_X[i];
-    const numDelay = cadBase + i * 0.08;
-    const labelDelay = numDelay + 0.1;
+
+  // Data-bearing ring geometry: the arc's sweep = current/longest. A
+  // fresh streak (like current=1, longest=9) paints ~40°; tying/beating
+  // the personal best paints the full circle. `dur` is longer than the
+  // other tweens so the eye can track the arc drawing around the digit.
+  const streakProgress = longestStreak > 0
+    ? Math.min(1, currentStreak / longestStreak)
+    : 0;
+  const RING_R = 24;
+  const RING_CY = CAD_VAL_Y - 14; // centered on the cap height of the digit
+  const FLAME_OFFSET_X = 18;      // top-right of ring, tighter after shrink
+  const FLAME_OFFSET_Y = -16;
+  const ringDelay = cadBase + 0.08 + 0.05;
+  const flameDelay = ringDelay + 0.20; // after arc has drawn a bit
+
+  const cadCol = (col, rawValue, label, sub, accent = false) => {
+    const cx = CAD_COL_X[col];
+    const numDelay = cadBase + col * 0.06;
+    const labelDelay = numDelay + 0.65; // wait for count-up to finish
     const dateDelay = labelDelay + 0.05;
-    return `${entrance(
-      `<text x="${cx}" y="${CAD_VAL_Y}" text-anchor="middle" class="row-value" fill="${accent ? p.accent : p.fg}">${escapeXml(value)}</text>`,
-      { delay: numDelay, dy: 6 }
-    )}
+    return `${countUpText({
+      x: cx, y: CAD_VAL_Y, className: "row-value",
+      fill: accent ? p.accent : p.fg,
+      target: rawValue,
+      delay: numDelay,
+      format: (n) => n.toLocaleString(),
+    })}
     ${entrance(
       `<text x="${cx}" y="${CAD_LABEL_Y}" text-anchor="middle" class="row-label" fill="${p.muted}">${escapeXml(label)}</text>`,
       { delay: labelDelay, dur: ANIM.fast, ease: EASE.quartOut }
@@ -543,27 +656,19 @@ function renderCombinedCard({
     )}`;
   };
 
-  // Ring + flame on the middle column (Current streak).
-  const RING_R = 34;
-  const RING_CY = CAD_VAL_Y - 9; // visually centered around the digit
-  const FLAME_OFFSET_X = 24;     // top-right of ring
-  const FLAME_OFFSET_Y = -22;
-  const ringDelay = cadBase + 0.08 + 0.05; // just before middle number lands
-  const flameDelay = ringDelay + 0.15;
-
   const cadenceDividers = `<g opacity="0">
-    <animate attributeName="opacity" begin="${cadBase}s" dur="${ANIM.base}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
+    <animate attributeName="opacity" begin="0.2s" dur="${ANIM.base}" from="0" to="1" fill="freeze" calcMode="spline" keySplines="${EASE.quartOut}"/>
     <line x1="${CAD_DIV_X_1}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_1}" y2="${CAD_DIV_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>
     <line x1="${CAD_DIV_X_2}" y1="${CAD_DIV_Y_TOP}" x2="${CAD_DIV_X_2}" y2="${CAD_DIV_Y_BOT}" stroke="${p.border}" stroke-opacity="${p.borderAlpha}" stroke-width="1"/>
   </g>`;
 
   const cadenceBody = `${sectionTitle(p, CAD_X0, CAD_PAD_TOP - 14, "CADENCE", 0.18)}
   ${cadenceDividers}
-  ${ringWithBreathe({ cx: CAD_COL_X[1], cy: RING_CY, r: RING_R, p, delay: ringDelay })}
-  ${flameWithFlicker({ x: CAD_COL_X[1] + FLAME_OFFSET_X, y: RING_CY + FLAME_OFFSET_Y, p, delay: flameDelay })}
-  ${cadCol(0, totalContribs.toLocaleString(), "Total contributions", sinceLabel)}
-  ${cadCol(1, currentStreak.toLocaleString(), "Current streak", currentLabel, true)}
-  ${cadCol(2, longestStreak.toLocaleString(), "Longest streak", longestLabel)}`;
+  ${progressArc({ cx: CAD_COL_X[1], cy: RING_CY, r: RING_R, progress: streakProgress, p, delay: ringDelay })}
+  ${flameWithFlicker({ x: CAD_COL_X[1] + FLAME_OFFSET_X, y: RING_CY + FLAME_OFFSET_Y, p, delay: flameDelay, progress: streakProgress })}
+  ${cadCol(0, totalContribs, "Total contributions", sinceLabel)}
+  ${cadCol(1, currentStreak, "Current streak", currentLabel, true)}
+  ${cadCol(2, longestStreak, "Longest streak", longestLabel)}`;
 
   const body = `  ${divider}
   ${volumeBody}
@@ -572,7 +677,7 @@ function renderCombinedCard({
   return svgWrap({
     width: CARD_W,
     height: CARD_H,
-    ariaLabel: `Stats for @${USERNAME}: ${totalCommits} commits, ${totalPRs} PRs, ${totalStars} stars, ${totalRepos} repos. Streak: ${totalContribs} contributions, current ${currentStreak}, longest ${longestStreak}.`,
+    ariaLabel: `Stats for @${USERNAME}: ${totalCommits} commits, ${totalPRs} PRs, ${totalStars} stars, ${totalRepos} repos. Streak: ${totalContribs} contributions, current ${currentStreak} day(s), longest ${longestStreak} day(s) (${Math.round(streakProgress * 100)}% of personal best).`,
     body,
   });
 }
