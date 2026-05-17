@@ -40,13 +40,30 @@ jobs:
         run: node scripts/generate-github-numbers.mjs
 
       - name: Commit if changed
+        # Rebase-retry on push: if another scheduled or push-triggered
+        # workflow (e.g. milestones, metrics) raced us to main, the
+        # initial `git push` returns "rejected (fetch first)". We
+        # rebase our single commit onto the new HEAD and push again.
+        # Three attempts cover the realistic max contention (3 parallel
+        # workflows on the same path event); beyond that we'd rather
+        # the job fail loudly than spin indefinitely.
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain assets/numbers-*.svg)" ]]; then
-            git add assets/numbers-*.svg
-            git commit -m "chore(numbers): refresh SVGs"
-            git push
-          else
+          if [[ -z "$(git status --porcelain assets/numbers-*.svg)" ]]; then
             echo "No GitHub-numbers changes — skipping commit."
+            exit 0
           fi
+          git add assets/numbers-*.svg
+          git commit -m "chore(numbers): refresh SVGs"
+          for attempt in 1 2 3; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push attempt $attempt failed — rebasing on origin/main and retrying."
+            git pull --rebase origin main
+            sleep 2
+          done
+          echo "::error::Push still failing after 3 rebase-retries."
+          exit 1
