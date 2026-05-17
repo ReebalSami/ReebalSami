@@ -2,7 +2,7 @@ name: Milestones
 
 on:
   schedule:
-    - cron: "23 6 * * *" # daily, 06:23 UTC (just after Metrics)
+    - cron: "23 */6 * * *" # every 6h at HH:23 UTC (00:23, 06:23, 12:23, 18:23)
   workflow_dispatch:
   push:
     branches: [main]

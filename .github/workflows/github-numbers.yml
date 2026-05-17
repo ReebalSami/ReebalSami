@@ -2,7 +2,7 @@ name: GitHub Numbers
 
 on:
   schedule:
-    - cron: "29 6 * * *" # daily, 06:29 UTC (just after Milestones at 06:23)
+    - cron: "29 */6 * * *" # every 6h at HH:29 UTC (00:29, 06:29, 12:29, 18:29)
   workflow_dispatch:
   push:
     branches: [main]
