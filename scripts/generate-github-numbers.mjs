@@ -62,22 +62,47 @@ const HIDDEN_LANGS = new Set(["Procfile", "Smarty", "HTML", "CSS", "Roff", "TeX"
 
 // ----- GraphQL data fetch -------------------------------------------------
 
-// Languages-by-recent-commits window. 24 months captures the user's ML/AI
-// pivot trajectory (recent enough to be relevant, broad enough to show range).
-const LANGS_WINDOW_YEARS = 2;
-const LANGS_WINDOW_LABEL = "TOP LANGUAGES · LAST 2 YEARS";
+// Languages-by-recent-commits window.
+//   null  → "overall" mode: count commits across the full history of each
+//           repo (no `since` filter). Best when the user is still building
+//           their public footprint and a recency window would hide
+//           too much.
+//   N     → restrict the tally to the last N years (e.g. 2 to capture an
+//           ML/AI pivot trajectory: recent enough to be relevant, broad
+//           enough to show range).
+// Flip this one constant; the label and GraphQL query both adapt.
+const LANGS_WINDOW_YEARS = null;
+const LANGS_WINDOW_LABEL =
+  LANGS_WINDOW_YEARS === null
+    ? "TOP LANGUAGES · OVERALL"
+    : `TOP LANGUAGES · LAST ${LANGS_WINDOW_YEARS} YEARS`;
 
 /**
  * Fetch user identity + repos with stargazer counts, primary language, and
- * recent commit counts within the languages-window above.
+ * commit counts. When LANGS_WINDOW_YEARS is null, `history(since: …)` is
+ * dropped from the query so the count covers each repo's entire history;
+ * otherwise it's filtered to the trailing N-year window.
  */
 async function fetchUserAndRepos(login) {
-  const recentSince = new Date();
-  recentSince.setFullYear(recentSince.getFullYear() - LANGS_WINDOW_YEARS);
+  const useWindow = LANGS_WINDOW_YEARS !== null;
+  const sinceIso = useWindow
+    ? (() => {
+        const d = new Date();
+        d.setFullYear(d.getFullYear() - LANGS_WINDOW_YEARS);
+        return d.toISOString();
+      })()
+    : null;
+
+  // GraphQL parameter declaration and `history()` argument are conditional
+  // so the query is well-formed in both modes — passing `since: null` to
+  // `history` would still narrow to "since the Unix epoch" semantically,
+  // but omitting the arg entirely is the documented "all history" path.
+  const varDecl = useWindow ? "($login: String!, $since: GitTimestamp!)" : "($login: String!)";
+  const historyArgs = useWindow ? "(since: $since)" : "";
 
   const data = await gql(
     `
-    query ($login: String!, $since: GitTimestamp!) {
+    query ${varDecl} {
       user(login: $login) {
         login
         createdAt
@@ -95,7 +120,7 @@ async function fetchUserAndRepos(login) {
             defaultBranchRef {
               target {
                 ... on Commit {
-                  history(since: $since) { totalCount }
+                  history${historyArgs} { totalCount }
                 }
               }
             }
@@ -104,7 +129,7 @@ async function fetchUserAndRepos(login) {
       }
     }
     `,
-    { login, since: recentSince.toISOString() }
+    useWindow ? { login, since: sinceIso } : { login }
   );
 
   return data.user;
