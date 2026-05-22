@@ -29,7 +29,7 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
 
 ## Currently
 
-- Finishing my **M.Sc. thesis at FH Wedel** — *Document Intelligence and Knowledge Graph Construction*: OCR-free extraction with **Donut + LayoutLMv3**, entity resolution, **GraphRAG** reasoning over local LLMs. Fully local, zero cloud.
+- Finishing my **M.Sc. thesis at FH Wedel** — *Document Intelligence and Knowledge Graph Construction*: OCR-free extraction with **modern document VLMs**, entity resolution, **GraphRAG** reasoning over local LLMs. Fully local, zero cloud.
 - Working through **AWS Cloud Practitioner**, **AI Practitioner**, and **ML Engineer Associate** certifications.
 - Shipping cloud-deployed ML projects on **AWS CDK**.
 
@@ -49,7 +49,7 @@ I'm a **Data Scientist & AI Engineer** based in Hamburg. Five-plus years at **OT
   <img src="./assets/tech-stack-light.svg" alt="Languages, web, cloud, and data tooling">
 </picture>
 
-<sub>**AI/ML** &nbsp;·&nbsp; PyTorch · Hugging Face · LangChain · Agno · Donut · LayoutLMv3 · GraphRAG · DINOv2 · ConvNeXt · scikit-learn · pandas · NumPy · OpenCV · Grad-CAM</sub>
+<sub>**AI/ML** &nbsp;·&nbsp; PyTorch · Hugging Face · LangChain · Agno · modern document VLMs · GraphRAG · DINOv2 · ConvNeXt · scikit-learn · pandas · NumPy · OpenCV · Grad-CAM</sub>
 
 </div>
 
