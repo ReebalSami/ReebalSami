@@ -66,6 +66,8 @@
  * right at the roof center, no front-anchor offset, no nesting tricks.
  */
 
+import { mulberry32 } from "./rng.mjs";
+
 // ===== Tunable constants (the only numbers in iso-space) =================
 //
 // All other modules import these instead of redefining them. Change here,
@@ -206,6 +208,133 @@ export function sideLPathRelative(gx, gy, h) {
 /** Floor tile (flat rhombus) at grid (gx, gy). Top face at h=0. */
 export function tilePath(gx, gy) {
   return topPath(gx, gy, 0);
+}
+
+// ===== Window grid (for L3/L4 cubes in dark theme) =======================
+//
+// Generates a deterministic mosaic of lit/unlit windows on one side face
+// of a cube. Each window is a small parallelogram sharing the parent
+// face's iso skew — vertical edges stay vertical, top/bottom edges slope
+// with the face. Same affine system as the cube, so windows rise with the
+// cube on load (no separate animation needed).
+//
+// Face-local coordinates (u, v):
+//   u ∈ [0, 1] along the base edge (back → front of the face)
+//   v ∈ [0, 1] along the vertical edge (street → roof)
+//
+// Mapping face-local (u, v) → world (gx_w, gy_w, gz_w):
+//   face='R' (sideR, south-east face): gx_w = gx+1, gy_w = gy + u, gz_w = v*h
+//   face='L' (sideL, south-west face): gx_w = gx + u, gy_w = gy+1, gz_w = v*h
+//
+// Window kinds are sampled per-window via a seeded RNG so the pattern is
+// stable across rebuilds. Distinct seed per (gx, gy, level, face) means
+// each face of each cube gets its own mosaic — no mirror symmetry.
+
+/** Per-level window grid layout. Levels outside this table get no windows. */
+const WINDOW_LAYOUT = {
+  3: { floors: 3, cols: 2 }, // L3 cubes (h = 5.0 units, ~17.5 px tall)
+  4: { floors: 4, cols: 2 }, // L4 cubes (h = 7.0 units, ~24.5 px tall)
+};
+
+/**
+ * Cumulative probability thresholds for window kind sampling. Ordered:
+ *   ~60% warm-on    — amber, the dominant NYC look
+ *   ~ 8% warm-bright — punchier yellow accent
+ *   ~10% cool-on    — rare cool-blue (fluorescent / monitor glow)
+ *   ~22% off        — unlit pane, recessed dark
+ * Sum = 1.00.
+ */
+const WINDOW_KIND_THRESHOLDS = [
+  { kind: "warm-on", upTo: 0.60 },
+  { kind: "warm-bright", upTo: 0.68 },
+  { kind: "cool-on", upTo: 0.78 },
+  { kind: "off", upTo: 1.00 },
+];
+
+function pickWindowKind(r) {
+  for (const t of WINDOW_KIND_THRESHOLDS) {
+    if (r < t.upTo) return t.kind;
+  }
+  return "off";
+}
+
+function windowSeedFor(gx, gy, level, face) {
+  // Mix grid position, level, and face index into a single 32-bit seed.
+  // Primes chosen to avoid simple collisions on a 26×7 grid.
+  return (
+    ((gx * 7919) ^ (gy * 524287) ^ (level * 6151) ^ (face === "L" ? 1 : 2)) >>> 0
+  );
+}
+
+/**
+ * Compute window parallelogram paths for one side face of a cube,
+ * relative to that cube's baseCenter (so they live inside the cube's
+ * inner animated <g> alongside the side faces).
+ *
+ * Returns an empty array for cubes whose level has no entry in
+ * WINDOW_LAYOUT (currently anything below L3).
+ *
+ * @param {number} gx grid x
+ * @param {number} gy grid y
+ * @param {number} level contribution level (1..4)
+ * @param {number} h cube height in WORLD UNITS (LEVEL_HEIGHT_UNITS[level])
+ * @param {'L'|'R'} face which side face — 'L' = sideL (south-west), 'R' = sideR (south-east)
+ * @returns {Array<{path:string, kind:'warm-on'|'warm-bright'|'cool-on'|'off'}>}
+ */
+export function windowPathsRelative(gx, gy, level, h, face) {
+  const layout = WINDOW_LAYOUT[level];
+  if (!layout) return [];
+  const { floors, cols } = layout;
+
+  // Face-local layout. Margins/gutters as fractions of the face dim.
+  // V_BOT > V_TOP leaves a "ground-floor / storefront" strip at street
+  // level, mirroring real NYC building stacking.
+  const U_MARGIN = 0.18;
+  const U_GUTTER = 0.18;
+  const V_TOP = 0.10;
+  const V_BOT = 0.18;
+  const V_GUTTER = 0.10;
+
+  const uWin = (1 - 2 * U_MARGIN - U_GUTTER * (cols - 1)) / cols;
+  const vWin = (1 - V_TOP - V_BOT - V_GUTTER * (floors - 1)) / floors;
+
+  const anchor = baseCenter(gx, gy);
+  const rng = mulberry32(windowSeedFor(gx, gy, level, face));
+  const out = [];
+
+  for (let row = 0; row < floors; row++) {
+    // row=0 is the top floor (closest to the roof);
+    // row=floors-1 is the bottom floor (closest to street level).
+    const vHi = 1 - V_TOP - row * (vWin + V_GUTTER);
+    const vLo = vHi - vWin;
+
+    for (let col = 0; col < cols; col++) {
+      const uLo = U_MARGIN + col * (uWin + U_GUTTER);
+      const uHi = uLo + uWin;
+
+      // Four face-local corners → world coords → project → face-relative pixels.
+      const corners = [
+        [uLo, vLo],
+        [uHi, vLo],
+        [uHi, vHi],
+        [uLo, vHi],
+      ].map(([u, v]) => {
+        const gz = v * h;
+        const p =
+          face === "R"
+            ? project(gx + 1, gy + u, gz)
+            : project(gx + u, gy + 1, gz);
+        return { x: p.x - anchor.x, y: p.y - anchor.y };
+      });
+
+      const [c0, c1, c2, c3] = corners;
+      const path = `M${fmt(c0)} L${fmt(c1)} L${fmt(c2)} L${fmt(c3)} Z`;
+      const kind = pickWindowKind(rng());
+      out.push({ path, kind });
+    }
+  }
+
+  return out;
 }
 
 // ===== Calendar bounds ===================================================

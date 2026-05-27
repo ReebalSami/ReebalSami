@@ -63,6 +63,40 @@ export const BRAND = {
   },
 };
 
+// ===== Window palette (lit windows on tall cubes, dark theme only) =======
+//
+// Consumed by `svg-render.mjs` when emitting NYC-style lit windows on
+// L3/L4 cubes via `iso-projection.windowPathsRelative()`. The four kinds
+// match the sampling distribution in `iso-projection.WINDOW_KIND_THRESHOLDS`:
+//
+//   warm-on / warm-bright — amber + punchier yellow, the dominant NYC look
+//   cool-on               — rare cool-blue fluorescent / monitor glow
+//   off                   — unlit pane, slightly darker than the side face
+//                            so it reads as a recessed dark window, not a
+//                            hole through the building
+//
+// Light theme: null — no windows are emitted in daytime mode.
+
+export const WINDOW_COLOR = {
+  light: null,
+  dark: {
+    // Warm amber, incandescent-bulb cast (~2800K). Deeper and warmer than
+    // a pure yellow — reads as a real lit window seen from far, not a
+    // post-it note. Strong contrast against the dark-green side faces.
+    "warm-on": "#FFB347",
+    // Brighter glow gold for the ~8% accent windows. Higher luminance,
+    // still warm — the "punchy" highlight that breaks up the amber mosaic.
+    "warm-bright": "#FFD166",
+    // Cool fluorescent / LED office light. Desaturated cool-white with a
+    // subtle blue cast — not a candy sky-blue. Reads as the rare "office
+    // still on at night" pane in real NYC photos.
+    "cool-on": "#A8C5D8",
+    // Unlit pane — slightly darker than the side face it sits on so it
+    // reads as a recessed dark window, not a hole through the building.
+    "off": "#0A0E14",
+  },
+};
+
 // ===== Character (chibi web-slinger) =====================================
 //
 // (No PAGE_BG export: the SVG renders with no painted background so it
