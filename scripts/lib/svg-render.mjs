@@ -35,8 +35,15 @@ import {
   sideRPathRelative,
   tilePath,
   gridBounds,
+  windowPathsRelative,
 } from "./iso-projection.mjs";
-import { LEVEL_COLOR, BRAND, CHARACTER_CSS_VARS, renderCssVars } from "./palette.mjs";
+import {
+  LEVEL_COLOR,
+  BRAND,
+  CHARACTER_CSS_VARS,
+  WINDOW_COLOR,
+  renderCssVars,
+} from "./palette.mjs";
 
 // Tunable: per-cell rise-stagger increment in seconds. Smaller = snappier
 // front-to-back sweep. 0.04s × 32 (max gx+gy) ≈ 1.3s total wave.
@@ -131,7 +138,7 @@ export function renderCity({ days, weeks, theme = "light", characterMarkup = "" 
   });
 
   const cubeMarkup = sortedBuildings
-    .map((b) => buildCubeMarkup(b))
+    .map((b) => buildCubeMarkup(b, theme))
     .join("\n      ");
 
   // ----- title strip (top-left of svg) -----------------------------------
@@ -175,12 +182,19 @@ export function renderCity({ days, weeks, theme = "light", characterMarkup = "" 
 
 // ===== Per-cube markup ===================================================
 
-function buildCubeMarkup(b) {
+function buildCubeMarkup(b, theme) {
   const anchor = baseCenter(b.gx, b.gy);
   const sideR = sideRPathRelative(b.gx, b.gy, b.h);
   const sideL = sideLPathRelative(b.gx, b.gy, b.h);
   const top = topPathRelative(b.gx, b.gy, b.h);
   const beginSec = (b.gx + b.gy) * RISE_STAGGER_SEC;
+
+  // NYC-style lit windows on tall cubes (L3, L4), dark theme only.
+  // Windows live inside the inner animated <g> so they rise with the cube.
+  // Paint order: sideR → sideL → windows(R) → windows(L) → top. This
+  // guarantees each window sits on top of its parent face but never bleeds
+  // onto the roof.
+  const windowMarkup = buildWindowMarkup(b, theme);
 
   // Wrap in two groups:
   //   outer: positions the cube at its base-center anchor
@@ -197,17 +211,36 @@ function buildCubeMarkup(b) {
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
           <path class="c-sideR-${b.level}" d="${sideR}"/>
-          <path class="c-sideL-${b.level}" d="${sideL}"/>
+          <path class="c-sideL-${b.level}" d="${sideL}"/>${windowMarkup}
           <path class="c-top-${b.level}"   d="${top}"/>
         </g>
       </g>`;
+}
+
+/**
+ * Build the per-cube window <path> elements (dark theme + L3/L4 only).
+ * Returns an empty string for cubes that should not have windows, so the
+ * caller can splice it unconditionally into the cube template.
+ */
+function buildWindowMarkup(b, theme) {
+  if (theme !== "dark") return "";
+  const windows = [
+    ...windowPathsRelative(b.gx, b.gy, b.level, b.h, "R"),
+    ...windowPathsRelative(b.gx, b.gy, b.level, b.h, "L"),
+  ];
+  if (windows.length === 0) return "";
+  const paths = windows
+    .map((w) => `<path class="win-${w.kind}" d="${w.path}"/>`)
+    .join("\n          ");
+  return `\n          ${paths}`;
 }
 
 // ===== Style block builder ===============================================
 
 function buildStyleBlock(theme) {
   const palette = LEVEL_COLOR[theme];
-  const css = buildPaletteCss(palette);
+  const windowPalette = WINDOW_COLOR[theme];
+  const css = buildPaletteCss(palette, windowPalette);
   const cssVars = renderCssVars(CHARACTER_CSS_VARS[theme], "      ");
   const captionFill = BRAND[theme].mutedText;
   return `<style>
@@ -225,7 +258,7 @@ ${indent(css, "    ")}
   </style>`;
 }
 
-function buildPaletteCss(palette) {
+function buildPaletteCss(palette, windowPalette) {
   const out = [];
   for (let lv = 0; lv <= 4; lv++) {
     out.push(`.c-top-${lv}   { fill: ${palette.top[lv]}; }`);
@@ -235,6 +268,12 @@ function buildPaletteCss(palette) {
   // Floor tiles: always level-0 (empty cells appear as gray; filled cells
   // get their cubes drawn on top so the floor is hidden anyway).
   out.push(`.floor path { fill: ${palette.top[0]}; }`);
+  // Window classes (dark theme only — light theme passes windowPalette=null).
+  if (windowPalette) {
+    for (const [kind, color] of Object.entries(windowPalette)) {
+      out.push(`.win-${kind} { fill: ${color}; }`);
+    }
+  }
   return out.join("\n");
 }
 
