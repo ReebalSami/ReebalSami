@@ -38,7 +38,7 @@
     .floor path { fill: #eff2f5; }
   </style>
   <g class="caption">
-    <text x="-61" y="-34.5">Mar 13, 2026 → Sep 10, 2026</text>
+    <text x="-61" y="-34.5">Mar 14, 2026 → Sep 11, 2026</text>
   </g>
   <g class="floor">
       <path d="M0.00,0.00 L7.00,3.50 L0.00,7.00 L-7.00,3.50 Z"/>
@@ -225,16 +225,28 @@
       <path d="M133.00,108.50 L140.00,112.00 L133.00,115.50 L126.00,112.00 Z"/>
   </g>
   <g class="cubes">
-      <g class="cube" transform="translate(7 21)">
+      <g class="cube" transform="translate(14 17.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.2s"
+                            dur="0.55s" begin="0.16s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
           <path class="c-sideR-3" d="M7.00,0.00 L0.00,3.50 L0.00,-14.00 L7.00,-17.50 Z"/>
           <path class="c-sideL-3" d="M-7.00,0.00 L0.00,3.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
           <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(28 17.5)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.16s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(21 21)">
@@ -244,21 +256,33 @@
                             dur="0.55s" begin="0.2s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(14 24.5)">
+      <g class="cube" transform="translate(35 21)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.2s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(0 24.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
                             dur="0.55s" begin="0.24s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
+          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(28 24.5)">
@@ -273,6 +297,30 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
+      <g class="cube" transform="translate(42 24.5)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.24s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(-21 28)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.28s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+        </g>
+      </g>
       <g class="cube" transform="translate(-7 28)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
@@ -280,9 +328,9 @@
                             dur="0.55s" begin="0.28s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
-          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
-          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-sideR-3" d="M7.00,0.00 L0.00,3.50 L0.00,-14.00 L7.00,-17.50 Z"/>
+          <path class="c-sideL-3" d="M-7.00,0.00 L0.00,3.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
+          <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(21 28)">
@@ -292,9 +340,9 @@
                             dur="0.55s" begin="0.28s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
+          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(35 28)">
@@ -304,9 +352,9 @@
                             dur="0.55s" begin="0.28s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(49 28)">
@@ -316,21 +364,9 @@
                             dur="0.55s" begin="0.28s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(-28 31.5)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.32s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
+          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(-14 31.5)">
@@ -340,21 +376,21 @@
                             dur="0.55s" begin="0.32s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-3" d="M7.00,0.00 L0.00,3.50 L0.00,-14.00 L7.00,-17.50 Z"/>
-          <path class="c-sideL-3" d="M-7.00,0.00 L0.00,3.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
-          <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(14 31.5)">
+      <g class="cube" transform="translate(0 31.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
                             dur="0.55s" begin="0.32s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
-          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
-          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(28 31.5)">
@@ -369,18 +405,6 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(42 31.5)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.32s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
-          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
-          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
-        </g>
-      </g>
       <g class="cube" transform="translate(56 31.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
@@ -393,7 +417,7 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(-21 35)">
+      <g class="cube" transform="translate(-7 35)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -405,16 +429,16 @@
           <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(-7 35)">
+      <g class="cube" transform="translate(7 35)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
                             dur="0.55s" begin="0.36s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-3" d="M7.00,0.00 L0.00,3.50 L0.00,-14.00 L7.00,-17.50 Z"/>
+          <path class="c-sideL-3" d="M-7.00,0.00 L0.00,3.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
+          <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(21 35)">
@@ -424,9 +448,21 @@
                             dur="0.55s" begin="0.36s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(35 35)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.36s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
+          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(49 35)">
@@ -453,19 +489,19 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(-14 38.5)">
+      <g class="cube" transform="translate(0 38.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
                             dur="0.55s" begin="0.4s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(0 38.5)">
+      <g class="cube" transform="translate(14 38.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -477,7 +513,7 @@
           <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(14 38.5)">
+      <g class="cube" transform="translate(42 38.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -487,30 +523,6 @@
           <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
           <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
           <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(28 38.5)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.4s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
-          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
-          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(42 38.5)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.4s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(56 38.5)">
@@ -537,7 +549,7 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(-7 42)">
+      <g class="cube" transform="translate(7 42)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -549,18 +561,6 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(7 42)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.44s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-3" d="M7.00,0.00 L0.00,3.50 L0.00,-14.00 L7.00,-17.50 Z"/>
-          <path class="c-sideL-3" d="M-7.00,0.00 L0.00,3.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
-          <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
-        </g>
-      </g>
       <g class="cube" transform="translate(35 42)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
@@ -568,9 +568,9 @@
                             dur="0.55s" begin="0.44s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(49 42)">
@@ -597,6 +597,18 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
+      <g class="cube" transform="translate(77 42)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.44s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+        </g>
+      </g>
       <g class="cube" transform="translate(0 45.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
@@ -609,6 +621,18 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
+      <g class="cube" transform="translate(14 45.5)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.48s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
+          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+        </g>
+      </g>
       <g class="cube" transform="translate(28 45.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
@@ -616,9 +640,9 @@
                             dur="0.55s" begin="0.48s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(42 45.5)">
@@ -628,9 +652,9 @@
                             dur="0.55s" begin="0.48s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-3" d="M7.00,0.00 L0.00,3.50 L0.00,-14.00 L7.00,-17.50 Z"/>
+          <path class="c-sideL-3" d="M-7.00,0.00 L0.00,3.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
+          <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(56 45.5)">
@@ -652,9 +676,9 @@
                             dur="0.55s" begin="0.48s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(7 49)">
@@ -664,9 +688,9 @@
                             dur="0.55s" begin="0.52s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-4" d="M7.00,0.00 L0.00,3.50 L0.00,-21.00 L7.00,-24.50 Z"/>
-          <path class="c-sideL-4" d="M-7.00,0.00 L0.00,3.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
-          <path class="c-top-4"   d="M0.00,-28.00 L7.00,-24.50 L0.00,-21.00 L-7.00,-24.50 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(21 49)">
@@ -676,9 +700,9 @@
                             dur="0.55s" begin="0.52s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(35 49)">
@@ -688,9 +712,9 @@
                             dur="0.55s" begin="0.52s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-3" d="M7.00,0.00 L0.00,3.50 L0.00,-14.00 L7.00,-17.50 Z"/>
-          <path class="c-sideL-3" d="M-7.00,0.00 L0.00,3.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
-          <path class="c-top-3"   d="M0.00,-21.00 L7.00,-17.50 L0.00,-14.00 L-7.00,-17.50 Z"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(49 49)">
@@ -706,6 +730,18 @@
         </g>
       </g>
       <g class="cube" transform="translate(63 49)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.52s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(91 49)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -760,36 +796,12 @@
                             dur="0.55s" begin="0.56s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(84 52.5)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.56s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
           <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
           <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(21 56)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.6s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(35 56)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -813,7 +825,31 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(42 59.5)">
+      <g class="cube" transform="translate(91 56)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.6s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(105 56)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.6s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(56 59.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -825,11 +861,11 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(84 59.5)">
+      <g class="cube" transform="translate(140 80.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.64s"
+                            dur="0.55s" begin="0.88s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
           <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
@@ -837,11 +873,11 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(98 59.5)">
+      <g class="cube" transform="translate(154 80.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.64s"
+                            dur="0.55s" begin="0.88s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
           <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
@@ -849,43 +885,7 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(49 63)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.68s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(140 73.5)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.8s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(147 77)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.84s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(133 84)">
+      <g class="cube" transform="translate(119 84)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -898,6 +898,18 @@
         </g>
       </g>
       <g class="cube" transform="translate(147 84)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="0.92s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(161 84)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -933,19 +945,7 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(154 87.5)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="0.96s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(105 91)">
+      <g class="cube" transform="translate(91 91)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -969,7 +969,31 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(126 94.5)">
+      <g class="cube" transform="translate(147 91)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="1s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(175 91)">
+        <g transform="scale(1 0)">
+          <animateTransform attributeName="transform" type="scale"
+                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
+                            dur="0.55s" begin="1s"
+                            fill="freeze"
+                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
+          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
+          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+        </g>
+      </g>
+      <g class="cube" transform="translate(98 94.5)">
         <g transform="scale(1 0)">
           <animateTransform attributeName="transform" type="scale"
                             values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
@@ -988,9 +1012,9 @@
                             dur="0.55s" begin="1.04s"
                             fill="freeze"
                             calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
+          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
+          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
+          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
         </g>
       </g>
       <g class="cube" transform="translate(168 94.5)">
@@ -1005,43 +1029,19 @@
           <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
         </g>
       </g>
-      <g class="cube" transform="translate(133 98)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="1.08s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-2" d="M7.00,0.00 L0.00,3.50 L0.00,-8.40 L7.00,-11.90 Z"/>
-          <path class="c-sideL-2" d="M-7.00,0.00 L0.00,3.50 L0.00,-8.40 L-7.00,-11.90 Z"/>
-          <path class="c-top-2"   d="M0.00,-15.40 L7.00,-11.90 L0.00,-8.40 L-7.00,-11.90 Z"/>
-        </g>
-      </g>
-      <g class="cube" transform="translate(161 98)">
-        <g transform="scale(1 0)">
-          <animateTransform attributeName="transform" type="scale"
-                            values="1 0; 1 1.08; 1 1" keyTimes="0; 0.78; 1"
-                            dur="0.55s" begin="1.08s"
-                            fill="freeze"
-                            calcMode="spline" keySplines="0.25 0.1 0.3 1; 0.4 0 0.6 1"/>
-          <path class="c-sideR-1" d="M7.00,0.00 L0.00,3.50 L0.00,-3.50 L7.00,-7.00 Z"/>
-          <path class="c-sideL-1" d="M-7.00,0.00 L0.00,3.50 L0.00,-3.50 L-7.00,-7.00 Z"/>
-          <path class="c-top-1"   d="M0.00,-10.50 L7.00,-7.00 L0.00,-3.50 L-7.00,-7.00 Z"/>
-        </g>
-      </g>
   </g>
   
 
   <g class="ws-root">
     <animateTransform attributeName="transform" type="translate"
-                      values="-7,3.5;-3.5,-3.23;0,-5.47;3.5,-3.23;7,3.5;1.75,0.43;-3.5,1.15;-8.75,5.68;-14,14;-12.25,5.1;-10.5,0.39;-8.75,-0.15;-7,3.5;-5.25,2.63;-3.5,5.25;-1.75,11.38;0,21;-3.5,13.67;-7,10.06;-10.5,10.17;-14,14;-15.75,11.02;-17.5,11.55;-19.25,15.58;-21,23.1;-19.25,15;-17.5,10.79;-15.75,10.45;-14,14;-12.25,11.81;-10.5,13.41;-8.75,18.81;-7,28;-10.5,21.52;-14,18.55;-17.5,19.08;-21,23.1;-19.25,15.58;-17.5,11.55;-15.75,11.02;-14,14;-17.5,11.38;-21,12.25;-24.5,16.63;-28,24.5;-26.25,18.24;-24.5,15.92;-22.75,17.54;-21,23.1;-19.25,15.58;-17.5,11.55;-15.75,11.02;-14,14;-14,11.9;-14,13.3;-14,18.2;-14,26.6;-15.75,19.44;-17.5,16.48;-19.25,17.69;-21,23.1;-21,23.1;-21,23.1;-21,23.1;-21,23.1;-7,0.35;7,-8.4;21,-3.15;35,16.1;36.75,7.77;38.5,3.48;40.25,3.22;42,7;43.75,5.25;45.5,7;47.25,12.25;49,21;47.25,11.01;45.5,5.34;43.75,4.01;42,7;43.75,6.38;45.5,9.68;47.25,16.88;49,28;47.25,25.38;45.5,26.25;43.75,30.63;42,38.5;43.75,29.83;45.5,25.19;47.25,24.58;49,28;50.75,21.39;52.5,18.61;54.25,19.64;56,24.5;54.25,20.13;52.5,19.25;50.75,21.88;49,28;49,21;49,17.5;49,17.5;49,21;47.25,12.25;45.5,7;43.75,5.25;42,7;40.25,2;38.5,1.84;36.75,6.55;35,16.1;38.5,14.47;42,17.08;45.5,23.92;49,35;49,29.97;49,29.46;49,33.47;49,42;45.5,32.18;42,27.16;38.5,26.93;35,31.5;36.75,26.25;38.5,24.5;40.25,26.25;42,31.5;42,31.5;42,31.5;42,31.5;42,31.5;45.5,26.25;49,24.5;52.5,26.25;56,31.5;57.75,25.51;59.5,24.1;61.25,27.26;63,35;61.25,29.05;59.5,27.64;57.75,30.8;56,38.5;56,30.62;56,26.82;56,27.12;56,31.5;66.5,15.75;77,14;87.5,26.25;98,52.5;99.75,55.13;101.5,61.25;103.25,70.88;105,84;105,84;105,84;105,84;105,84;106.75,77.56;108.5,74.83;110.25,75.81;112,80.5;110.25,76.13;108.5,75.25;106.75,77.88;105,84;106.75,77.88;108.5,75.25;110.25,76.13;112,80.5;110.25,76.13;108.5,75.25;106.75,77.88;105,84;106.75,77.88;108.5,75.25;110.25,76.13;112,80.5;110.25,75.73;108.5,74.72;106.75,77.48;105,84;106.75,77.88;108.5,75.25;110.25,76.13;112,80.5;110.25,75.33;108.5,74.2;106.75,77.08;105,84;105,84;105,84;105,84;105,84;106.75,77.88;108.5,75.25;110.25,76.13;112,80.5;119,71.33;126,65.94;133,64.33;140,66.5;140,66.5;140,66.5;140,66.5;140,66.5;103.25,32.9;66.5,11.2;29.75,1.4;-7,3.5"
-                      keyTimes="0.00000;0.00404;0.00807;0.01211;0.01614;0.02052;0.02491;0.02929;0.03367;0.03766;0.04164;0.04563;0.04961;0.05383;0.05804;0.06225;0.06647;0.07056;0.07466;0.07875;0.08285;0.08679;0.09074;0.09468;0.09862;0.10257;0.10651;0.11045;0.11439;0.11849;0.12259;0.12668;0.13078;0.13485;0.13891;0.14298;0.14704;0.15099;0.15493;0.15887;0.16282;0.16698;0.17114;0.17531;0.17947;0.18325;0.18704;0.19082;0.19461;0.19855;0.20249;0.20643;0.21038;0.21436;0.21835;0.22233;0.22631;0.23012;0.23393;0.23774;0.24155;0.25146;0.26137;0.27128;0.28119;0.29116;0.30114;0.31112;0.32110;0.32410;0.32711;0.33011;0.33312;0.33627;0.33943;0.34259;0.34574;0.34890;0.35206;0.35521;0.35837;0.36177;0.36516;0.36855;0.37195;0.37500;0.37804;0.38109;0.38413;0.38718;0.39022;0.39327;0.39631;0.39918;0.40205;0.40492;0.40779;0.41066;0.41353;0.41640;0.41927;0.42211;0.42495;0.42779;0.43063;0.43379;0.43694;0.44010;0.44326;0.44626;0.44927;0.45227;0.45527;0.45872;0.46216;0.46561;0.46906;0.47190;0.47473;0.47757;0.48041;0.48364;0.48686;0.49009;0.49331;0.49615;0.49899;0.50183;0.50467;0.51383;0.52299;0.53215;0.54131;0.54440;0.54750;0.55060;0.55369;0.55656;0.55943;0.56230;0.56517;0.56804;0.57091;0.57378;0.57665;0.57949;0.58233;0.58517;0.58801;0.59799;0.60796;0.61794;0.62792;0.63310;0.63827;0.64345;0.64862;0.65454;0.66045;0.66636;0.67228;0.67656;0.68083;0.68511;0.68939;0.69367;0.69795;0.70223;0.70651;0.71078;0.71506;0.71934;0.72362;0.72790;0.73218;0.73646;0.74073;0.74501;0.74929;0.75357;0.75785;0.76213;0.76640;0.77068;0.77496;0.77924;0.78352;0.78780;0.79208;0.79635;0.80063;0.80491;0.80919;0.81822;0.82726;0.83629;0.84533;0.84960;0.85388;0.85816;0.86244;0.86758;0.87272;0.87786;0.88300;0.90227;0.92154;0.94081;0.96009;0.97006;0.98004;0.99002;1.00000"
+                      values="0,0;3.5,-5.33;7,-7.1;10.5,-5.33;14,0;15.75,-6.99;17.5,-8.73;19.25,-5.24;21,3.5;19.25,-6.04;17.5,-9.8;15.75,-7.79;14,0;17.5,-3.45;21,-1.68;24.5,5.3;28,17.5;28,17.5;28,17.5;28,17.5;28,17.5;28,12.65;28,12.2;28,16.15;28,24.5;28,17.5;28,14;28,14;28,17.5;26.25,13.65;24.5,13.3;22.75,16.45;21,23.1;22.75,16.45;24.5,13.3;26.25,13.65;28,17.5;29.75,11.38;31.5,8.75;33.25,9.63;35,14;31.5,9.94;28,10.1;24.5,14.49;21,23.1;22.75,18.14;24.5,18.23;26.25,23.39;28,33.6;28,33.6;28,33.6;28,33.6;28,33.6;26.25,28.23;24.5,27.84;22.75,32.43;21,42;22.75,37.63;24.5,36.75;26.25,39.38;28,45.5;33.25,23.63;38.5,15.75;43.75,21.88;49,42;52.5,33.48;56,29.82;59.5,31.03;63,37.1;64.75,30.85;66.5,29;68.25,31.55;70,38.5;71.75,31.15;73.5,27.3;75.25,26.95;77,30.1;75.25,23.05;73.5,20.93;71.75,23.75;70,31.5;70,28;70,28;70,31.5;70,38.5;70,38.5;70,38.5;70,38.5;70,38.5;70,38.5;70,38.5;70,38.5;70,38.5;68.25,32.44;66.5,30.18;64.75,31.74;63,37.1;63,37.1;63,37.1;63,37.1;63,37.1;61.25,32.1;59.5,30.67;57.75,32.8;56,38.5;70,28;84,31.5;98,49;112,80.5;113.75,73.72;115.5,70.87;117.25,71.97;119,77;117.25,72.13;115.5,71.09;113.75,73.88;112,80.5;113.75,74.38;115.5,71.75;117.25,72.63;119,77;124.25,73.15;129.5,72.8;134.75,75.95;140,82.6;143.5,75.07;147,71.05;150.5,70.53;154,73.5;148.75,70.88;143.5,71.75;138.25,76.13;133,84;134.75,78.4;136.5,76.3;138.25,77.7;140,82.6;138.25,77.7;136.5,76.3;134.75,78.4;133,84;136.5,78.75;140,77;143.5,78.75;147,84;147,76.72;147,73.12;147,73.22;147,77;145.25,69.31;143.5,66.17;141.75,67.56;140,73.5;145.25,67.42;150.5,65.98;155.75,69.17;161,77;161,77;161,77;161,77;161,77;164.5,71.38;168,70.67;171.5,74.88;175,84;171.5,75.88;168,72;164.5,72.38;161,77;157.5,71.75;154,70;150.5,71.75;147,77;147,73.5;147,73.5;147,77;147,84;110.25,42;73.5,14;36.75,0;0,0"
+                      keyTimes="0.00000;0.00427;0.00855;0.01282;0.01709;0.02112;0.02516;0.02919;0.03322;0.03725;0.04129;0.04532;0.04935;0.05395;0.05855;0.06315;0.06775;0.07599;0.08423;0.09247;0.10071;0.10471;0.10871;0.11271;0.11672;0.12072;0.12472;0.12872;0.13272;0.13680;0.14087;0.14495;0.14903;0.15310;0.15718;0.16126;0.16533;0.16937;0.17340;0.17743;0.18147;0.18584;0.19022;0.19460;0.19898;0.20319;0.20741;0.21163;0.21585;0.22483;0.23380;0.24277;0.25175;0.25590;0.26006;0.26421;0.26836;0.27240;0.27643;0.28046;0.28449;0.29506;0.30562;0.31619;0.32675;0.33156;0.33636;0.34116;0.34596;0.35047;0.35497;0.35947;0.36397;0.36863;0.37328;0.37793;0.38258;0.38708;0.39158;0.39609;0.40059;0.40509;0.40959;0.41408;0.41858;0.43040;0.44222;0.45404;0.46585;0.48756;0.50927;0.53097;0.55268;0.55718;0.56169;0.56619;0.57069;0.57942;0.58815;0.59689;0.60562;0.61012;0.61462;0.61913;0.62363;0.63419;0.64476;0.65532;0.66589;0.66893;0.67197;0.67500;0.67804;0.68108;0.68412;0.68716;0.69020;0.69324;0.69627;0.69931;0.70235;0.70593;0.70951;0.71309;0.71667;0.72005;0.72343;0.72681;0.73020;0.73384;0.73749;0.74114;0.74478;0.74780;0.75081;0.75382;0.75683;0.75984;0.76285;0.76587;0.76888;0.77216;0.77543;0.77871;0.78199;0.78500;0.78800;0.79101;0.79402;0.79705;0.80009;0.80313;0.80617;0.80973;0.81329;0.81685;0.82041;0.84178;0.86314;0.88450;0.90586;0.90920;0.91255;0.91589;0.91923;0.92257;0.92592;0.92926;0.93260;0.93588;0.93916;0.94244;0.94571;0.94872;0.95173;0.95473;0.95774;0.96831;0.97887;0.98944;1.00000"
                       dur="28.00s"
                       repeatCount="indefinite"/>
     <g class="ws-flip">
       <animateTransform attributeName="transform" type="scale"
-                        values="1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1"
-                        keyTimes="0.00000;0.01789;0.03527;0.06811;0.10020;0.13241;0.14862;0.16448;0.18098;0.22784;0.28297;0.34701;0.35973;0.37317;0.38535;0.40894;0.42041;0.43189;0.45665;0.48170;0.49445;0.56632;0.57779;0.69110;0.70822;0.72533;0.74245;0.75956;0.77667;0.79379;0.84704;1.00000"
+                        values="1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1;1 1;-1 1"
+                        keyTimes="0.00000;0.03483;0.05114;0.13435;0.15066;0.18322;0.20066;0.25341;0.26998;0.38436;0.40238;0.55446;0.62542;0.67926;0.69141;0.73166;0.74599;0.75803;0.77019;0.79523;0.80759;0.92057;0.94692;1.00000"
                         dur="28.00s"
                         repeatCount="indefinite"
                         calcMode="discrete"/>
@@ -1052,13 +1052,13 @@
             stroke-linecap="round"
             opacity="0">
         <animate attributeName="d"
-                 values="M2.6,-10 L2.6,-70;M2.6,-10 L-21.5,-37.24;M2.6,-10 L-25,-35;M2.6,-10 L-28.5,-37.24;M2.6,-10 L-32,-43.97;M2.6,-10 L-21.35,-47.57;M2.6,-10 L-26.6,-48.3;M2.6,-10 L-31.85,-52.82;M2.6,-10 L-37.1,-61.15;M2.6,-10 L-11.73,-19.49;M2.6,-10 L-13.48,-14.77;M2.6,-10 L-15.23,-14.24;M2.6,-10 L-16.98,-17.88;M2.6,-10 L-8.44,-57.84;M2.6,-10 L-10.19,-60.46;M2.6,-10 L-11.94,-66.59;M2.6,-10 L-13.69,-76.21;M2.6,-10 L-19.6,-27.06;M2.6,-10 L-23.1,-23.45;M2.6,-10 L-26.6,-23.56;M2.6,-10 L-30.1,-27.39;M2.6,-10 L-12.72,-53.29;M2.6,-10 L-14.47,-53.82;M2.6,-10 L-16.22,-57.84;M2.6,-10 L-17.97,-65.37;M2.6,-10 L-12.72,-20.4;M2.6,-10 L-14.47,-16.18;M2.6,-10 L-16.22,-15.85;M2.6,-10 L-17.97,-19.39;M2.6,-10 L-9.8,-56.5;M2.6,-10 L-11.55,-58.1;M2.6,-10 L-13.3,-63.5;M2.6,-10 L-15.05,-72.69;M2.6,-10 L-20.49,-29.58;M2.6,-10 L-23.99,-26.6;M2.6,-10 L-27.49,-27.13;M2.6,-10 L-30.99,-31.15;M2.6,-10 L-12.72,-20.21;M2.6,-10 L-14.47,-16.18;M2.6,-10 L-16.22,-15.66;M2.6,-10 L-17.97,-18.63;M2.6,-10 L-17.9,-50.17;M2.6,-10 L-21.4,-51.05;M2.6,-10 L-24.9,-55.42;M2.6,-10 L-28.4,-63.3;M2.6,-10 L-19.4,-33.09;M2.6,-10 L-21.15,-30.77;M2.6,-10 L-22.9,-32.39;M2.6,-10 L-24.65,-37.95;M2.6,-10 L-12.72,-20.21;M2.6,-10 L-14.47,-16.18;M2.6,-10 L-16.22,-15.66;M2.6,-10 L-17.97,-18.63;M2.6,-10 L0,-57.9;M2.6,-10 L0,-59.3;M2.6,-10 L0,-64.2;M2.6,-10 L0,-72.6;M2.6,-10 L-17.85,-28.17;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.42;M2.6,-10 L-23.1,-31.82;M2.6,-10 L-31.86,-38.02;M2.6,-10 L-45.86,-29.27;M2.6,-10 L-59.86,-34.52;M2.6,-10 L-73.86,-53.77;M2.6,-10 L-12.72,-20.48;M2.6,-10 L-14.47,-16.18;M2.6,-10 L-16.22,-15.93;M2.6,-10 L-17.97,-19.7;M2.6,-10 L-9.8,-56.35;M2.6,-10 L-11.55,-58.1;M2.6,-10 L-13.3,-63.35;M2.6,-10 L-15.05,-72.1;M2.6,-10 L-9.8,-17.56;M2.6,-10 L-11.55,-11.9;M2.6,-10 L-13.3,-10.56;M2.6,-10 L-15.05,-13.56;M2.6,-10 L-7.44,-59.28;M2.6,-10 L-9.19,-62.58;M2.6,-10 L-10.94,-69.78;M2.6,-10 L-12.69,-80.9;M2.6,-10 L-11.73,-54.35;M2.6,-10 L-13.48,-55.23;M2.6,-10 L-15.23,-59.6;M2.6,-10 L-16.98,-67.48;M2.6,-10 L-11.73,-19.41;M2.6,-10 L-13.48,-14.77;M2.6,-10 L-15.23,-14.16;M2.6,-10 L-16.98,-17.59;M2.6,-10 L-17.85,-27.99;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.24;M2.6,-10 L-23.1,-31.09;M2.6,-10 L-17.85,-45.67;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.42;M2.6,-10 L-23.1,-53.55;M2.6,-10 L0,-17;M2.6,-10 L0,-13.5;M2.6,-10 L0,-13.5;M2.6,-10 L0,-17;M2.6,-10 L-9.8,-17.15;M2.6,-10 L-11.55,-11.9;M2.6,-10 L-13.3,-10.15;M2.6,-10 L-15.05,-11.9;M2.6,-10 L-12.72,-53.97;M2.6,-10 L-14.47,-53.82;M2.6,-10 L-16.22,-58.52;M2.6,-10 L-17.97,-68.07;M2.6,-10 L-14.21,-56.31;M2.6,-10 L-17.71,-58.91;M2.6,-10 L-21.21,-65.76;M2.6,-10 L-24.71,-76.83;M2.6,-10 L0,-57.01;M2.6,-10 L0,-56.5;M2.6,-10 L0,-60.51;M2.6,-10 L0,-69.04;M2.6,-10 L-17.9,-23.97;M2.6,-10 L-21.4,-18.95;M2.6,-10 L-24.9,-18.72;M2.6,-10 L-28.4,-23.29;M2.6,-10 L-19.75,-36.75;M2.6,-10 L-21.5,-35;M2.6,-10 L-23.25,-36.75;M2.6,-10 L-25,-42;M2.6,-10 L-21.5,-36.75;M2.6,-10 L-25,-35;M2.6,-10 L-28.5,-36.75;M2.6,-10 L-32,-42;M2.6,-10 L-17.85,-46.21;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.96;M2.6,-10 L-23.1,-55.7;M2.6,-10 L-17.85,-46.2;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.95;M2.6,-10 L-23.1,-55.66;M2.6,-10 L0,-17.29;M2.6,-10 L0,-13.5;M2.6,-10 L0,-13.79;M2.6,-10 L0,-18.18;M2.6,-10 L-26.6,-55.3;M2.6,-10 L-37.1,-53.55;M2.6,-10 L-47.6,-65.8;M2.6,-10 L-58.1,-92.05;M2.6,-10 L-5.65,-62.2;M2.6,-10 L-7.4,-68.32;M2.6,-10 L-9.15,-77.95;M2.6,-10 L-10.9,-91.07;M2.6,-10 L-17.85,-27.93;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.18;M2.6,-10 L-23.1,-30.87;M2.6,-10 L-17.85,-45.67;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.42;M2.6,-10 L-23.1,-53.55;M2.6,-10 L-17.85,-27.83;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.08;M2.6,-10 L-23.1,-30.45;M2.6,-10 L-17.85,-45.67;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.42;M2.6,-10 L-23.1,-53.55;M2.6,-10 L-17.85,-27.83;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.08;M2.6,-10 L-23.1,-30.45;M2.6,-10 L-17.85,-45.81;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.56;M2.6,-10 L-23.1,-54.08;M2.6,-10 L-17.85,-27.83;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.08;M2.6,-10 L-23.1,-30.45;M2.6,-10 L-17.85,-45.94;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.69;M2.6,-10 L-23.1,-54.6;M2.6,-10 L-17.85,-27.83;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.08;M2.6,-10 L-23.1,-30.45;M2.6,-10 L-23.1,-25.34;M2.6,-10 L-30.1,-19.95;M2.6,-10 L-37.1,-18.34;M2.6,-10 L-44.1,-20.51;M2.6,-10 L-80.85,-6.3;M2.6,-10 L-117.6,15.4;M2.6,-10 L-154.35,25.2;M2.6,-10 L-191.1,23.1"
-                 keyTimes="0.00000;0.00404;0.00807;0.01211;0.01614;0.02052;0.02491;0.02929;0.03367;0.03766;0.04164;0.04563;0.04961;0.05383;0.05804;0.06225;0.06647;0.07056;0.07466;0.07875;0.08285;0.08679;0.09074;0.09468;0.09862;0.10257;0.10651;0.11045;0.11439;0.11849;0.12259;0.12668;0.13078;0.13485;0.13891;0.14298;0.14704;0.15099;0.15493;0.15887;0.16282;0.16698;0.17114;0.17531;0.17947;0.18325;0.18704;0.19082;0.19461;0.19855;0.20249;0.20643;0.21038;0.21436;0.21835;0.22233;0.22631;0.23012;0.23393;0.23774;0.24155;0.29116;0.30114;0.31112;0.32110;0.32410;0.32711;0.33011;0.33312;0.33627;0.33943;0.34259;0.34574;0.34890;0.35206;0.35521;0.35837;0.36177;0.36516;0.36855;0.37195;0.37500;0.37804;0.38109;0.38413;0.38718;0.39022;0.39327;0.39631;0.39918;0.40205;0.40492;0.40779;0.41066;0.41353;0.41640;0.41927;0.42211;0.42495;0.42779;0.43063;0.43379;0.43694;0.44010;0.44326;0.44626;0.44927;0.45227;0.45527;0.45872;0.46216;0.46561;0.46906;0.47190;0.47473;0.47757;0.48041;0.48364;0.48686;0.49009;0.49331;0.49615;0.49899;0.50183;0.50467;0.54440;0.54750;0.55060;0.55369;0.55656;0.55943;0.56230;0.56517;0.56804;0.57091;0.57378;0.57665;0.57949;0.58233;0.58517;0.58801;0.59799;0.60796;0.61794;0.62792;0.63310;0.63827;0.64345;0.64862;0.67656;0.68083;0.68511;0.68939;0.69367;0.69795;0.70223;0.70651;0.71078;0.71506;0.71934;0.72362;0.72790;0.73218;0.73646;0.74073;0.74501;0.74929;0.75357;0.75785;0.76213;0.76640;0.77068;0.77496;0.77924;0.78352;0.78780;0.79208;0.79635;0.80063;0.80491;0.80919;0.84960;0.85388;0.85816;0.86244;0.86758;0.87272;0.87786;0.88300;0.97006;0.98004;0.99002;1.00000"
+                 values="M2.6,-10 L2.6,-70;M2.6,-10 L-21.5,-36.78;M2.6,-10 L-25,-35;M2.6,-10 L-28.5,-36.78;M2.6,-10 L-32,-42.1;M2.6,-10 L-17.85,-46.55;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-48.3;M2.6,-10 L-23.1,-57.03;M2.6,-10 L-17.85,-28.96;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-27.21;M2.6,-10 L-23.1,-35;M2.6,-10 L-14.74,-56.04;M2.6,-10 L-18.24,-57.81;M2.6,-10 L-21.74,-64.79;M2.6,-10 L-25.24,-76.98;M2.6,-10 L0,-56.95;M2.6,-10 L0,-56.5;M2.6,-10 L0,-60.45;M2.6,-10 L0,-68.8;M2.6,-10 L0,-17;M2.6,-10 L0,-13.5;M2.6,-10 L0,-13.5;M2.6,-10 L0,-17;M2.6,-10 L-15.81,-49.39;M2.6,-10 L-17.56,-49.04;M2.6,-10 L-19.31,-52.19;M2.6,-10 L-21.06,-58.84;M2.6,-10 L-15.81,-24.11;M2.6,-10 L-17.56,-20.96;M2.6,-10 L-19.31,-21.31;M2.6,-10 L-21.06,-25.16;M2.6,-10 L-17.85,-27.83;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.08;M2.6,-10 L-23.1,-30.45;M2.6,-10 L-18.59,-49.2;M2.6,-10 L-22.09,-49.36;M2.6,-10 L-25.59,-53.75;M2.6,-10 L-29.09,-62.36;M2.6,-10 L-11.73,-55.13;M2.6,-10 L-13.48,-55.23;M2.6,-10 L-15.23,-60.38;M2.6,-10 L-16.98,-70.59;M2.6,-10 L-13.27,-53.42;M2.6,-10 L-15.02,-53.03;M2.6,-10 L-16.77,-57.62;M2.6,-10 L-18.52,-67.19;M2.6,-10 L-17.85,-45.67;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.42;M2.6,-10 L-23.1,-53.55;M2.6,-10 L-23.01,-38.17;M2.6,-10 L-28.26,-30.29;M2.6,-10 L-33.51,-36.42;M2.6,-10 L-38.76,-56.54;M2.6,-10 L-20.49,-30.26;M2.6,-10 L-23.99,-26.6;M2.6,-10 L-27.49,-27.81;M2.6,-10 L-30.99,-33.89;M2.6,-10 L-19.4,-41.08;M2.6,-10 L-21.15,-39.23;M2.6,-10 L-22.9,-41.78;M2.6,-10 L-24.65,-48.73;M2.6,-10 L-13.27,-20.82;M2.6,-10 L-15.02,-16.97;M2.6,-10 L-16.77,-16.62;M2.6,-10 L-18.52,-19.77;M2.6,-10 L-19.4,-41.35;M2.6,-10 L-21.15,-39.23;M2.6,-10 L-22.9,-42.05;M2.6,-10 L-24.65,-49.8;M2.6,-10 L0,-56.5;M2.6,-10 L0,-56.5;M2.6,-10 L0,-60;M2.6,-10 L0,-67;M2.6,-10 L-19.4,-33.02;M2.6,-10 L-21.15,-30.77;M2.6,-10 L-22.9,-32.32;M2.6,-10 L-24.65,-37.69;M2.6,-10 L-19.4,-40.66;M2.6,-10 L-21.15,-39.23;M2.6,-10 L-22.9,-41.36;M2.6,-10 L-24.65,-47.06;M2.6,-10 L-30.8,-65.1;M2.6,-10 L-44.8,-68.6;M2.6,-10 L-58.8,-86.1;M2.6,-10 L-72.8,-117.6;M2.6,-10 L-17.85,-28.04;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.29;M2.6,-10 L-23.1,-31.33;M2.6,-10 L-17.85,-45.84;M2.6,-10 L-19.6,-44.8;M2.6,-10 L-21.35,-47.59;M2.6,-10 L-23.1,-54.21;M2.6,-10 L-17.85,-27.83;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.08;M2.6,-10 L-23.1,-30.45;M2.6,-10 L-22.64,-42.79;M2.6,-10 L-27.89,-42.44;M2.6,-10 L-33.14,-45.59;M2.6,-10 L-38.39,-52.24;M2.6,-10 L-18.59,-24.67;M2.6,-10 L-22.09,-20.64;M2.6,-10 L-25.59,-20.12;M2.6,-10 L-29.09,-23.09;M2.6,-10 L-21.35,-47.42;M2.6,-10 L-26.6,-48.3;M2.6,-10 L-31.85,-52.67;M2.6,-10 L-37.1,-60.55;M2.6,-10 L-19.4,-32.87;M2.6,-10 L-21.15,-30.77;M2.6,-10 L-22.9,-32.17;M2.6,-10 L-24.65,-37.07;M2.6,-10 L-19.4,-40.63;M2.6,-10 L-21.15,-39.23;M2.6,-10 L-22.9,-41.33;M2.6,-10 L-24.65,-46.93;M2.6,-10 L-21.5,-36.75;M2.6,-10 L-25,-35;M2.6,-10 L-28.5,-36.75;M2.6,-10 L-32,-42;M2.6,-10 L0,-17.09;M2.6,-10 L0,-13.5;M2.6,-10 L0,-13.59;M2.6,-10 L0,-17.38;M2.6,-10 L-17.85,-28.35;M2.6,-10 L-19.6,-25.2;M2.6,-10 L-21.35,-26.6;M2.6,-10 L-23.1,-32.53;M2.6,-10 L-23.01,-41.15;M2.6,-10 L-28.26,-39.71;M2.6,-10 L-33.51,-42.9;M2.6,-10 L-38.76,-50.73;M2.6,-10 L-19.6,-47.26;M2.6,-10 L-23.1,-46.55;M2.6,-10 L-26.6,-50.76;M2.6,-10 L-30.1,-59.88;M2.6,-10 L-19.6,-27.33;M2.6,-10 L-23.1,-23.45;M2.6,-10 L-26.6,-23.83;M2.6,-10 L-30.1,-28.45;M2.6,-10 L-21.5,-36.75;M2.6,-10 L-25,-35;M2.6,-10 L-28.5,-36.75;M2.6,-10 L-32,-42;M2.6,-10 L0,-56.5;M2.6,-10 L0,-56.5;M2.6,-10 L0,-60;M2.6,-10 L0,-67;M2.6,-10 L-80.85,4.2;M2.6,-10 L-117.6,32.2;M2.6,-10 L-154.35,46.2;M2.6,-10 L-191.1,46.2"
+                 keyTimes="0.00000;0.00427;0.00855;0.01282;0.01709;0.02112;0.02516;0.02919;0.03322;0.03725;0.04129;0.04532;0.04935;0.05395;0.05855;0.06315;0.06775;0.10471;0.10871;0.11271;0.11672;0.12072;0.12472;0.12872;0.13272;0.13680;0.14087;0.14495;0.14903;0.15310;0.15718;0.16126;0.16533;0.16937;0.17340;0.17743;0.18147;0.18584;0.19022;0.19460;0.19898;0.20319;0.20741;0.21163;0.21585;0.25590;0.26006;0.26421;0.26836;0.27240;0.27643;0.28046;0.28449;0.29506;0.30562;0.31619;0.32675;0.33156;0.33636;0.34116;0.34596;0.35047;0.35497;0.35947;0.36397;0.36863;0.37328;0.37793;0.38258;0.38708;0.39158;0.39609;0.40059;0.40509;0.40959;0.41408;0.41858;0.55718;0.56169;0.56619;0.57069;0.61012;0.61462;0.61913;0.62363;0.63419;0.64476;0.65532;0.66589;0.66893;0.67197;0.67500;0.67804;0.68108;0.68412;0.68716;0.69020;0.69324;0.69627;0.69931;0.70235;0.70593;0.70951;0.71309;0.71667;0.72005;0.72343;0.72681;0.73020;0.73384;0.73749;0.74114;0.74478;0.74780;0.75081;0.75382;0.75683;0.75984;0.76285;0.76587;0.76888;0.77216;0.77543;0.77871;0.78199;0.78500;0.78800;0.79101;0.79402;0.79705;0.80009;0.80313;0.80617;0.80973;0.81329;0.81685;0.82041;0.90920;0.91255;0.91589;0.91923;0.92257;0.92592;0.92926;0.93260;0.93588;0.93916;0.94244;0.94571;0.94872;0.95173;0.95473;0.95774;0.96831;0.97887;0.98944;1.00000"
                  dur="28.00s"
                  repeatCount="indefinite"/>
         <animate attributeName="opacity"
-                 values="0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0"
-                 keyTimes="0.00000;0.00081;0.00161;0.00888;0.01372;0.01501;0.01702;0.01789;0.02578;0.03104;0.03245;0.03447;0.03527;0.04244;0.04722;0.04850;0.05046;0.05130;0.05888;0.06394;0.06529;0.06729;0.06811;0.07548;0.08039;0.08170;0.08364;0.08443;0.09153;0.09626;0.09752;0.09941;0.10020;0.10730;0.11203;0.11329;0.11521;0.11603;0.12341;0.12832;0.12963;0.13159;0.13241;0.13972;0.14460;0.14590;0.14783;0.14862;0.15572;0.16045;0.16171;0.16365;0.16448;0.17198;0.17697;0.17830;0.18023;0.18098;0.18779;0.19234;0.19355;0.19539;0.19618;0.20328;0.20801;0.20927;0.21117;0.21197;0.21914;0.22392;0.22520;0.22708;0.22784;0.23469;0.23926;0.24048;0.28318;0.28518;0.30314;0.31511;0.31831;0.32170;0.32230;0.32771;0.33131;0.33227;0.33375;0.33438;0.34006;0.34385;0.34486;0.34637;0.34701;0.35269;0.35648;0.35749;0.35905;0.35973;0.36584;0.36991;0.37100;0.37256;0.37317;0.37865;0.38230;0.38328;0.38474;0.38535;0.39083;0.39449;0.39546;0.39689;0.39746;0.40263;0.40607;0.40699;0.40837;0.40894;0.41411;0.41755;0.41847;0.41984;0.42041;0.42552;0.42893;0.42984;0.43126;0.43189;0.43758;0.44136;0.44237;0.44386;0.44446;0.44987;0.45347;0.45443;0.45596;0.45665;0.46285;0.46699;0.46809;0.46962;0.47019;0.47530;0.47871;0.47962;0.48106;0.48170;0.48751;0.49138;0.49241;0.49388;0.49445;0.49956;0.50297;0.50388;0.54193;0.54254;0.54812;0.55183;0.55282;0.55427;0.55484;0.56000;0.56345;0.56437;0.56574;0.56632;0.57148;0.57493;0.57585;0.57722;0.57779;0.58290;0.58630;0.58721;0.59000;0.59200;0.60996;0.62193;0.62513;0.62896;0.62999;0.63931;0.64552;0.64717;0.67313;0.67399;0.68169;0.68682;0.68819;0.69025;0.69110;0.69880;0.70394;0.70531;0.70736;0.70822;0.71592;0.72105;0.72242;0.72448;0.72533;0.73303;0.73817;0.73954;0.74159;0.74245;0.75015;0.75528;0.75665;0.75870;0.75956;0.76726;0.77239;0.77376;0.77582;0.77667;0.78437;0.78951;0.79088;0.79293;0.79379;0.80149;0.80662;0.80799;0.84618;0.84704;0.85474;0.85987;0.86124;0.86347;0.86450;0.87375;0.87991;0.88156;0.96208;0.96408;0.98204;0.99401;1.00000"
+                 values="0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0;0;0.9;1;0.5;0"
+                 keyTimes="0.00000;0.00085;0.00171;0.00940;0.01453;0.01589;0.01790;0.01870;0.02596;0.03080;0.03209;0.03403;0.03483;0.04209;0.04693;0.04822;0.05027;0.05119;0.05947;0.06499;0.06646;0.10151;0.10231;0.10951;0.11432;0.11560;0.11752;0.11832;0.12552;0.13032;0.13160;0.13353;0.13435;0.14169;0.14658;0.14788;0.14984;0.15066;0.15800;0.16289;0.16419;0.16614;0.16695;0.17421;0.17905;0.18034;0.18234;0.18322;0.19110;0.19635;0.19775;0.19982;0.20066;0.20826;0.21332;0.21467;0.25258;0.25341;0.26089;0.26587;0.26720;0.26917;0.26998;0.27723;0.28207;0.28336;0.28661;0.28872;0.30774;0.32041;0.32380;0.32771;0.32867;0.33732;0.34308;0.34462;0.34686;0.34776;0.35587;0.36127;0.36271;0.36491;0.36584;0.37421;0.37979;0.38128;0.38348;0.38438;0.39248;0.39789;0.39933;0.40149;0.40239;0.41049;0.41588;0.41732;0.55358;0.55448;0.56259;0.56799;0.56943;0.60652;0.60742;0.61552;0.62093;0.62237;0.62574;0.62786;0.64687;0.65955;0.66293;0.66650;0.66711;0.67257;0.67622;0.67719;0.67865;0.67926;0.68473;0.68837;0.68935;0.69080;0.69141;0.69688;0.70053;0.70150;0.70307;0.70378;0.71022;0.71452;0.71566;0.71734;0.71802;0.72411;0.72817;0.72925;0.73093;0.73166;0.73822;0.74260;0.74376;0.74539;0.74599;0.75141;0.75502;0.75599;0.75743;0.75803;0.76346;0.76707;0.76803;0.76953;0.77019;0.77609;0.78002;0.78107;0.78259;0.78319;0.78860;0.79221;0.79317;0.79462;0.79523;0.80070;0.80435;0.80532;0.80688;0.80759;0.81400;0.81828;0.81942;0.90653;0.90720;0.91322;0.91723;0.91830;0.91990;0.92057;0.92659;0.93060;0.93167;0.93326;0.93391;0.93981;0.94375;0.94480;0.94632;0.94692;0.95233;0.95594;0.95690;0.95985;0.96197;0.98098;0.99366;1.00000"
                  dur="28.00s"
                  repeatCount="indefinite"/>
       </path>
@@ -1083,8 +1083,8 @@
               <!-- head (rotated by animations.mjs during idle via headAnimation) -->
               <g class="ws-head">
                 <animateTransform attributeName="transform" type="rotate"
-                                  values="0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;-12;9;-7;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;-12;9;-7;0;0;0;0;0;0;0;0;0;0;0;0;0;-12;9;-7;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;-12;9;-7;0;0;0;0;0;-12;9;-7;0;0;0"
-                                  keyTimes="0.00000;0.00807;0.01614;0.02491;0.03367;0.04164;0.04961;0.05804;0.06647;0.07466;0.08285;0.09074;0.09862;0.10651;0.11439;0.12259;0.13078;0.13891;0.14704;0.15493;0.16282;0.17114;0.17947;0.18704;0.19461;0.20249;0.21038;0.21835;0.22631;0.23393;0.24155;0.25146;0.26137;0.27128;0.28119;0.30114;0.32110;0.32711;0.33312;0.33943;0.34574;0.35206;0.35837;0.36516;0.37195;0.37804;0.38413;0.39022;0.39631;0.40205;0.40779;0.41353;0.41927;0.42495;0.43063;0.43694;0.44326;0.44927;0.45527;0.46216;0.46906;0.47473;0.48041;0.48686;0.49331;0.49899;0.50467;0.51383;0.52299;0.53215;0.54131;0.54750;0.55369;0.55943;0.56517;0.57091;0.57665;0.58233;0.58801;0.60796;0.62792;0.63827;0.64862;0.65454;0.66045;0.66636;0.67228;0.68083;0.68939;0.69795;0.70651;0.71506;0.72362;0.73218;0.74073;0.74929;0.75785;0.76640;0.77496;0.78352;0.79208;0.80063;0.80919;0.81822;0.82726;0.83629;0.84533;0.85388;0.86244;0.87272;0.88300;0.90227;0.92154;0.94081;0.96009;0.98004;1.00000"
+                                  values="0;0;0;0;0;0;0;0;0;-12;9;-7;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;-12;9;-7;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;-12;9;-7;0;-12;9;-7;0;0;0;-12;9;-7;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;-12;9;-7;0;0;0;0;0;0;0;0;0;0;0"
+                                  keyTimes="0.00000;0.00855;0.01709;0.02516;0.03322;0.04129;0.04935;0.05855;0.06775;0.07599;0.08423;0.09247;0.10071;0.10871;0.11672;0.12472;0.13272;0.14087;0.14903;0.15718;0.16533;0.17340;0.18147;0.19022;0.19898;0.20741;0.21585;0.22483;0.23380;0.24277;0.25175;0.26006;0.26836;0.27643;0.28449;0.30562;0.32675;0.33636;0.34596;0.35497;0.36397;0.37328;0.38258;0.39158;0.40059;0.40959;0.41858;0.43040;0.44222;0.45404;0.46585;0.48756;0.50927;0.53097;0.55268;0.56169;0.57069;0.57942;0.58815;0.59689;0.60562;0.61462;0.62363;0.64476;0.66589;0.67197;0.67804;0.68412;0.69020;0.69627;0.70235;0.70951;0.71667;0.72343;0.73020;0.73749;0.74478;0.75081;0.75683;0.76285;0.76888;0.77543;0.78199;0.78800;0.79402;0.80009;0.80617;0.81329;0.82041;0.84178;0.86314;0.88450;0.90586;0.91255;0.91923;0.92592;0.93260;0.93916;0.94571;0.95173;0.95774;0.97887;1.00000"
                                   dur="28.00s"
                                   repeatCount="indefinite"/>
                 <ellipse cx="0" cy="-8.6" rx="2.6" ry="2.4" fill="var(--ws-red)"/>
